@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.FragmentManager;
@@ -24,6 +25,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.yang.fragment.MenuFragmentpageAdapt;
+import com.example.yang.util.CheckPermission;
+
+import java.io.File;
 
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener,ViewPager.OnPageChangeListener{
@@ -41,11 +45,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private FragmentTransaction transaction;
     private MenuFragmentpageAdapt mAdapter;
 
+    /*
+    * 主界面 fragment*/
     public static final int PAGE_ONE = 0;
     public static final int PAGE_TWO = 1;
     public static final int PAGE_THREE = 2;
     public static final int PAGE_FOUR = 3;
 
+    /*
+    * 目录名*/
+    String MAIN_FOLDER = "YLYW";
+    String DATA = "data";
     Network network;
 
     public Handler mnHandler = new Handler(){
@@ -68,9 +78,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         transaction = manager.beginTransaction();
         mAdapter = new MenuFragmentpageAdapt(manager);
 
+        CheckPermission.isStorage(this);
         /*
             * 这是网络线程*/
-       final BroadcastReceiver connectionRecever = new BroadcastReceiver(){
+       /*final BroadcastReceiver connectionRecever = new BroadcastReceiver(){
 
            @Override
            public void onReceive(Context context, Intent intent) {
@@ -78,8 +89,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                final NetworkInfo mobNetInfo = connectMgr.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
                NetworkInfo wifiNetInfo = connectMgr.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
                if(!mobNetInfo.isConnected() && !wifiNetInfo.isConnected()){
-                   /*
-                   * 网络未连接*/
+                   *//*
+                   * 网络未连接*//*
                    Log.i(null,"网络未连接");
                }else{
 
@@ -95,11 +106,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                }
            }
-       };
+       };*/
 
         /*
-        * 这是ui初始化*/
+        * ui初始化*/
         init_active_id();
+        CreateFolder();
+
+        //Intent mainac = getIntent();
 
         signal_image.setOnClickListener(this);
         signal_textview.setOnClickListener(this);
@@ -132,6 +146,32 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         return 0;
     }
 
+    public void CreateFolder(){
+        boolean sdCardExist = Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED);
+
+        if(!sdCardExist)
+        {
+
+            Toast.makeText(this,"请插入外部SD存储卡",Toast.LENGTH_LONG);
+
+        }else {
+            /*
+            * 创建一级目录*/
+            String MainFolder = Environment.getExternalStorageDirectory().getPath()+File.separator+MAIN_FOLDER;
+            File dirFirstFile = new File(MainFolder);
+
+            if(!dirFirstFile.exists()){
+                dirFirstFile.mkdirs();
+            }
+
+            /*创建二级目录*/
+            String DataFolder = MainFolder+File.separator+DATA;
+            File DirSecendFile = new File(DataFolder);
+            if(!DirSecendFile.exists()){
+                DirSecendFile.mkdirs();
+            }
+        }
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

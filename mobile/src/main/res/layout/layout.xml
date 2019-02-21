@@ -52,42 +52,6 @@
         android:layout_weight="2">
     </android.support.v4.view.ViewPager>
 
-
-
-   <!-- <RadioGroup
-        android:id="@+id/rg_tab_bar"
-        android:layout_width="match_parent"
-        android:layout_height="56dp"
-        android:layout_alignParentBottom="true"
-        android:background="@color/white"
-        android:orientation="horizontal">
-
-        <RadioButton
-            android:id="@+id/rb_channel"
-            style="@style/tab_menu_item"
-            android:drawableTop="@drawable/tab_menu_channel"
-            android:text="@string/tab_menu_alert" />
-
-        <RadioButton
-            android:id="@+id/rb_message"
-            style="@style/tab_menu_item"
-            android:drawableTop="@drawable/tab_menu_message"
-            android:text="@string/tab_menu_profile" />
-
-        <RadioButton
-            android:id="@+id/rb_better"
-            style="@style/tab_menu_item"
-            android:drawableTop="@drawable/tab_menu_better"
-            android:text="@string/tab_menu_pay" />
-
-        <RadioButton
-            android:id="@+id/rb_setting"
-            style="@style/tab_menu_item"
-            android:drawableTop="@drawable/tab_menu_setting"
-            android:text="@string/tab_menu_setting"/>
-
-    </RadioGroup>&ndash;&gt;
--->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"

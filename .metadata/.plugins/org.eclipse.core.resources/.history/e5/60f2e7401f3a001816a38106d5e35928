@@ -1,0 +1,17 @@
+package jkhjk;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+import javax.xml.crypto.Data;
+
+public class hjkhk {
+	public void c(){
+	Date date=new Date();
+	
+	SimpleDateFormat df=new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+	String time=df.format(date);
+	System.out.println(time);
+
+	}
+}

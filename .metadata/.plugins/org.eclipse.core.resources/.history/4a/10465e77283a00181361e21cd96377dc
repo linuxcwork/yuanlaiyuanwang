@@ -1,0 +1,25 @@
+package jkhjk;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+
+import javax.xml.crypto.Data;
+
+public class hjkhk {
+	
+	public static void main(String args[]) {
+	Date date=new Date();
+	
+	SimpleDateFormat df=new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+	String time=df.format(date);
+	System.out.println(time);
+	Calendar c=Calendar.getInstance();
+	System.out.println(c.get(Calendar.MINUTE));
+	
+	Integer a=2;
+	Integer b=1;
+	System.out.println(a.compareTo(b));
+
+	}
+}

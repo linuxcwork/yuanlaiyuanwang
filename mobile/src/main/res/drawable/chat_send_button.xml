@@ -1,0 +1,13 @@
+<?xml version = "1.0" encoding="utf-8" ?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android" >
+    <!-- 用来聊天按界面，发送和其他工功能选择-->
+    <item android:state_checkable="true"
+    android:id="@+id/send_change"
+    android:text="@string/send" >
+    </item>
+    <item   android:src="@mipmap/jiahao"
+            android:id="@+id/send_change1"
+             >
+    </item>
+
+</selector>

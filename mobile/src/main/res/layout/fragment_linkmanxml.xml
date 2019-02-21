@@ -4,36 +4,103 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center">
+        <SearchView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"/>
+    </RelativeLayout>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        >
-
+        android:orientation="horizontal">
         <LinearLayout
+            android:id="@+id/map_search"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:layout_weight="1"
+            android:padding="2dp"
+            android:orientation="vertical">
+            <com.example.yang.Activity.ZQImageViewRoundOval
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:src="@mipmap/map_search"
+                style="@style/link_funtion_image_style"/>
 
-            <ImageView
-                android:id="@+id/new_friend_image"
-                android:layout_width="match_parent"
-                android:layout_height="45dip"
-                android:layout_margin="5dp"
-                android:layout_weight="5"
-                android:background="@mipmap/ic_launcher" />
             <TextView
-                android:id="@+id/new_friend_textview"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_margin="10dp"
-                android:textColor="@color/black"
-                android:layout_weight="1"
-                android:gravity="left|center_vertical"
-                android:textSize="20dp"
-                android:text="@string/new_friend"/>
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp"
+                android:text="地图"/>
         </LinearLayout>
-
+        <LinearLayout
+            android:id="@+id/game_makefri"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:padding="2dp"
+            android:orientation="vertical">
+            <com.example.yang.Activity.ZQImageViewRoundOval
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                style="@style/link_funtion_image_style"
+                android:src="@mipmap/map_search"
+                />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp"
+                android:text="游戏"/>
+    </LinearLayout>
+        <LinearLayout
+            android:id="@+id/announ_fri"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:padding="2dp"
+            android:orientation="vertical">
+            <com.example.yang.Activity.ZQImageViewRoundOval
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                style="@style/link_funtion_image_style"
+                android:src="@mipmap/map_search"
+                />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp"
+                android:text="公告"/>
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/searchfri_bycond"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:padding="2dp"
+            android:orientation="vertical">
+            <com.example.yang.Activity.ZQImageViewRoundOval
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                style="@style/link_funtion_image_style"
+                android:src="@mipmap/map_search"
+                />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp"
+                android:text="条件查找"/>
+        </LinearLayout>
     </LinearLayout>
 
     <ListView
@@ -41,20 +108,5 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         />
-        <!--android:scrollbars="none"
-        android:dividerHeight="0dp"
-        android:divider="#00000000"
-        android:listSelector="#00000000"
-        android:cacheColorHint="#00000000"-->
-
-
-   <!-- <com.example.wechat.widget.SideBar
-        android:id="@id/sidebar"
-        android:layout_height="wrap_content"
-        android:layout_width="30dp"
-        android:layout_marginTop="30dp"
-        android:layout_gravity="right|center_vertical"/>-->
-
-
 
 </LinearLayout>

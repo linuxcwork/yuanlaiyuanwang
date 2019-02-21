@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+
+    <RelativeLayout
+        android:id="@+id/image_tips"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentStart="true"
+        android:background="@color/black">
+        <ImageView
+            android:id="@+id/image_return"
+            android:layout_width="40dp"
+            android:layout_alignParentStart="true"
+            android:layout_height="match_parent" />
+        <TextView
+            android:id="@+id/image_position"
+            android:layout_width="wrap_content"
+            android:layout_toEndOf="@+id/image_return"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:textSize="18sp"
+            android:textColor="@color/white"
+            android:text="@string/album_priview"/>
+        <Button
+            android:id="@+id/image_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/black"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:layout_alignParentEnd="true"
+            android:text="@string/album_send"/>
+    </RelativeLayout>
+
+    <ImageView
+        android:id="@+id/image_curr"
+        android:layout_alignBottom="@+id/image_tips"
+        android:layout_alignTop="@+id/image_bottom"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <GridView
+        android:id="@+id/image_all"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"></GridView>
+
+    <RelativeLayout
+        android:id="@+id/image_bottom"
+        android:layout_width="match_parent"
+        android:layout_alignParentBottom="true"
+        android:background="@color/black"
+        android:layout_height="50dp">
+        <TextView
+            android:id="@+id/image_edit"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:padding="10dp"
+            android:gravity="center"
+            android:textSize="18sp"
+            android:textColor="@color/white"
+            android:layout_alignParentStart="true"
+            android:text="@string/album_editable"/>
+        <CheckBox
+            android:id="@+id/image_cbp"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:padding="10dp"
+            android:textSize="18sp"
+
+            android:textColor="@color/white"
+            android:layout_alignParentEnd="true"
+            android:text="@string/album_priview"/>
+    </RelativeLayout>
+
+
+</RelativeLayout>

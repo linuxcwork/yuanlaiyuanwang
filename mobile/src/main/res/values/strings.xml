@@ -6,16 +6,40 @@
     <string name="life_main">生活</string>
     <string name="own_main">我的</string>
     <string name="new_friend">新朋友</string>
-    <string name="admin">账户:</string>
-    <string name="passwd">密码:</string>
+    <string name="contacts_nearby">附近的人</string>
+    <string name="admin">昵称</string>
+    <string name="passwd">密码</string>
     <string name="login">登 录</string>
     <string name="login_style">用短信验证码登录</string>
     <string name="forget_passwd">忘记密码</string>
     <string name="register">注册</string>
     <string name="separator">|</string>
-    <string name="id_card">身份证</string>
-    <string name="telphone">手机</string>
+    <string name="id_card">身份证:</string>
+    <string name="telphone">手机:</string>
     <string name="installed">已安装</string>
     <string name="popular">热门应用</string>
     <string name="send">发送</string>
+    <string name="camera">拍摄</string>
+    <string name="location">位置</string>
+    <string name="picture">相册</string>
+    <string name="nextstep">下一步</string>
+    <string name="getver">获取验证码</string>
+    <string name="ver">验证码</string>
+    <string name="sure">确认</string>
+    <string name="check_passwd">确认密码:</string>
+    <string name="phoneoremil">手机号/邮箱号</string>
+    <string name="tipspaswwd">密码</string>
+    <string name="canle_meaaage">取消</string>
+    
+    <string name="album_tips">图片和视频</string>
+    <string name="album_send">发送</string>
+    <string name="album_original_sample">原图</string>
+    <string name="album_priview">预览</string>
+    <string name="album_select">选择</string>
+    <string name="album_editable">编辑</string>
+
+    <string name="id_card_jump">跳过</string>
+    <string name="id_card_front">身份证正面</string>
+    <string name="id_card_back">身份证背面</string>
+
 </resources>

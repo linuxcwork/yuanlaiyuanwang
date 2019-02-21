@@ -47,9 +47,9 @@ public class signallistview extends BaseAdapter{
        bundle.putString("key", name);
 
         Intent intent = new Intent(context,chat_contrue.class);
-        intent.putExtras(bundle);
+        intent.putExtra("signale",bundle);
         this.context.startActivity(intent);
-       /*Toast.makeText(context,"hashish's",Toast.LENGTH_LONG).show();*/
+
         /*mcallback.onItemWidgeClickListener(view);*/
     }
 

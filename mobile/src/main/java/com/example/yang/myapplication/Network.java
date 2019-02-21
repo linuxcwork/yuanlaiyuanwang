@@ -51,18 +51,20 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.net.UnknownHostException;
 
+import okhttp3.OkHttpClient;
+
 /**
  * Created by yang on 2018/3/17.
  */
 
-class Network extends Thread{
+class Network {
 
     static Socket network;
     static HttpURLConnection urlconn;
 
     public Network(){
       try {
-          network = new Socket("192.168.1.200",8000);
+          network = new Socket("192.168.0.103",8000);
       }catch (UnknownHostException e){
           e.printStackTrace();
       } catch (IOException e) {
@@ -133,13 +135,14 @@ class Network extends Thread{
         return 0;
     }
 
-    public int recv_message(String clienttalkfrom){
+    public String recv_message(){
+        String msg = null;
         try {
             DataInputStream sendto = new DataInputStream(network.getInputStream());
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return 0;
+        return msg;
     }
 
 

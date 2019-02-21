@@ -18,7 +18,7 @@ public class ShareHelper {
     /**
      * 保存在手机里的SP文件名
      */
-    public static final String FILE_NAME = "person_message";
+    public static final String FILE_NAME = "UserData";
 
     public ShareHelper(String FILE_NAME){
 
