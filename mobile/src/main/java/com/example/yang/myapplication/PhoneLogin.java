@@ -8,19 +8,15 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
 import android.os.Message;
-import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.baidu.tts.loopj.RequestParams;
 import com.example.yang.Activity.VerifyCodeView;
 import com.example.yang.network.OkHttpManager;
 
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -29,7 +25,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import okhttp3.Call;
-import okhttp3.Response;
 
 public class PhoneLogin extends Activity implements View.OnClickListener{
     private VerifyCodeView verifyCodeView;
@@ -40,7 +35,7 @@ public class PhoneLogin extends Activity implements View.OnClickListener{
     private int countSeconds = 60;//倒计时秒数
     private Context mContext;
     private OkHttpManager http;
-    private com.example.yang.myapplication.Message mess;
+    private com.example.yang.myapplication.mMessage mess;
     private User user;
     private Boolean runningThree=false;
 
@@ -183,7 +178,7 @@ public class PhoneLogin extends Activity implements View.OnClickListener{
         }
     }
 
-    private static boolean isMobileNO(String tel) {
+    public static boolean isMobileNO(String tel) {
         Pattern p = Pattern.compile("^(13[0-9]|15([0-3]|[5-9])|14[5,7,9]|17[1,3,5,6,7,8]|18[0-9])\\d{8}$");
         Matcher m = p.matcher(tel);
         System.out.println(m.matches() + "---");

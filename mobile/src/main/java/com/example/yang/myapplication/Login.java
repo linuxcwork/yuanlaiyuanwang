@@ -3,9 +3,7 @@ package com.example.yang.myapplication;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.os.Looper;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
@@ -14,7 +12,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.yang.Aichar.IdCardActivity;
-import com.example.yang.Loger.Logger;
 import com.example.yang.network.OkHttpManager;
 import com.example.yang.network.ServerResponse;
 import com.example.yang.util.UrlListdb;
@@ -24,11 +21,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import okhttp3.Call;
-import okhttp3.Response;
 
-import static android.widget.Toast.*;
-import static com.baidu.tts.loopj.AsyncHttpClient.log;
-import static com.example.yang.myapplication.sqlite_linkmanmss.TAG;
 
 public class Login extends Activity implements View.OnClickListener{
 
@@ -41,9 +34,8 @@ public class Login extends Activity implements View.OnClickListener{
 
     private ServerResponse serverResponse = new ServerResponse();
 
-    User user;
-    UrlListdb urlListdb = new UrlListdb();
-    OkHttpManager http = new OkHttpManager();
+    private UrlListdb urlListdb = new UrlListdb();
+    private OkHttpManager http = new OkHttpManager();
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

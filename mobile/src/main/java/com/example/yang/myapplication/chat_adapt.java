@@ -7,13 +7,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.yang.ui.GifTextView;
 
 import java.util.List;
-
-import static com.example.yang.myapplication.R.drawable.d_ganmao;
 
 /**
  * Created by yang on 2018/4/6.

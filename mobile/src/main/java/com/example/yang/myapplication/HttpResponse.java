@@ -3,7 +3,6 @@ package com.example.yang.myapplication;
 import java.io.IOException;
 
 import okhttp3.Call;
-import okhttp3.Response;
 
 /*
 *   网络消息回调
@@ -14,6 +13,6 @@ import okhttp3.Response;
 *   时间：2018/05/27*/
 
 public interface HttpResponse {
-    public void succesd(Call call,Object response);
-    public void failed(Call call, IOException e);
+    void succesd(Call call,Object response);
+    void failed(Call call, IOException e);
 }

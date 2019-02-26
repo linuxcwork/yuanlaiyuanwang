@@ -7,5 +7,5 @@ import android.view.View;
  */
 
 public interface callback {
-    public  void onItemWidgeClickListener(View v);
+    void onItemWidgeClickListener(View v);
 }

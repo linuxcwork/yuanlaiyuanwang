@@ -2,9 +2,7 @@ package com.example.yang.myapplication;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.widget.Toast;
 
-import java.util.HashMap;
 import java.util.Map;
 
 /**

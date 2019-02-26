@@ -13,7 +13,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.baidu.tts.loopj.RequestParams;
 import com.example.yang.Activity.NewPasswd;
 import com.example.yang.Activity.VerifyCodeView;
 import com.example.yang.network.OkHttpManager;
@@ -21,11 +20,8 @@ import com.example.yang.network.OkHttpManager;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import okhttp3.Call;
-import okhttp3.Response;
 
 public class ForgetPasswd extends Activity implements View.OnClickListener{
 
@@ -33,12 +29,11 @@ public class ForgetPasswd extends Activity implements View.OnClickListener{
     private VerifyCodeView ver;
     private Button getver;
     private Context mContext;
-    private Button nextstep_button;
     private Boolean runningThree=false;
 
     private OkHttpManager http;
     private User user;
-    private Message mess;
+    private mMessage mess;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -48,7 +43,7 @@ public class ForgetPasswd extends Activity implements View.OnClickListener{
         phone = (EditText) findViewById(R.id.forget_phonenumber);
         ver = (VerifyCodeView) findViewById(R.id.forget_verification);
         getver =(Button) findViewById(R.id.forget_getver);
-        nextstep_button = (Button) findViewById(R.id.forget_nextstep);
+        Button nextstep_button = (Button) findViewById(R.id.forget_nextstep);
 
         getver.setOnClickListener(this);
         nextstep_button.setOnClickListener(this);
@@ -156,19 +151,12 @@ public class ForgetPasswd extends Activity implements View.OnClickListener{
         if ("".equals(mobile)) {
             Log.e("tag", "mobile=" + mobile);
             new AlertDialog.Builder(mContext).setTitle("提示").setMessage("手机号码不能为空").setCancelable(true).show();
-        } else if (isMobileNO(mobile) == false) {
+        } else if (PhoneLogin.isMobileNO(mobile) == false) {
             new AlertDialog.Builder(mContext).setTitle("提示").setMessage("请输入正确的手机号码").setCancelable(true).show();
         } else {
             Log.e("tag", "输入了正确的手机号");
             requestVerifyCode(mobile);
         }
-    }
-
-    private static boolean isMobileNO(String tel) {
-        Pattern p = Pattern.compile("^(13[0-9]|15([0-3]|[5-9])|14[5,7,9]|17[1,3,5,6,7,8]|18[0-9])\\d{8}$");
-        Matcher m = p.matcher(tel);
-        System.out.println(m.matches() + "---");
-        return m.matches();
     }
 
     /*

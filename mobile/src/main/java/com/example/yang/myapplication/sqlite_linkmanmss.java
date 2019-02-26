@@ -3,19 +3,15 @@ package com.example.yang.myapplication;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-import android.database.DatabaseErrorHandler;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Environment;
-import android.text.Editable;
 import android.util.Log;
-import android.widget.Toast;
 
 import java.io.File;
 import java.util.Map;
 
-import static android.content.Context.MODE_PRIVATE;
 
 /**
  * Created by yang on 2018/3/17.

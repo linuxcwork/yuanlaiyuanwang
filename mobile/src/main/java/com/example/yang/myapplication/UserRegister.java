@@ -1,13 +1,11 @@
 package com.example.yang.myapplication;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Looper;
-import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -24,11 +22,8 @@ import com.example.yang.util.UrlListdb;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import okhttp3.Call;
-import okhttp3.Response;
 
 public class UserRegister extends Activity implements View.OnClickListener{
     private EditText account;
@@ -39,7 +34,7 @@ public class UserRegister extends Activity implements View.OnClickListener{
     private Button  getver;
     private Button reg;
 
-    private Message mess = new Message();
+    private mMessage mess = new mMessage();
     private User user;
     private Context mContext;
     private OkHttpManager http;
@@ -90,7 +85,7 @@ public class UserRegister extends Activity implements View.OnClickListener{
         String mobile = phone.getText().toString();
         String ver_send = ver.getEditContent();
 
-        if(!isMobileNO(mobile)){
+        if(!PhoneLogin.isMobileNO(mobile)){
             System.out.println("手机号错误");
             return;
         }
@@ -186,7 +181,7 @@ public class UserRegister extends Activity implements View.OnClickListener{
             Looper.prepare();
             Toast.makeText(UserRegister.this,info.PHONE_IS_NOT_EMMPUT,Toast.LENGTH_SHORT).show();
             Looper.loop();
-        } else if (isMobileNO(mobile) == false) {
+        } else if (PhoneLogin.isMobileNO(mobile) == false) {
             Looper.prepare();
             Toast.makeText(UserRegister.this,info.PHONE_NUMBER_ERROR,Toast.LENGTH_SHORT).show();
             Looper.loop();
@@ -194,13 +189,6 @@ public class UserRegister extends Activity implements View.OnClickListener{
             Log.e("tag", "输入了正确的手机号");
             requestVerifyCode(mobile);
         }
-    }
-
-    private static boolean isMobileNO(String tel) {
-        Pattern p = Pattern.compile("^(13[0-9]|15([0-3]|[5-9])|14[5,7,9]|17[1,3,5,6,7,8]|18[0-9])\\d{8}$");
-        Matcher m = p.matcher(tel);
-        System.out.println(m.matches() + "---");
-        return m.matches();
     }
 
     private void startCountBack() {

@@ -1,6 +1,6 @@
 package com.example.yang.myapplication;
 
-public class Message {
+public class mMessage {
     /*
     * 对端的ID号*/
     private String id;

@@ -1,13 +1,5 @@
 package com.example.yang.myapplication;
 
-import android.app.Activity;
-import android.content.Context;
-import android.graphics.drawable.ColorDrawable;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.BaseAdapter;
-import android.widget.ListView;
 
 /**
  * Created by yang on 2018/3/22.
