@@ -3,47 +3,52 @@ package com.amap.map3d.demo.basic;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.graphics.Matrix;
 import android.graphics.drawable.Icon;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
+import android.os.Message;
 import android.os.PersistableBundle;
-import android.os.Trace;
-import android.provider.SyncStateContract;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.animation.LinearInterpolator;
 import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.Toast;
 
 import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationClient;
 import com.amap.api.location.AMapLocationClientOption;
 import com.amap.api.location.AMapLocationListener;
 import com.amap.api.maps.AMap;
-import com.amap.api.maps.AMap.InfoWindowAdapter;
 import com.amap.api.maps.CameraUpdateFactory;
 import com.amap.api.maps.LocationSource;
 import com.amap.api.maps.MapView;
+import com.amap.api.maps.UiSettings;
 import com.amap.api.maps.model.BitmapDescriptorFactory;
 import com.amap.api.maps.model.LatLng;
 import com.amap.api.maps.model.Marker;
 import com.amap.api.maps.model.MarkerOptions;
 import com.amap.api.maps.model.MyLocationStyle;
-import com.amap.api.maps.model.animation.Animation;
-import com.amap.api.maps.model.animation.RotateAnimation;
+import com.bumptech.glide.load.engine.Resource;
 import com.example.yang.myapplication.R;
-import com.example.yang.network.CheckNetwork;
+import com.example.yang.network.OkHttpManager;
 import com.example.yang.util.CheckPermission;
+import com.example.yang.util.UrlListdb;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+
 
 
 /****************************************************************
@@ -57,7 +62,8 @@ import java.util.Date;
  * @class describe
  *****************************************************************/
 public class MapLocationPosition extends AppCompatActivity implements View.OnClickListener,AMapLocationListener{
-    AMap aMap;
+    private final String MTAG = "MapLocationPosition";
+    private AMap aMap;
     public String MAPRESOURCE = "mapresource";
     //标识，用于判断是否只显示一次定位信息和用户重新定位
     private boolean isFirstLoc = true;
@@ -69,29 +75,54 @@ public class MapLocationPosition extends AppCompatActivity implements View.OnCli
     //声明AMapLocationClient类对象
     public AMapLocationClient mLocationClient = null;
 
-    MyLocationStyle myLocationStyle;
+    private MyLocationStyle myLocationStyle;
+
 
     //截图保存的名称
     private String screeshotname = null;
     private ImageButton returnimageButton;
     private Button sendbutton;
+    private TheadAMapLocation theadAMapLocation = new TheadAMapLocation();
+
+
+    //服务器返回消息
+    public final int LOCALFRIENDS = 1;
+    Handler handler = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            int w = msg.what;
+            switch (w) {
+                case LOCALFRIENDS:    //case里不能用变量
+                    DrawMarker();
+                    break;
+                default:
+                    break;
+            }
+        }
+    };
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         System.out.println("MapLocationPosition: onCreate");
+
+
+        setContentView(R.layout.map_postion);
+        CheckPermission.isGPSpermission(MapLocationPosition.this);
         if (CheckPermission.isGPSOpen(this) == true){
             CheckPermission.openGPS(this);
         }
 
-        setContentView(R.layout.map_postion);
         MapView mapView = (MapView) findViewById(R.id.map);//找到地图控件
         initActivity();
+
         Intent intent = getIntent();
         if(intent.getExtras().getString(MAPRESOURCE).equals("linkman_fragment"))
         {
             returnimageButton.setVisibility(View.GONE);
             sendbutton.setVisibility(View.GONE);
         }
+
         //在activity执行onCreate时执行mMapView.onCreate(savedInstanceState)，创建地图
         mapView.onCreate(savedInstanceState);
         aMap = mapView.getMap();//初始化地图控制器对象
@@ -115,6 +146,7 @@ public class MapLocationPosition extends AppCompatActivity implements View.OnCli
         returnimageButton.setOnClickListener(this);
         sendbutton = findViewById(R.id.map_send);
         sendbutton.setOnClickListener(this);
+
     }
 
     /**************************************************************************
@@ -126,11 +158,31 @@ public class MapLocationPosition extends AppCompatActivity implements View.OnCli
     {
         myLocationStyle = new MyLocationStyle();//初始化定位蓝点样式类myLocationStyle.myLocationType(MyLocationStyle.LOCATION_TYPE_LOCATION_ROTATE);//连续定位、且将视角移动到地图中心点，定位点依照设备方向旋转，并且会跟随设备移动。（1秒1次定位）如果不设置myLocationType，默认也会执行此种模式。
         myLocationStyle.interval(2000); //设置连续定位模式下的定位间隔，只在连续定位模式下生效，单次定位模式下不会生效。单位为毫秒。
-        aMap.setMyLocationStyle(myLocationStyle);//设置定位蓝点的Style
 //aMap.getUiSettings().setMyLocationButtonEnabled(true);设置默认定位按钮是否显示，非必需设置。
         aMap.setMyLocationEnabled(true);// 设置为true表示启动显示定位蓝点，false表示隐藏定位蓝点并不进行定位，默认是false。
-        myLocationStyle.myLocationType(MyLocationStyle.LOCATION_TYPE_LOCATION_ROTATE);
-        //MyLocationStyle myLocationIcon(BitmapDescriptor myLocationIcon);//设置定位蓝点的icon图标方法，需要用到BitmapDescriptor类对象作为参数。
+        // 自定义精度范围的圆形边框颜色
+        myLocationStyle.strokeColor(Color.argb(0x44, 0, 0, 0xff));
+        // 自定义精度范围的圆形边框宽度
+        myLocationStyle.strokeWidth(10);
+        // 设置圆形的填充颜色
+        myLocationStyle.radiusFillColor(Color.argb(0x22, 0, 0, 0xff));
+        myLocationStyle.myLocationType(MyLocationStyle.LOCATION_TYPE_FOLLOW_NO_CENTER);
+        //设置定位蓝点的icon图标方法，需要用到BitmapDescriptor类对象作为参数。R.drawable.a用户头像
+        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.album);
+        Bitmap bitzoom = zoomBitmap(bitmap,100,100);
+        myLocationStyle.myLocationIcon(BitmapDescriptorFactory.fromBitmap(bitzoom));
+        aMap.setMyLocationStyle(myLocationStyle);//设置定位蓝点的Style
+    }
+
+    public static Bitmap zoomBitmap(Bitmap bitmap,int w,int h){
+        int width = bitmap.getWidth();
+        int height = bitmap.getHeight();
+        Matrix matrix = new Matrix();
+        float scaleWidht = ((float)w / width);
+        float scaleHeight = ((float)h / height);
+        matrix.postScale(scaleWidht, scaleHeight);
+        Bitmap newbmp = Bitmap.createBitmap(bitmap, 0, 0, width, height, matrix, true);
+        return newbmp;
     }
 
     /**************************************************************************
@@ -141,6 +193,13 @@ public class MapLocationPosition extends AppCompatActivity implements View.OnCli
      ***************************************************************************/
     public void initLocation()
     {
+        UiSettings uiSettings = aMap.getUiSettings();
+        uiSettings.setCompassEnabled(true);// 设置指南针是否显示
+        uiSettings.setZoomControlsEnabled(false);// 设置缩放按钮是否显示
+        uiSettings.setScaleControlsEnabled(true);// 设置比例尺是否显示
+        uiSettings.setRotateGesturesEnabled(true);// 设置地图旋转是否可用
+        uiSettings.setTiltGesturesEnabled(false);// 设置地图倾斜是否可用
+        uiSettings.setMyLocationButtonEnabled(false);// 设置默认定位按钮是否显示
         //初始化定位
         mLocationClient = new AMapLocationClient(this);
         //设置定位回调监听
@@ -153,7 +212,7 @@ public class MapLocationPosition extends AppCompatActivity implements View.OnCli
 
         //获取一次定位结果：
         //该方法默认为false。
-        mLocationOption.setOnceLocation(true);
+        mLocationOption.setOnceLocation(false);
 
         //获取最近3s内精度最高的一次定位结果：
         //设置setOnceLocationLatest(boolean b)接口为true，启动定位时SDK会返回最近3s内精度最高的一次定位结果。如果设置其为true，setOnceLocation(boolean b)接口也会被设置为true，反之不会，默认为false。
@@ -170,20 +229,12 @@ public class MapLocationPosition extends AppCompatActivity implements View.OnCli
 
     @Override
     public void onLocationChanged(AMapLocation aMapLocation) {
+        Log.d(MTAG,"onLocationChanged");
+        //http://a.amap.com/lbs/static/unzip/Android_Map_Doc/index.html?3D/com/amap/api/maps/model/class-use/LatLng.html
+        //将屏幕坐标转换成地理坐标
         if (aMapLocation != null) {
             if (aMapLocation.getErrorCode() == 0) {
-                //定位成功
-                System.out.println("ResolveAMapLocation:succeed");
-
-                //设置缩放级别
-                aMap.moveCamera(CameraUpdateFactory.zoomTo(17));
-                //将地图移动到定位点
-                aMap.moveCamera(CameraUpdateFactory.changeLatLng(new LatLng(aMapLocation.getLatitude(), aMapLocation.getLongitude())));
-                //点击定位按钮 能够将地图的中心移动到定位点
-                mListener.onLocationChanged(aMapLocation);
-                //添加图钉
-                //aMap.addMarker(getMarkerOptions(amapLocation));
-                //获取定位信息
+                /*//获取定位信息
                 StringBuffer buffer = new StringBuffer();
                 buffer.append(aMapLocation.getCountry() + ""
                         + aMapLocation.getProvince() + ""
@@ -191,9 +242,43 @@ public class MapLocationPosition extends AppCompatActivity implements View.OnCli
                         + aMapLocation.getProvince() + ""
                         + aMapLocation.getDistrict() + ""
                         + aMapLocation.getStreet() + ""
-                        + aMapLocation.getStreetNum());
-                Toast.makeText(getApplicationContext(), buffer.toString(), Toast.LENGTH_LONG).show();
+                        + aMapLocation.getStreetNum());*/
+                Map<String, Object> map = new HashMap<String, Object>();
+                map.put("id", "00000000001");//用户id
+                map.put("Latitude", aMapLocation.getLatitude());
+                map.put("Longitude", aMapLocation.getLongitude());
 
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                       ArrayList<MapNearbyInfo> mapinfoarrayList = theadAMapLocation.HTTPAMapRequst(map);
+                        Message msg = new Message();
+                        msg.obj = mapinfoarrayList;
+                        msg.what = LOCALFRIENDS;
+                        handler.sendMessage(msg);
+                        try {
+                            Thread.sleep(60000);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }).start();
+                //定位成功
+                System.out.println("ResolveAMapLocation:succeed");
+                if (isFirstLoc) {
+                    System.out.println("ResolveAMapLocation:fail");
+                    //设置缩放级别
+                    aMap.moveCamera(CameraUpdateFactory.zoomTo(17));
+                    //将地图移动到定位点
+                    aMap.moveCamera(CameraUpdateFactory.changeLatLng(new LatLng(aMapLocation.getLatitude(), aMapLocation.getLongitude())));
+                    //点击定位按钮 能够将地图的中心移动到定位点
+                    mListener.onLocationChanged(aMapLocation);
+                    isFirstLoc = false;
+                    //Toast.makeText(getApplicationContext(), buffer.toString(), Toast.LENGTH_LONG).show();
+                }
+
+                //添加图钉
+                //aMap.addMarker(getMarkerOptions(amapLocation));
 
             }else {
                 //定位失败时，可通过ErrCode（错误码）信息来确定失败的原因，errInfo是错误信息，详见错误码表。
@@ -292,9 +377,11 @@ public class MapLocationPosition extends AppCompatActivity implements View.OnCli
     ***************************************************************************/
     public void DrawMarker()
     {
+        double longitude = 0;
+        double latitude = 0;
         System.out.println("MapLocationPosition: --DrawMarker-- ");
-        LatLng latLng = new LatLng(39.906901,116.397972);
-        //final Marker marker = aMap.addMarker(new MarkerOptions().position(latLng).title("北京").snippet("DefaultMarker"));
+        LatLng latLng = new LatLng(latitude,longitude);
+        final Marker marker = aMap.addMarker(new MarkerOptions().position(latLng).title("北京").snippet("DefaultMarker"));
         MarkerOptions markerOption = new MarkerOptions();
         markerOption.position(latLng);
         markerOption.title("name").snippet("西安市：34.341568, 108.940174");
@@ -329,37 +416,35 @@ public class MapLocationPosition extends AppCompatActivity implements View.OnCli
 
     class MapNearbyInfo{
         //头像
-        private Icon nearbyicon;
-        //姓名
-        private String nearbyname;
+        private File nearbyicon;
         //是否结婚
         private String ismarry;
+        //姓名
+        private String name;
+        //情感状况
+        private short emotion;
+        //是否实名认证
+        private Boolean isreal;
+        //信用值
+        private int reliablecount;
+        //诚意金
+        private Boolean ispay;
         //性别
         private String sex;
         //年龄
         private int age;
-        //职业
-        private String work;
         //纬度
         private double mapLatitude;
         //经度
         private double mapLongitude;
 
 
-        public Icon getNearbyicon() {
+        public File getNearbyicon() {
             return nearbyicon;
         }
 
-        public void setNearbyicon(Icon nearbyicon) {
+        public void setNearbyicon(File nearbyicon) {
             this.nearbyicon = nearbyicon;
-        }
-
-        public String getNearbyname() {
-            return nearbyname;
-        }
-
-        public void setNearbyname(String nearbyname) {
-            this.nearbyname = nearbyname;
         }
 
         public String getIsmarry() {
@@ -386,14 +471,6 @@ public class MapLocationPosition extends AppCompatActivity implements View.OnCli
             this.age = age;
         }
 
-        public String getWork() {
-            return work;
-        }
-
-        public void setWork(String work) {
-            this.work = work;
-        }
-
         public double getMapLatitude() {
             return mapLatitude;
         }
@@ -408,6 +485,46 @@ public class MapLocationPosition extends AppCompatActivity implements View.OnCli
 
         public void setMapLongitude(double mapLongitude) {
             this.mapLongitude = mapLongitude;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public short getEmotion() {
+            return emotion;
+        }
+
+        public void setEmotion(short emotion) {
+            this.emotion = emotion;
+        }
+
+        public Boolean getIsreal() {
+            return isreal;
+        }
+
+        public void setIsreal(Boolean isreal) {
+            this.isreal = isreal;
+        }
+
+        public int getReliablecount() {
+            return reliablecount;
+        }
+
+        public void setReliablecount(int reliablecount) {
+            this.reliablecount = reliablecount;
+        }
+
+        public Boolean getIspay() {
+            return ispay;
+        }
+
+        public void setIspay(Boolean ispay) {
+            this.ispay = ispay;
         }
     }
 
