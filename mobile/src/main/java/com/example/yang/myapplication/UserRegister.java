@@ -3,6 +3,7 @@ package com.example.yang.myapplication;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Looper;
@@ -17,6 +18,8 @@ import com.example.yang.Aichar.IdCardActivity;
 import com.example.yang.Loger.LocalInfo;
 import com.example.yang.network.OkHttpManager;
 import com.example.yang.network.ServerResponse;
+import com.example.yang.util.SMSCore;
+import com.example.yang.util.SMS_Receiver;
 import com.example.yang.util.UrlListdb;
 
 import java.io.IOException;
@@ -28,7 +31,6 @@ import okhttp3.Call;
 public class UserRegister extends Activity implements View.OnClickListener{
     private EditText account;
     private EditText passwd1;
-    private EditText passwd2;
     private EditText phone;
     private VerifyCodeView ver;
     private Button  getver;
@@ -62,6 +64,14 @@ public class UserRegister extends Activity implements View.OnClickListener{
                         getMobiile(phone.getText().toString());
                     }
                 }).start();
+                //发送获取验证码的信息
+                // 注册接收下行receiver
+                SMS_Receiver smsReceiver= new SMS_Receiver();
+                IntentFilter receiverFilter = new IntentFilter(SMSCore.ACTION_SMS_RECEIVER);
+                registerReceiver(smsReceiver, receiverFilter);
+                //发送短信
+                SMSCore smscore=new SMSCore();
+                smscore.SendSMS2("10001", "501", UserRegister.this);
                 break;
             case R.id.register_button:
                 new Thread(new Runnable() {
@@ -99,7 +109,7 @@ public class UserRegister extends Activity implements View.OnClickListener{
         map.put("username", useraccount);
        // map.put("event", mess.EVENT_REGISTER);
         map.put("phone", mobile);
-       // map.put("verification", ver_send);
+        map.put("verification", ver_send);
         map.put("passwd",passwd);
 
         http.postKeyValuePaires(urlListdb.register, map, new HttpResponse() {
@@ -128,7 +138,6 @@ public class UserRegister extends Activity implements View.OnClickListener{
     private void view_init(){
         account = (EditText) findViewById(R.id.register_acount);
         passwd1 = (EditText) findViewById(R.id.register_passwd);
-        passwd2 = (EditText) findViewById(R.id.register_passwd_check);
         phone = (EditText) findViewById(R.id.register_phonenumber);
         ver = (VerifyCodeView) findViewById(R.id.register_verify_code_view);
         getver = (Button) findViewById(R.id.register_getver);
@@ -210,16 +219,9 @@ public class UserRegister extends Activity implements View.OnClickListener{
     private boolean info_check(){
         if(account.getText().toString().isEmpty() ||
                 passwd1.getText().toString().isEmpty() ||
-                passwd2.getText().toString().isEmpty() ||
                 phone.getText().toString().isEmpty()){
             Looper.prepare();
             Toast.makeText(UserRegister.this,info.ACCOUNT_IS_EMMPUT,Toast.LENGTH_SHORT).show();
-            Looper.loop();
-            return true;
-        }
-        if(!passwd2.getText().toString().equals(passwd1.getText().toString())){
-            Looper.prepare();
-            Toast.makeText(UserRegister.this,info.TOW_PASSWD_DIFF,Toast.LENGTH_LONG).show();
             Looper.loop();
             return true;
         }
