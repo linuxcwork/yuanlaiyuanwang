@@ -19,9 +19,7 @@ import android.widget.ListView;
 import com.amap.map3d.demo.basic.MapLocationPosition;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.BitmapImageViewTarget;
-import com.example.yang.Activity.ZQImageViewRoundOval;
 import com.example.yang.myapplication.Linkman_Listview_Adapt;
-import com.example.yang.myapplication.PhoneLogin;
 import com.example.yang.myapplication.R;
 
 import java.util.ArrayList;
@@ -123,6 +121,7 @@ public class linkman_fragment extends Fragment implements View.OnClickListener {
 
                 break;
             case R.id.announ_fri:
+
                 break;
             case R.id.searchfri_bycond:
                 break;

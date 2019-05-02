@@ -18,4 +18,6 @@ public class UrlListdb {
     public String register = "http://10.0.2.2:8080/sclove/RegisterActionsql";
     //登陆路径
     public String login = "http://10.0.2.2:8080/sclove/LoginAction.do";
+    //地图信息获取
+    public String map = "http://10.0.2.2:8080/sclove/GetNearbyFriendPosition";
 }

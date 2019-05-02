@@ -27,7 +27,6 @@ import java.util.List;
  * Description:可替换的模板表情，gridview实现
  */
 public class EmotiomComplateFragment extends BaseFragment {
-    private EmotionPagerAdapter emotionPagerGvAdapter;
     private ViewPager vp_complate_emotion_layout;
     private EmojiIndicatorView ll_point_group;//表情面板对应的点列表
     private int emotion_map_type;
@@ -124,7 +123,7 @@ public class EmotiomComplateFragment extends BaseFragment {
         //初始化指示器
         ll_point_group.initIndicator(emotionViews.size());
         // 将多个GridView添加显示到ViewPager中
-        emotionPagerGvAdapter = new EmotionPagerAdapter(emotionViews);
+        EmotionPagerAdapter emotionPagerGvAdapter = new EmotionPagerAdapter(emotionViews);
         vp_complate_emotion_layout.setAdapter(emotionPagerGvAdapter);
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(screenWidth, gvHeight);
         vp_complate_emotion_layout.setLayoutParams(params);

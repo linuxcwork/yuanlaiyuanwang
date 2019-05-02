@@ -9,6 +9,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -19,6 +20,7 @@ import android.widget.Toast;
 
 import com.example.yang.fragment.MenuFragmentpageAdapt;
 import com.example.yang.util.CheckPermission;
+import com.example.yang.util.FileOperationUtil;
 
 import java.io.File;
 
@@ -47,12 +49,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     /*
     * 目录名*/
-    String MAIN_FOLDER = "YLYW";
     String DATA = "data";
     Network network;
 
-    public Handler mnHandler = new Handler(){
-      public void HandleMassage(Message msg){
+    Handler mnHandler = new Handler(){
+      public void handleMessage(Message msg){
           switch (msg.what){
               case 1:
                   default:
@@ -72,41 +73,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mAdapter = new MenuFragmentpageAdapt(manager);
 
         CheckPermission.isStorage(this);
-        /*
-            * 这是网络线程*/
-       /*final BroadcastReceiver connectionRecever = new BroadcastReceiver(){
-
-           @Override
-           public void onReceive(Context context, Intent intent) {
-               ConnectivityManager connectMgr = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
-               final NetworkInfo mobNetInfo = connectMgr.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
-               NetworkInfo wifiNetInfo = connectMgr.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
-               if(!mobNetInfo.isConnected() && !wifiNetInfo.isConnected()){
-                   *//*
-                   * 网络未连接*//*
-                   Log.i(null,"网络未连接");
-               }else{
-
-                   new Thread(new Runnable() {
-                       @Override
-                       public void run() {
-                           network = new Network();
-
-                           Message net_message = new Message();
-                           mnHandler.sendMessage(net_message);
-                       }
-                   }).start();
-
-               }
-           }
-       };*/
+        CheckPermission.isGPSpermission(this);
+        if (CheckPermission.isGPSOpen(this) == true){
+            CheckPermission.openGPS(this);
+        }
 
         /*
         * ui初始化*/
         init_active_id();
         CreateFolder();
-
-        //Intent mainac = getIntent();
 
         signal_image.setOnClickListener(this);
         signal_textview.setOnClickListener(this);
@@ -144,25 +119,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         if(!sdCardExist)
         {
-
             Toast.makeText(this,"请插入外部SD存储卡",Toast.LENGTH_LONG);
 
         }else {
             /*
             * 创建一级目录*/
-            String MainFolder = Environment.getExternalStorageDirectory().getPath()+File.separator+MAIN_FOLDER;
-            File dirFirstFile = new File(MainFolder);
-
-            if(!dirFirstFile.exists()){
-                dirFirstFile.mkdirs();
-            }
+            String MainFolder = Environment.getExternalStorageDirectory().getPath()+File.separator+FileOperationUtil.MAIN_FOLDER;
+            FileOperationUtil.CreateDir(MainFolder);
 
             /*创建二级目录*/
             String DataFolder = MainFolder+File.separator+DATA;
-            File DirSecendFile = new File(DataFolder);
-            if(!DirSecendFile.exists()){
-                DirSecendFile.mkdirs();
-            }
+            FileOperationUtil.CreateDir(DataFolder);
         }
     }
 

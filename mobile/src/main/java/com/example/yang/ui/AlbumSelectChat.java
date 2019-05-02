@@ -1,28 +1,16 @@
 package com.example.yang.ui;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.provider.MediaStore;
 import android.support.annotation.Nullable;
-import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.OrientationHelper;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.StaggeredGridLayoutManager;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -32,13 +20,8 @@ import com.example.yang.InterfaceClass.sendDataToAvtivityInterface;
 import com.example.yang.adapter.GridAdapter;
 import com.example.yang.myapplication.R;
 import com.example.yang.util.MDGridRvDividerDecoration;
-import com.example.yang.util.ViewHolder;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -54,11 +37,7 @@ import java.util.Map;
  * @class describe  选择需要发送的图片
  *****************************************************************/
 public class AlbumSelectChat extends AppCompatActivity implements View.OnClickListener {
-    private ImageView returnpreview;
     private static Button send;
-    private LinearLayout original;
-    private TextView priview;
-    private RecyclerView noScrollgridview;
     private GridAdapter albumadapt = null;
     private List<Map<String, Object>> listItems = null;
     private ArrayList mdata = new ArrayList();
@@ -76,19 +55,20 @@ public class AlbumSelectChat extends AppCompatActivity implements View.OnClickLi
             super.handleMessage(msg);
         }
     };
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.funtionablumchat);
-        returnpreview = findViewById(R.id.album_tips_return);
+        ImageView returnpreview = findViewById(R.id.album_tips_return);
         returnpreview.setOnClickListener(this);
         send = findViewById(R.id.album_send);
         send.setOnClickListener(this);
-        original = findViewById(R.id.album_original);
+        LinearLayout original = findViewById(R.id.album_original);
         original.setOnClickListener(this);
-        priview = findViewById(R.id.album_privew_text);
+        TextView priview = findViewById(R.id.album_privew_text);
         priview.setOnClickListener(this);
-        noScrollgridview = findViewById(R.id.album_girdview);
+        RecyclerView noScrollgridview = findViewById(R.id.album_girdview);
 
         Intent getintent = getIntent();
         String source = getintent.getStringExtra("activity");
@@ -124,7 +104,6 @@ public class AlbumSelectChat extends AppCompatActivity implements View.OnClickLi
         @Override
         public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
             super.onScrollStateChanged(recyclerView, newState);
-            int firstPosition;
             switch (newState) {
                 case RecyclerView.SCROLL_STATE_SETTLING:
                     albumadapt.SetScrollState(1);

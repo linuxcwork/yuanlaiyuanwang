@@ -1,6 +1,7 @@
 package com.example.yang.Aichar;
 
 import android.content.Context;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.baidu.ocr.sdk.OCR;
@@ -24,6 +25,7 @@ import java.lang.reflect.Array;
  * @class describe
  *****************************************************************/
 public class IdCardIdtfcation {
+    private final String MTAG = "IdCardIdtfcation";
     Context context;
     public IdCardIdtfcation(Context context){
         this.context = context;
@@ -36,7 +38,7 @@ public class IdCardIdtfcation {
             }
             @Override
             public void onError(OCRError error) {
-                System.out.println(error);
+                Log.e(MTAG,"IdCardIdtfcation"+error);
                 // 调用失败，返回OCRError子类SDKError对象
             }
         }, context, "O2ygXFpcAkiOh7iuwsxZ2pE0", "b1Sqee3dBB5hMMEtmiI8HHcZQPDN8nGi");
@@ -74,7 +76,7 @@ public class IdCardIdtfcation {
 
                     @Override
                     public void onError(OCRError error) {
-                        System.err.println(error);
+                        Log.e(MTAG,"identificationAction"+error);
                         // 调用失败，返回OCRError对象
                     }
                 });

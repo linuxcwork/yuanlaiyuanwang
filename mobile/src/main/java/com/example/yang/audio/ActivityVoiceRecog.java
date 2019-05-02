@@ -3,21 +3,17 @@ package com.example.yang.audio;
 import android.Manifest;
 import android.app.Activity;
 import android.content.pm.PackageManager;
-import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
 
 import com.baidu.speech.EventListener;
 import com.baidu.speech.EventManager;
-import com.baidu.speech.EventManagerFactory;
 import com.baidu.speech.asr.SpeechConstant;
 
 import org.json.JSONObject;
@@ -26,7 +22,6 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import static com.baidu.speech.audio.MicrophoneServer.TAG;
 
 public class ActivityVoiceRecog extends Activity implements EventListener{
 
@@ -42,14 +37,11 @@ public class ActivityVoiceRecog extends Activity implements EventListener{
 
     private EventManager asr;
 
-    private boolean logTime = true;
-
-    private boolean enableOffline = false; // 测试离线命令词，需要改成true
-
     /**
      * 测试参数填在这里
      */
     private void start() {
+        boolean enableOffline = false; // 测试离线命令词，需要改成true
         txtLog.setText("");
         Map<String, Object> params = new LinkedHashMap<String, Object>();
         String event = null;
@@ -76,7 +68,7 @@ public class ActivityVoiceRecog extends Activity implements EventListener{
                     synchronized (autoCheck) {
                         String message = autoCheck.obtainErrorMessage(); // autoCheck.obtainAllMessage();
                         txtLog.append(message + "\n");
-                        ; // 可以用下面一行替代，在logcat中查看代码
+                        // 可以用下面一行替代，在logcat中查看代码
                         // Log.w("AutoCheckMessage", message);
                     }
                 }
@@ -131,6 +123,7 @@ public class ActivityVoiceRecog extends Activity implements EventListener{
     }
 
     private void printLog(String text) {
+        boolean logTime = true;
         if (logTime) {
             text += "  ;time=" + System.currentTimeMillis();
         }

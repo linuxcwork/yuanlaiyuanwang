@@ -33,6 +33,11 @@ public class User {
     public User(){
 
     }
+
+    class MeaaageHead{
+        public int muserId;                       //用户ID号
+        public int mlength;                       //消息长度
+    }
     //获取用户名
     public String getUserName() {             //获取用户名
         return userName;

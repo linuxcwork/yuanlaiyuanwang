@@ -1,16 +1,8 @@
 package com.example.yang.Activity;
 
-import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
-import android.text.TextUtils;
-import android.util.AttributeSet;
 import android.widget.GridView;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import okhttp3.internal.Util;
 
 /****************************************************************
  * @name MyApplication

@@ -1,10 +1,5 @@
 package com.example.yang.network;
 
-import android.app.Service;
-import android.content.Intent;
-import android.os.Binder;
-import android.os.IBinder;
-import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.example.yang.myapplication.HttpResponse;
@@ -220,7 +215,6 @@ public class OkHttpManager{
         });
     }
 
-
     /**
      * 提交多个键值对
      * @param url 提交的路径
@@ -235,6 +229,7 @@ public class OkHttpManager{
                 build.add(entry.getKey(),entry.getValue().toString());
             }
         }
+
         FormBody formBody = build.build();
 
         Request request = new Request.Builder()
@@ -325,7 +320,7 @@ public class OkHttpManager{
     /**
      * 上传多个文件和参数
      */
-    public void upLoadMultiFiles(String url, File[] files, Map<String, String> map) {
+    public void upLoadMultiFiles(String url, File[] files, Map<String, Object> map) {
         MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
         //添加文件
         if (files.length != 0) {
@@ -337,15 +332,19 @@ public class OkHttpManager{
         }
         //添加参数
         if (map != null) {
-            for (Map.Entry<String, String> entry : map.entrySet()) {
-                builder.addFormDataPart(entry.getKey(), entry.getValue());
+            for (Map.Entry<String, Object> entry : map.entrySet()) {
+                builder.addFormDataPart(entry.getKey(), entry.getValue().toString());
             }
         }
-        Request request = new Request.Builder().url(url).post(builder.build()).build();
+
+        Request request = new Request.Builder()
+                .url(url)
+                .post(builder.build())
+                .build();
         okHttpClient.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
-                Log.i(TAG, "onFailure: ");
+                Log.i(TAG, "onFailure: "+e);
             }
 
             @Override

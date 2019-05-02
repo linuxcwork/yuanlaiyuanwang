@@ -9,7 +9,6 @@ import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.ImageSpan;
 import android.util.AttributeSet;
-import android.widget.EditText;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;

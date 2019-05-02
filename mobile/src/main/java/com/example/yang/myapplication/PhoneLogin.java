@@ -12,6 +12,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.yang.Activity.VerifyCodeView;
@@ -27,8 +29,8 @@ import java.util.regex.Pattern;
 import okhttp3.Call;
 
 public class PhoneLogin extends Activity implements View.OnClickListener{
-    private VerifyCodeView verifyCodeView;
-    private EditText phonenum;
+    private EditText verifyCodeView;
+    private TextView phonenum;
     private Button   getver;
     private Button   login;
 
@@ -45,7 +47,7 @@ public class PhoneLogin extends Activity implements View.OnClickListener{
             super.handleMessage(msg);
             if (countSeconds > 0) {
                 --countSeconds;
-                getver.setText("(" + countSeconds + ")后获取验证码");
+                getver.setText("(" + countSeconds + ")秒后重试");
                 mCountHandler.sendEmptyMessageDelayed(0, 1000);
             } else {
                 countSeconds = 60;
@@ -59,14 +61,17 @@ public class PhoneLogin extends Activity implements View.OnClickListener{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.phonelogin);
 
-        phonenum = (EditText) findViewById(R.id.phone_phonenumber);
+        //手机号
+        phonenum = (TextView) findViewById(R.id.phone_login_phone);
         getver = (Button) findViewById(R.id.phone_getver);
         login = (Button)  findViewById(R.id.phone_nextstep);
-        verifyCodeView = (VerifyCodeView) findViewById(R.id.phone_verification);
+        verifyCodeView = (EditText) findViewById(R.id.phone_verification);
+        //头像
+        ImageView image = (ImageView) findViewById(R.id.phone_login_image);
 
         getver.setOnClickListener(this);
         login.setOnClickListener(this);
-        verifyCodeView.setInputCompleteListener(new VerifyCodeView.InputCompleteListener() {
+        /*verifyCodeView.setInputCompleteListener(new VerifyCodeView.InputCompleteListener() {
             @Override
             public void inputComplete() {
                 Toast.makeText(PhoneLogin.this, "inputComplete: " + verifyCodeView.getEditContent(), Toast.LENGTH_SHORT).show();
@@ -76,7 +81,7 @@ public class PhoneLogin extends Activity implements View.OnClickListener{
             public void invalidContent() {
 
             }
-        });
+        });*/
         Intent phonelogin = getIntent();
     }
 
@@ -84,14 +89,17 @@ public class PhoneLogin extends Activity implements View.OnClickListener{
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.phone_getver:
-                new Thread(new Runnable() {
+                startCountBack();
+                /** 相信服务器发送获取验证码的请求*/
+                /*new Thread(new Runnable() {
                     @Override
                     public void run() {
                         getMobiile(phonenum.getText().toString().trim());
                     }
-                }).start();
+                }).start();*/
                 break;
             case R.id.phone_nextstep:
+                /*将验证码发送给服务器，获取执行结果，判断是否登陆*/
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
@@ -104,11 +112,8 @@ public class PhoneLogin extends Activity implements View.OnClickListener{
 
     public void login() {
         String mobile = phonenum.getText().toString().trim();
-        String verifyCode = verifyCodeView.getEditContent();
+        String verifyCode = verifyCodeView.getText().toString();
         Map<String,Object> map = new HashMap<String, Object>();
-        int id = Preferences.getAccountId();
-        String token = Preferences.getToken();
-        map.put("user_id", id);
         map.put("event", mess.EVENT_PHONE_LOGIN);
         map.put("phone", mobile);
         map.put("verification", verifyCode);
@@ -138,8 +143,6 @@ public class PhoneLogin extends Activity implements View.OnClickListener{
 
     private void requestVerifyCode(String mobile) {
         Map<String,Object> map = new HashMap<String, Object>();
-        int id = Preferences.getAccountId();
-        map.put("user_id", id);
         map.put("event", mess.EVENT_GET_VERIFICATION);
         map.put(mess.getData(),mobile);
 
@@ -200,7 +203,7 @@ public class PhoneLogin extends Activity implements View.OnClickListener{
     };
 
     private void startCountBack() {
-        ((Activity) mContext).runOnUiThread(new Runnable() {
+        this.runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 getver.setText(countSeconds + "");

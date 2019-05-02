@@ -1,6 +1,7 @@
 package com.example.yang.audio;
 
 import android.media.*;
+import android.util.Log;
 
 import java.io.File;
 import java.io.IOException;
@@ -8,6 +9,7 @@ import java.util.UUID;
 /*
 * 录音管理类*/
 public class AudioManager {
+    private final String MTAG = "AudioManager";
     private String mDir;//文件夹名称
     private MediaRecorder mMediaRecorder;
     private String mCurrentFilePath;//文件储存路径
@@ -89,6 +91,7 @@ public class AudioManager {
                 //mMediaRecorder.getMaxAmplitude() 范围:1-32767
                 return maxLevel * mMediaRecorder.getMaxAmplitude() / 32768 + 1;//最大值 * [0,1）+ 1
             } catch (Exception e) {
+                Log.e(MTAG,"getVoiceLevel"+e);
             }
         }
         return 1;

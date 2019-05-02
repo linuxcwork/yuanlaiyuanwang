@@ -17,7 +17,6 @@ import android.widget.TextView;
 import com.example.yang.myapplication.R;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 

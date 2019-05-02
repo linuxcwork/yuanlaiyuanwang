@@ -3,9 +3,6 @@ package com.example.yang.util;
 import android.os.Handler;
 import android.os.Message;
 
-import com.bumptech.glide.Glide;
-import com.example.yang.Aichar.IdCardActivity;
-
 import org.json.JSONObject;
 
 import java.io.BufferedReader;

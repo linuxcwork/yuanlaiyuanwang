@@ -21,5 +21,5 @@ public interface sendDataToAvtivityInterface {
      * descript ： 回传adapt中已选择图片给Activity,及图片数量
      * return   ： void
     ***************************************************************************/
-    public void dataCon(int count, ArrayList selecedata, List<Map<String, Object>> alldata);
+    void dataCon(int count, ArrayList selecedata, List<Map<String, Object>> alldata);
 }

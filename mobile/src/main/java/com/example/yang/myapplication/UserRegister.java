@@ -161,7 +161,6 @@ public class UserRegister extends Activity implements View.OnClickListener{
 
     private void requestVerifyCode(String mobile) {
         Map<String,Object> map = new HashMap<String, Object>();
-        //int id = Preferences.getAccountId();
         map.put("verifycode",mobile);
 
         if (runningThree) {

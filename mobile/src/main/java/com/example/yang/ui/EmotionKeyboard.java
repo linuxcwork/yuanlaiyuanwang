@@ -2,7 +2,6 @@ package com.example.yang.ui;
 
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
-import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Rect;
@@ -32,10 +31,6 @@ import static com.example.yang.network.OkHttpManager.TAG;
  *              本人仅做细微修改以及代码解析
  */
 public class EmotionKeyboard {
-
-    private FragmentManager chatmanager;
-    private FragmentTransaction chattransaction;
-    private ChatFuntionViewPager chatmAdapter;
     ViewPager gviewpager;
     View mlinview;
     public static final int FPAGE_ONE = 0;
@@ -133,9 +128,9 @@ public class EmotionKeyboard {
 
     public void BindToViewPager(Context context,ViewPager viewPager){
         gviewpager = viewPager;
-        chatmanager = mActivity.getSupportFragmentManager();
-        chattransaction = chatmanager.beginTransaction();
-        chatmAdapter = new ChatFuntionViewPager(context,chatmanager);
+        FragmentManager chatmanager = mActivity.getSupportFragmentManager();
+        FragmentTransaction chattransaction = chatmanager.beginTransaction();
+        ChatFuntionViewPager  chatmAdapter = new ChatFuntionViewPager(context,chatmanager);
         viewPager.setAdapter(chatmAdapter);
         viewPager.setCurrentItem(0);
 

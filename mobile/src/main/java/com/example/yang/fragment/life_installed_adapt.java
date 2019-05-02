@@ -1,7 +1,6 @@
 package com.example.yang.fragment;
 
 import android.content.Context;
-import android.provider.ContactsContract;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;

@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
-import com.example.yang.adapter.HorizontalRecyclerviewAdapter;
 
 
 /**

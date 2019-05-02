@@ -38,7 +38,6 @@ public class AutoCheck {
     private Context context;
     private Handler handler;
 
-    private boolean hasError;
     private boolean enableOffline;
     private boolean isFinished = false;
 
@@ -89,8 +88,8 @@ public class AutoCheck {
     }
 
     private String formatString(PrintConfig config) {
+        boolean hasError = false;
         StringBuilder sb = new StringBuilder();
-        hasError = false;
 
         for (HashMap.Entry<String, Check> entry : checks.entrySet()) {
             Check check = entry.getValue();

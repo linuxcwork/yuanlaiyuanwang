@@ -4,8 +4,10 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.os.Looper;
 import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.View;
@@ -15,7 +17,10 @@ import android.widget.Toast;
 
 import com.example.yang.Activity.NewPasswd;
 import com.example.yang.Activity.VerifyCodeView;
+import com.example.yang.Loger.LocalInfo;
 import com.example.yang.network.OkHttpManager;
+import com.example.yang.util.SMSCore;
+import com.example.yang.util.SMS_Receiver;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -79,6 +84,15 @@ public class ForgetPasswd extends Activity implements View.OnClickListener{
                         getMobiile(phone.getText().toString());
                     }
                 }).start();
+                //发送获取验证码的信息
+                // 注册接收下行receiver
+
+                SMS_Receiver smsReceiver= new SMS_Receiver();
+                IntentFilter receiverFilter = new IntentFilter(SMSCore.ACTION_SMS_RECEIVER);
+                registerReceiver(smsReceiver, receiverFilter);
+                //发送短信
+                SMSCore smscore=new SMSCore();
+                smscore.SendSMS2("10001", "501", ForgetPasswd.this);
                 break;
         }
     }
@@ -87,9 +101,6 @@ public class ForgetPasswd extends Activity implements View.OnClickListener{
         String mobile = phone.getText().toString().trim();
         String verifyCode = ver.getEditContent();
         Map<String,Object> map = new HashMap<String, Object>();
-        int id = Preferences.getAccountId();
-        String token = Preferences.getToken();
-        map.put("user_id", id);
         map.put("event", mess.EVENT_FORGET_PASSWD);
         map.put("phone", mobile);
         map.put("verification", verifyCode);
@@ -119,8 +130,6 @@ public class ForgetPasswd extends Activity implements View.OnClickListener{
 
     private void requestVerifyCode(String mobile) {
         Map<String,Object> map = new HashMap<String, Object>();
-        int id = Preferences.getAccountId();
-        map.put("user_id", id);
         map.put("event", mess.EVENT_GET_VERIFICATION);
         map.put(mess.getData(),mobile);
 
@@ -148,11 +157,16 @@ public class ForgetPasswd extends Activity implements View.OnClickListener{
 
     //获取验证码信息，判断是否有手机号码
     private void getMobiile(String mobile) {
+        LocalInfo info = new LocalInfo();
         if ("".equals(mobile)) {
             Log.e("tag", "mobile=" + mobile);
-            new AlertDialog.Builder(mContext).setTitle("提示").setMessage("手机号码不能为空").setCancelable(true).show();
+            Looper.prepare();
+            Toast.makeText(ForgetPasswd.this,info.PHONE_IS_NOT_EMMPUT,Toast.LENGTH_SHORT).show();
+            Looper.loop();
         } else if (PhoneLogin.isMobileNO(mobile) == false) {
-            new AlertDialog.Builder(mContext).setTitle("提示").setMessage("请输入正确的手机号码").setCancelable(true).show();
+            Looper.prepare();
+            Toast.makeText(ForgetPasswd.this,info.PHONE_NUMBER_ERROR,Toast.LENGTH_SHORT).show();
+            Looper.loop();
         } else {
             Log.e("tag", "输入了正确的手机号");
             requestVerifyCode(mobile);

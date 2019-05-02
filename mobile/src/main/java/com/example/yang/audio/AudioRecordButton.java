@@ -6,9 +6,6 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
-import android.view.View;
-
-import com.example.yang.myapplication.R;
 
 
 public class AudioRecordButton extends android.support.v7.widget.AppCompatButton {

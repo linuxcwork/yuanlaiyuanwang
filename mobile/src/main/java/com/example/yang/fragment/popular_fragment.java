@@ -8,7 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
-import com.example.yang.myapplication.Linkman_Listview_Adapt;
 import com.example.yang.myapplication.R;
 
 /**

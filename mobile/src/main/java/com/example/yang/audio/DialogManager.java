@@ -1,25 +1,19 @@
 package com.example.yang.audio;
 
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.example.yang.myapplication.R;
 
-import static com.example.yang.network.OkHttpManager.TAG;
 
 public class DialogManager {
     private Dialog mDialog;
     private ImageView mVoice;
     private Context mContext;
-    private Button send;
-    private Button cancle;
     public DialogManager(Context context) {
         mContext = context;
        // mDialog = new Dialog(context,R.style.Theme_AudioDialog);
@@ -32,9 +26,9 @@ public class DialogManager {
     public interface AudioFinishRecorderListener {
         void onFinish(float seconds,String filePath,String flag);
     }
-    private AudioFinishRecorderListener mAudioFinishRecorderListener;
+
     public void setAudioFinishRecorderListener(AudioFinishRecorderListener listener){
-        mAudioFinishRecorderListener = listener;
+        AudioFinishRecorderListener mAudioFinishRecorderListener = listener;
     }
     /**
      * 显示Dialog
@@ -47,7 +41,7 @@ public class DialogManager {
         mDialog.setContentView(view);
         mDialog.setTitle("正在录音......");
         //成员控件赋值
-        send = (Button) mDialog.findViewById(R.id.voice_send);
+        Button send = (Button) mDialog.findViewById(R.id.voice_send);
         send.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -55,7 +49,7 @@ public class DialogManager {
                 mDialog.hide();
             }
         });
-        cancle = (Button) mDialog.findViewById(R.id.voice_canle);
+        Button cancle = (Button) mDialog.findViewById(R.id.voice_canle);
         cancle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

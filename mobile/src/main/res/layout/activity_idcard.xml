@@ -13,13 +13,14 @@
         android:id="@+id/id_card_tips"
         android:layout_width="match_parent"
         android:layout_height="40dp"
-        android:background="@drawable/background">
+        >
         <ImageButton
             android:id="@+id/id_card_back"
             android:layout_width="50dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_alignParentStart="true"
-            android:background="@drawable/albumreturn"/>
+            android:src="@mipmap/return_forylyw_round"
+            />
         <Button
             android:id="@+id/id_card_jump"
             android:layout_width="wrap_content"
@@ -27,7 +28,7 @@
             android:layout_alignParentEnd="true"
             android:text="@string/id_card_jump"
             android:background="@color/transparent"
-            android:textColor="@color/white"/>
+            android:textColor="@color/black"/>
     </RelativeLayout>
 
     <LinearLayout
@@ -53,7 +54,8 @@
             android:layout_width="match_parent"
             android:layout_height="180dp"
             android:layout_gravity="center"
-            android:background="@drawable/id"/>
+            android:src="@mipmap/jiahao"
+            />
         </LinearLayout>
 
         <LinearLayout
@@ -71,7 +73,8 @@
             android:layout_width="match_parent"
             android:layout_height="180dp"
             android:layout_gravity="center"
-            android:background="@drawable/id"/>
+            android:src="@mipmap/jiahao"
+            />
         </LinearLayout>
 
         <LinearLayout

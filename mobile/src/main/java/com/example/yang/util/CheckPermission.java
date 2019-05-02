@@ -8,11 +8,8 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.LocationManager;
 import android.net.Uri;
-import android.os.Build;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 
-import static android.support.v4.content.PermissionChecker.PERMISSION_GRANTED;
 
 /****************************************************************
  * @name MyApplication
@@ -31,7 +28,12 @@ public class CheckPermission {
             Manifest.permission.WRITE_EXTERNAL_STORAGE,
             Manifest.permission.READ_PHONE_STATE,
             Manifest.permission.CAMERA,
-            Manifest.permission.RECORD_AUDIO};
+            Manifest.permission.RECORD_AUDIO,
+            Manifest.permission.SEND_SMS};
+    private static String[] POSITION_PERMISSIONS_STORAGE = {
+            Manifest.permission.ACCESS_WIFI_STATE,
+            Manifest.permission.ACCESS_COARSE_LOCATION,
+            Manifest.permission.ACCESS_FINE_LOCATION};
     private static int REQUEST_EXTERNAL_STORAGE = 1;
 
     public CheckPermission(){
@@ -63,6 +65,22 @@ public class CheckPermission {
                     REQUEST_EXTERNAL_STORAGE);
         }
         return false;
+    }
+
+    public static final void isGPSpermission(Activity activity){
+        int wifi_ops = ActivityCompat.checkSelfPermission(activity,
+                Manifest.permission.ACCESS_WIFI_STATE);
+        int net_ops = ActivityCompat.checkSelfPermission(activity,
+                Manifest.permission.ACCESS_COARSE_LOCATION);
+        int gps_ops = ActivityCompat.checkSelfPermission(activity,
+                Manifest.permission.ACCESS_FINE_LOCATION);
+
+        if (wifi_ops != PackageManager.PERMISSION_GRANTED ||
+                net_ops != PackageManager.PERMISSION_GRANTED ||
+                gps_ops != PackageManager.PERMISSION_GRANTED){
+            ActivityCompat.requestPermissions(activity,POSITION_PERMISSIONS_STORAGE,
+                    REQUEST_EXTERNAL_STORAGE);
+        }
     }
     /**
      * 判断GPS是否开启，GPS或者AGPS开启一个就认为是开启的
