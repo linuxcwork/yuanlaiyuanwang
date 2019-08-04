@@ -1,12 +1,15 @@
 package com.example.yang.myapplication;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.os.Handler;
 import android.os.Looper;
+import android.os.Message;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -45,6 +48,21 @@ public class UserRegister extends Activity implements View.OnClickListener{
     private Boolean runningThree = false;
     private LocalInfo info = new LocalInfo();
     private UrlListdb urlListdb = new UrlListdb();
+    private final int REGRESPONSE = 1;
+
+    @SuppressLint("HandlerLeak")
+    private Handler mhandler = new Handler(){
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case REGRESPONSE:
+                    Map<String, Object> response =(Map<String, Object>) msg.obj;
+                    String mstr = (String)response.get("register");
+                    RegisterRsp(mstr);
+                    break;
+            }
+            super.handleMessage(msg);
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,11 +118,7 @@ public class UserRegister extends Activity implements View.OnClickListener{
             return;
         }
 
-        Bundle bundle = new Bundle();
-        bundle.putString("username", useraccount);
-        bundle.putString("phone", mobile);
-        bundle.putString("passwd",passwd);
-        bundle.putString("from","userregister");
+
         Map<String,Object> map = new HashMap<String, Object>();
         map.put("username", useraccount);
        // map.put("event", mess.EVENT_REGISTER);
@@ -114,18 +128,11 @@ public class UserRegister extends Activity implements View.OnClickListener{
 
         http.postKeyValuePaires(urlListdb.register, map, new HttpResponse() {
             @Override
-            public void succesd(Call call, Object response) {
-                String serrsp = response.toString();
-                if (serrsp.contains(serverResponse.REGISTERSUCCEED)) {
-                    Intent main = new Intent(UserRegister.this, IdCardActivity.class);
-                    main.putExtras(bundle);
-                    startActivity(main);
-                    finish();
-                } else if (serrsp.contains(serverResponse.REGISTERED)) {
-                    Looper.prepare();
-                    Toast.makeText(UserRegister.this, "手机号已注册", Toast.LENGTH_SHORT).show();
-                    Looper.loop();
-                }
+            public void succesd(Call call, Map<String, Object> response) {
+                Message message = new Message();
+                message.what = REGRESPONSE;
+                message.obj = response;
+                mhandler.sendMessage(message);
             }
 
             @Override
@@ -133,6 +140,27 @@ public class UserRegister extends Activity implements View.OnClickListener{
                 System.out.println(e + call.request().toString());
             }
         });
+    }
+
+    private void RegisterRsp(String serrsp){
+        /*Bundle bundle = new Bundle();
+        bundle.putString("username", useraccount);
+        bundle.putString("phone", mobile);
+        bundle.putString("passwd",passwd);
+        bundle.putString("from","userregister");*/
+        if(serrsp == null){
+            return ;
+        }
+        if (serrsp.equals("succeed")) {
+            Intent main = new Intent(UserRegister.this, IdCardActivity.class);
+            //main.putExtras(bundle);
+            startActivity(main);
+            finish();
+        } else if (serrsp.equals("failed")) {
+            Looper.prepare();
+            Toast.makeText(UserRegister.this, "手机号已注册", Toast.LENGTH_SHORT).show();
+            Looper.loop();
+        }
     }
 
     private void view_init(){
@@ -170,7 +198,7 @@ public class UserRegister extends Activity implements View.OnClickListener{
 
         http.postKeyValuePaires(urlListdb.register, map, new HttpResponse() {
             @Override
-            public void succesd(Call call,Object response) {
+            public void succesd(Call call,Map<String, Object> response) {
                 String verrsp = response.toString();
                 System.out.println("ls");
             }
@@ -181,6 +209,11 @@ public class UserRegister extends Activity implements View.OnClickListener{
             }
         });
 
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
     }
 
     //获取验证码信息，判断是否有手机号码

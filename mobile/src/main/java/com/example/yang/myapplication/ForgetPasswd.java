@@ -107,7 +107,7 @@ public class ForgetPasswd extends Activity implements View.OnClickListener{
 
         http.postKeyValuePaires(user.host_url, map, new HttpResponse() {
             @Override
-            public void succesd(Call call, Object response) {
+            public void succesd(Call call, Map<String, Object> response) {
                 if (!response.toString().isEmpty()) {
 
                         if (response.equals("success")) {
@@ -140,7 +140,7 @@ public class ForgetPasswd extends Activity implements View.OnClickListener{
 
         http.postKeyValuePaires(user.host_url, map, new HttpResponse() {
             @Override
-            public void succesd(Call call,Object response) {
+            public void succesd(Call call,Map<String, Object> response) {
                 if(!response.toString().isEmpty()) {
                         response.equals("success");
                     Log.e("tag", "获取验证码==" +response);

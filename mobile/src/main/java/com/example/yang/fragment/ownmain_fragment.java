@@ -25,6 +25,7 @@ import com.baidu.location.BDAbstractLocationListener;
 import com.baidu.location.BDLocation;
 import com.baidu.mapapi.SDKInitializer;
 import com.baidu.mapapi.map.MyLocationData;
+import com.example.yang.Activity.SettingActivity;
 import com.example.yang.myapplication.HttpResponse;
 import com.example.yang.myapplication.R;
 import com.example.yang.network.OkHttpManager;
@@ -115,6 +116,8 @@ public class ownmain_fragment extends Fragment implements View.OnClickListener,C
                 break;
             case R.id.set_person:
                 //软件的部分设置
+                Intent intent = new Intent(getContext(), SettingActivity.class);
+                startActivity(intent);
                 break;
                 default:
                 Log.e(TAG,"no this id in the active");
@@ -197,7 +200,7 @@ public class ownmain_fragment extends Fragment implements View.OnClickListener,C
             public void run() {
                 http.postKeyValuePaires(url, map, new HttpResponse() {
                     @Override
-                    public void succesd(Call call, Object response) {
+                    public void succesd(Call call, Map<String, Object> response) {
                         System.out.println(response.toString());
                         Message message = new Message();
                         message.obj = response.toString();

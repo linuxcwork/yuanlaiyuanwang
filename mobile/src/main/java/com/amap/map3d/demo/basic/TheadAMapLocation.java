@@ -35,7 +35,7 @@ public class TheadAMapLocation {
         map.put("userid","6720181230111105");
             http.postKeyValuePaires(urlListdb.map, map, new HttpResponse() {
                 @Override
-                public void succesd(Call call, Object response) {
+                public void succesd(Call call, Map<String, Object> response) {
                     System.out.println(response.toString());
                 }
 

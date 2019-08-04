@@ -4,6 +4,12 @@ import android.util.Log;
 
 import com.example.yang.myapplication.HttpResponse;
 import com.example.yang.myapplication.chat_contrue;
+import com.example.yang.util.FileOperationUtil;
+
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.File;
 import java.io.IOException;
@@ -22,6 +28,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
+import okhttp3.ResponseBody;
 
 /**
  * Created by yang on 2018/4/16.
@@ -37,19 +44,19 @@ public class OkHttpManager{
     public OkHttpManager() {
        super();
         okHttpClient = new OkHttpClient();
-        //File cacheDir = new File(getCacheDir(), "okhttp_cache");
-        //File cacheDir = new File(getExternalCacheDir(), "okhttp");
-        //Cache cache = new Cache(cacheDir, 10 * 1024 * 1024);
+
+        File cacheDir = FileOperationUtil.CreateDir(FileOperationUtil.getMainDir()+File.separator+"cache");
+        Cache cache = new Cache(cacheDir, 10 * 1024 * 1024);
 
         okHttpClient = new OkHttpClient.Builder()
                 .connectTimeout(5*1000, TimeUnit.MILLISECONDS) //链接超时
                 .readTimeout(10*1000,TimeUnit.MILLISECONDS) //读取超时
                 .writeTimeout(10*1000,TimeUnit.MILLISECONDS) //写入超时
+                .cache(cache) //设置缓存
+              //  .addInterceptor(new HttpHeadInterceptor()) //应用拦截器：统一添加消息头
+               // .addNetworkInterceptor(new NetworkspaceInterceptor())//网络拦截器
+              //  .addInterceptor(loggingInterceptor)//应用拦截器：打印日志*/
                 .build();
-                /* .cache(cache)  //设置缓存
-               .addInterceptor(new HttpHeadInterceptor()) //应用拦截器：统一添加消息头
-                .addNetworkInterceptor(new NetworkspaceInterceptor())//网络拦截器
-               .addInterceptor(loggingInterceptor)//应用拦截器：打印日志*/
     }
 
 //    /**
@@ -210,7 +217,7 @@ public class OkHttpManager{
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 Log.i(TAG, "onResponse: " + response.body().string());
-                responsehandle.succesd(call,response);
+                //responsehandle.succesd(call,response);
             }
         });
     }
@@ -226,12 +233,13 @@ public class OkHttpManager{
         if (map != null) {
             //增强for循环遍历
             for (Map.Entry<String, Object> entry : map.entrySet()) {
-                build.add(entry.getKey(),entry.getValue().toString());
+                if(entry != null) {
+                    build.add(entry.getKey(), entry.getValue().toString());
+                }
             }
         }
 
         FormBody formBody = build.build();
-
         Request request = new Request.Builder()
                 .post(formBody)
                 .url(url)
@@ -245,9 +253,41 @@ public class OkHttpManager{
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 //response 数据流再度去一次后就会关闭
-                String ret = response.body().string();
-                System.out.println(ret);
-                responsehandle.succesd(call,ret);
+                ResponseBody body = response.body();
+                //System.out.println(body.string());
+                String responseData=response.body().string();
+                try{
+                    JSONArray jsonArray=new JSONArray(responseData);
+                    for(int i=0;i<jsonArray.length();i++)
+                    {
+                        JSONObject jsonObject=jsonArray.getJSONObject(i);
+                        String id=jsonObject.getString("count");
+                        //String name=jsonObject.getString("name");
+
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                /*int len = new Long(body.contentLength()).intValue();
+                Map<String, Object> map = new HashMap<String, Object>();
+                if(len > 2) {
+                    char[] buf = new char[len];
+
+                    body.charStream().read(buf);
+                    System.out.println(buf);
+                    String p = String.copyValueOf(buf).substring(1, len - 1);
+
+                    String[] temp = p.split(",");
+                    System.out.println(temp);
+
+                    for (String s : temp) {
+                         String[] m = s.trim().split("=");
+                        map.put(m[0], m[1]);
+                    }
+                }else {
+                    map.put("loginstate","fail");
+                }*/
+                responsehandle.succesd(call,map);
             }
         });
 

@@ -20,4 +20,6 @@ public class UrlListdb {
     public String login = "http://10.0.2.2:8080/sclove/LoginAction.do";
     //地图信息获取
     public String map = "http://10.0.2.2:8080/sclove/GetNearbyFriendPosition";
+    //注销
+    public  String logout = "http://10.0.2.2:8080/sclove/Logout";
 }

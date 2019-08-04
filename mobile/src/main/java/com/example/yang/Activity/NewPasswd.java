@@ -62,7 +62,7 @@ public class NewPasswd extends Activity {
 
                                     http.postKeyValuePaires(user.host_url, map, new HttpResponse() {
                                         @Override
-                                        public void succesd(Call call, Object response) {
+                                        public void succesd(Call call, Map<String, Object> response) {
                                             if (!response.toString().isEmpty()) {
                                                     if (response.equals("success")) {
                                                         Intent newpasswd = new Intent(NewPasswd.this, MainActivity.class);

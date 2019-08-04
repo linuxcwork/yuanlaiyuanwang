@@ -1,11 +1,13 @@
 package com.example.yang.myapplication;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.Environment;
+import android.os.Handler;
 import android.os.Looper;
+import android.os.Message;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
@@ -35,6 +37,7 @@ public class Login extends Activity implements View.OnClickListener{
     private Button login;
     private TextView forgetpasswd;
     private TextView regist;
+    private final int RESPONSE = 1;
 
     //目录名
     private String MainFolder = null;
@@ -42,12 +45,25 @@ public class Login extends Activity implements View.OnClickListener{
     private UrlListdb urlListdb = new UrlListdb();
     private OkHttpManager http = new OkHttpManager();
 
+    @SuppressLint("HandlerLeak")
+    private Handler mhandler = new Handler(){
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case RESPONSE:
+                    Map<String, Object> response =(Map<String, Object>) msg.obj;
+                    LoginResponse(response);
+                    break;
+            }
+            super.handleMessage(msg);
+        }
+    };
+
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login);
         /*
          * 创建一级目录*/
-        MainFolder = Environment.getExternalStorageDirectory().getPath()+File.separator+FileOperationUtil.MAIN_FOLDER;
+        MainFolder = FileOperationUtil.getMainDir();
         FileOperationUtil.CreateDir(MainFolder);
 
         admin  = (EditText) findViewById(R.id.login_administrator);
@@ -80,24 +96,14 @@ public class Login extends Activity implements View.OnClickListener{
                             map.put("id", admin.getText());
                             map.put("passwd", passwd.getText());
                             map.put("devicename",SystemUtil.getSystemModel());
+
                             http.postKeyValuePaires(urlListdb.login, map, new HttpResponse() {
                                 @Override
-                                public void succesd(Call call,Object response) {
-                                    System.out.println(response.getClass());
-                                    String loginret = response.toString();
-                                    System.out.println(loginret);
-                                   if (!response.toString().isEmpty()) {
-                                            if (loginret.contains(serverResponse.LOGINSUCCEED)) {
-                                                UpdateFile();
-                                                Intent intent = new Intent(Login.this, MainActivity.class);
-                                                startActivity(intent);
-                                                    //  finish();
-                                            } else if (loginret.contains(serverResponse.LOGINFAIL)) {
-                                                Looper.prepare();
-                                                print("用户名或密码错误，请重试");
-                                                Looper.loop();
-                                            }
-                                    }
+                                public void succesd(Call call,Map<String, Object> response) {
+                                    Message message = new Message();
+                                    message.what = RESPONSE;
+                                    message.obj = response;
+                                    mhandler.sendMessage(message);
                                 }
 
                                 @Override
@@ -117,6 +123,7 @@ public class Login extends Activity implements View.OnClickListener{
 
                     }
                 }).start();
+
                 break;
             case R.id.login_forget_passwd_textview:
                 Intent forgetpasswd = new Intent(Login.this, ForgetPasswd.class);
@@ -125,11 +132,38 @@ public class Login extends Activity implements View.OnClickListener{
             case R.id.login_register_textview:
                 Intent register = new Intent(Login.this, UserRegister.class);
                 startActivity(register);
+                finish();
                 break;
         }
     }
 
-    public void UpdateFile(){
+    private void LoginResponse(Map<String, Object> response){
+        Intent intent = new Intent(Login.this, MainActivity.class);
+        startActivity(intent);
+        /*if(response.get("loginstate") == null){
+            print("用户名或密码错误，请重试");
+            return ;
+        }
+        String loginstate = response.get("loginstate").toString();
+        if (loginstate.equals(serverResponse.LOGINSUCCEED)) {
+            UpdateFile(response);
+            Intent intent = new Intent(Login.this, MainActivity.class);
+            startActivity(intent);
+        } else if (loginstate.equals(serverResponse.LOGINFAIL)) {
+            String statet = String.valueOf(response.get("state"));
+            String lastlogintime = String.valueOf(response.get("logintime"));
+            String devicename = String.valueOf(response.get("devicename"));
+            if(statet != null && statet.equals("1") &&
+                    lastlogintime != null &&
+                    devicename != null){
+                print(lastlogintime+" 已登陆,设备名"+devicename);
+            }else {
+                print("用户名或密码错误，请重试");
+            }
+        }*/
+    }
+
+    public void UpdateFile(Map<String, Object> map){
 
         /*创建二级目录用户个人信息*/
         String DataFolder = MainFolder+File.separator+admin.getText();
@@ -139,6 +173,9 @@ public class Login extends Activity implements View.OnClickListener{
         FileOperationUtil.CreateFile(userconfig);
         SharedPreferences sharedPreferences = getSharedPreferences("userinfo", MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
+        for (String key : map.keySet()) {
+                editor.putString(key, (String) map.get(key));
+        }
         editor.putString("account",admin.getText().toString());
         editor.putString("passwd",passwd.getText().toString());
         editor.putString("state","1");
@@ -154,6 +191,16 @@ public class Login extends Activity implements View.OnClickListener{
         } catch (IOException e) {
             e.printStackTrace();
         }*/
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
     }
 
     public void print(String massage){

@@ -687,7 +687,7 @@ public class chat_contrue extends AppCompatActivity implements View.OnClickListe
                 public void run() {
                     services.get().postKeyValuePaires(urlname, map, new HttpResponse() {
                         @Override
-                        public void succesd(Call call, Object response) {
+                        public void succesd(Call call, Map<String, Object> response) {
 
                         }
 

@@ -43,4 +43,10 @@
     <string name="id_card_front">身份证正面</string>
     <string name="id_card_back">身份证背面</string>
 
+    <string name="setting">设置</string>
+    <string name="account_and_secure">账号与安全</string>
+    <string name="apk_information">关于软件</string>
+    <string name="exit_login">退出</string>
+    <string name="help_and_feedback">帮助与反馈</string>
+
 </resources>

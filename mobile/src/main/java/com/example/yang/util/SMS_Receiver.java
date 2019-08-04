@@ -40,10 +40,7 @@ public class SMS_Receiver extends BroadcastReceiver {
             System.out.println(sb.toString());
             if(SMSCore.PhoneNumber==""&&address.equals(GetNumberAddress)){
                 SMSCore.PhoneNumber=SMSCore.GetPhoneNumberFromSMSText(sb.toString());
-                //MessageTools.ShowDialog(context, address);
             }
-           // MessageTools.ShowDialog(context, sb.toString().trim());
-          //  MessageTools.ShowDialog(context, SMSCore.PhoneNumber);
         }
     }
 }

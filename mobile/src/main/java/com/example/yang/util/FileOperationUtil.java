@@ -1,5 +1,6 @@
 package com.example.yang.util;
 
+import android.os.Environment;
 import android.util.Log;
 
 import java.io.File;
@@ -31,13 +32,24 @@ public class FileOperationUtil {
      * descript ：创建一个目录，返回目录路径
      * return ：
     ***************************************************************************/
-    public static void CreateDir(String name){
-        File DirSecendFile = new File(name);
-        if(!DirSecendFile.exists()){
-            DirSecendFile.mkdirs();
+    public static File CreateDir(String name){
+        File dir = new File(name);
+        if(!dir.exists()){
+            dir.mkdirs();
             Log.d(TAG,"create new dir: "+name);
         }
+        return  dir;
     }
+
+    /**************************************************************************
+     * Name ：
+     * descript ：
+     * return ：
+    ***************************************************************************/
+    public static String getMainDir(){
+         return Environment.getExternalStorageDirectory().getPath()+File.separator+MAIN_FOLDER;
+    }
+
     /**************************************************************************
      * Name ：
      * descript ：创建一个文件，出入文件路径

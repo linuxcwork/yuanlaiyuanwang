@@ -8,6 +8,7 @@ import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 
 import com.baidu.tts.loopj.RequestParams;
+import com.example.yang.util.ChatSDKInit;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -27,7 +28,7 @@ public class StartLogo extends AppCompatActivity {
 
         final View view = View.inflate(this, R.layout.logo, null);
         setContentView(view);
-
+        //ChatSDKInit chatSDKInit = new ChatSDKInit(this);
         user = new User();
         preference = new ShareHelper("tet");
         nextactivity = (Integer) preference.get(this, "status", user.getStatus());
