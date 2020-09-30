@@ -60,15 +60,15 @@ import static com.example.yang.myapplication.sqlite_linkmanmss.KEY_TIME;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener,ViewPager.OnPageChangeListener{
     private final String TAG = "MainActivity";
-    ImageView signal_image;
-    TextView signal_textview;
-    ImageView linkman_image;
-    TextView linkman_textview;
-    ImageView life_image;
-    TextView life_textview;
-    ImageView own_image;
-    TextView own_textview;
-    ViewPager fragment_viewpage;
+    private ImageView signal_image;
+    private TextView signal_textview;
+    private ImageView linkman_image;
+    private TextView linkman_textview;
+    /*ImageView life_image;
+    TextView life_textview;*/
+    private ImageView own_image;
+    private TextView own_textview;
+    private ViewPager fragment_viewpage;
 
     private FragmentManager manager;
     private FragmentTransaction transaction;
@@ -206,14 +206,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         signal_textview =  findViewById(R.id.signal_main_text);
         linkman_image =  findViewById(R.id.linkman_main_image);
         linkman_textview =  findViewById(R.id.linkman_main_text);
-        life_image =  findViewById(R.id.life_main_image);
-        life_textview =  findViewById(R.id.life_main_text);
+        /*life_image =  findViewById(R.id.life_main_image);
+        life_textview =  findViewById(R.id.life_main_text);*/
         own_image =  findViewById(R.id.own_main_image);
         own_textview =  findViewById(R.id.own_main_text);
         ImageView searchimage = findViewById(R.id.tianjia_main);
         searchimage.setOnClickListener(this);
-        life_image.setOnClickListener(this);
-        life_textview.setOnClickListener(this);
+        /*life_image.setOnClickListener(this);
+        life_textview.setOnClickListener(this);*/
 
         fragment_viewpage.setAdapter(mAdapter);
         if(num >=0 && num < 4){
@@ -317,10 +317,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     linkman_image.setSelected(true);
                     linkman_textview.setTextColor(R.color.green);
                     break;
-                case PAGE_THREE:
+               /* case PAGE_THREE:
                     life_image.setSelected(true);
                     life_textview.setTextColor(R.color.green);
-                    break;
+                    break;*/
                 case PAGE_FOUR:
                     own_image.setSelected(true);
                     own_textview.setTextColor(R.color.green);

@@ -16,7 +16,7 @@ public class MenuFragmentpageAdapt extends FragmentPagerAdapter{
     private messageoff_fragment messageoff;
     private final int PAGER_COUNT = 4;
     private linkman_fragment linkman;
-    private lifemain_fragment lifemain;
+    //private lifemain_fragment lifemain;
     private ownmain_fragment ownmain;
 
     public MenuFragmentpageAdapt(FragmentManager gm){
@@ -24,7 +24,7 @@ public class MenuFragmentpageAdapt extends FragmentPagerAdapter{
 
         messageoff = new messageoff_fragment();
         linkman = new linkman_fragment();
-        lifemain = new lifemain_fragment();
+        //lifemain = new lifemain_fragment();
         ownmain = new ownmain_fragment();
 
     }
@@ -50,9 +50,9 @@ public class MenuFragmentpageAdapt extends FragmentPagerAdapter{
             case MainActivity.PAGE_TWO:
                 fragment = linkman;
                 break;
-            case MainActivity.PAGE_THREE:
+            /*case MainActivity.PAGE_THREE:
                 fragment = lifemain;
-                break;
+                break;*/
             case MainActivity.PAGE_FOUR:
                 fragment = ownmain;
                 ownmain.onResume();

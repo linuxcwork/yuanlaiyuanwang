@@ -36,7 +36,6 @@ import org.jivesoftware.smack.SmackConfiguration;
 import org.jivesoftware.smack.SmackException;
 import org.jivesoftware.smack.StanzaCollector;
 import org.jivesoftware.smack.filter.PacketIDFilter;
-import org.jivesoftware.smack.packet.Element;
 import org.jivesoftware.smack.packet.IQ;
 import org.jivesoftware.smack.provider.IQProvider;
 import org.jivesoftware.smack.tcp.XMPPTCPConnection;
@@ -51,7 +50,7 @@ import java.util.regex.Pattern;
 import static com.example.yang.util.FileOperationUtil.SECONDUSERINFODIRPATH;
 
 
-public class Login extends Activity implements View.OnClickListener{
+public class Login extends Activity implements View.OnClickListener {
 
     private LinearLayout phone_number_lin;
     private EditText admin;
@@ -75,7 +74,7 @@ public class Login extends Activity implements View.OnClickListener{
     private File path;
 
     //计时器
-    private Boolean runningThree=false;
+    private Boolean runningThree = false;
     private static String phone_number;
 
     private SharedPreferencedUtils sharedPreferencedUtils = new SharedPreferencedUtils();
@@ -85,11 +84,11 @@ public class Login extends Activity implements View.OnClickListener{
     private OkHttpManager http = new OkHttpManager();
 
     @SuppressLint("HandlerLeak")
-    private Handler mhandler = new Handler(){
+    private Handler mhandler = new Handler() {
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case RESPONSE:
-                    String response =(String) msg.obj;
+                    String response = (String) msg.obj;
                     LoginResponse(response);
                     break;
             }
@@ -106,11 +105,11 @@ public class Login extends Activity implements View.OnClickListener{
         FileOperationUtil.CreateDir(FileOperationUtil.SECONDCACHEDIRPATH);
         FileOperationUtil.CreateDir(SECONDUSERINFODIRPATH);
 
-        listener =  MessageListener.getMessageListener(getApplicationContext());
+        listener = MessageListener.getMessageListener(getApplicationContext());
         phone_number_lin = findViewById(R.id.loging_phone_number_linearlayout);
         phone_number_area = findViewById(R.id.login_phone_number_area);
         conutry_number = findViewById(R.id.login_phone_conutry_number);
-        admin  = (EditText) findViewById(R.id.login_administrator);
+        admin = (EditText) findViewById(R.id.login_administrator);
         phone_number_ensure = findViewById(R.id.login_main_login);
 
         ver_lin = findViewById(R.id.login_ver_linearlayout);
@@ -128,21 +127,22 @@ public class Login extends Activity implements View.OnClickListener{
         phone_number_area.setOnClickListener(this);
         phone_number_ensure.setOnClickListener(this);
         ver_action.setOnClickListener(this);
+        phone_number_tips.setClickable(false);
 
         byshortmassage.setOnClickListener(this);
-        login.setOnClickListener(this);
+        //login.setOnClickListener(this);
         forgetpasswd.setOnClickListener(this);
         regist.setOnClickListener(this);
 
         CheckPermission.isStorage(this);
         CheckPermission.isGPSpermission(this);
-        if (CheckPermission.isGPSOpen(this) == true){
+        if (CheckPermission.isGPSOpen(this) == true) {
             CheckPermission.openGPS(this);
         }
 
         xmppConnection = XmppConnection.getInstance();
-        FileOperationUtil.CreateDir(SECONDUSERINFODIRPATH+File.separator+"image");
-        path = FileOperationUtil.CreateFile(SECONDUSERINFODIRPATH+File.separator+"image"+File.separator+"avatar.jpg");
+        FileOperationUtil.CreateDir(SECONDUSERINFODIRPATH + File.separator + "image");
+        path = FileOperationUtil.CreateFile(SECONDUSERINFODIRPATH + File.separator + "image" + File.separator + "avatar.jpg");
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
@@ -152,7 +152,7 @@ public class Login extends Activity implements View.OnClickListener{
         switch (v.getId()) {
             case R.id.login_phone_number_area:
                 Intent area_intent = new Intent(Login.this, CountryActivity.class);
-                startActivityForResult(area_intent,12);
+                startActivityForResult(area_intent, 12);
                 break;
             case R.id.login_bymessage:
                 Intent phonelogin = new Intent(Login.this, PhoneLogin.class);
@@ -164,7 +164,7 @@ public class Login extends Activity implements View.OnClickListener{
                 getMobiile(phone_number);
 
 
-                if(CheckNetwork.isMobileConnected(this) || CheckNetwork.isWifiConnected(this) || CheckNetwork.isNetworkConnected(this)) {
+                if (CheckNetwork.isMobileConnected(this) || CheckNetwork.isWifiConnected(this) || CheckNetwork.isNetworkConnected(this)) {
                     /*boolean islogin = xmppConnection.login(this,admin.getText().toString(), passwd.getText().toString());
                     if (islogin) {
                         xmppConnection.recieveMessage(listener);
@@ -202,8 +202,8 @@ public class Login extends Activity implements View.OnClickListener{
                     }else {
                         Toast.makeText(this,"请检查账号和密码是否正确",Toast.LENGTH_LONG).show();
                     }*/
-                }else {
-                    Toast.makeText(this,"请检查网络连接",Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(this, "请检查网络连接", Toast.LENGTH_LONG).show();
                 }
                 break;
             case R.id.login_forget_passwd_textview:
@@ -222,14 +222,11 @@ public class Login extends Activity implements View.OnClickListener{
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data)
-    {
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         // TODO Auto-generated method stub
-        switch (requestCode)
-        {
+        switch (requestCode) {
             case 12:
-                if (resultCode == RESULT_OK)
-                {
+                if (resultCode == RESULT_OK) {
                     Bundle bundle = data.getExtras();
                     String countryNumber = bundle.getString("countryNumber");
 
@@ -243,34 +240,34 @@ public class Login extends Activity implements View.OnClickListener{
         super.onActivityResult(requestCode, resultCode, data);
     }
 
-    private void LoginResponse(String res){
+    private void LoginResponse(String res) {
         Map<String, Object> response = http.getJsonObject(res);
-        if(response.get("loginstate") == null){
+        if (response.get("loginstate") == null) {
             print("用户名或密码错误，请重试");
-            return ;
+            return;
         }
         String loginstate = response.get("loginstate").toString();
         if (loginstate.equals(serverResponse.LOGINSUCCEED)) {
             SharedPreferencedUtils sharedPreferencedUtils = new SharedPreferencedUtils();
-            sharedPreferencedUtils.UpdateFile(this,response);
+            sharedPreferencedUtils.UpdateFile(this, response);
             Intent intent = new Intent(Login.this, MainActivity.class);
-            intent.putExtra("num",1);
+            intent.putExtra("num", 1);
             startActivity(intent);
         } else if (loginstate.equals(serverResponse.LOGINFAIL)) {
             String statet = String.valueOf(response.get("state"));
             String lastlogintime = String.valueOf(response.get("logintime"));
             String devicename = String.valueOf(response.get("devicename"));
-            if(statet != null && statet.equals("1") &&
+            if (statet != null && statet.equals("1") &&
                     lastlogintime != null &&
-                    devicename != null){
-                print(lastlogintime+" 已登陆,设备名"+devicename);
-            }else {
+                    devicename != null) {
+                print(lastlogintime + " 已登陆,设备名" + devicename);
+            } else {
                 print("用户名或密码错误，请重试");
             }
         }
     }
 
-    private void requestVerifyCode(String mobile) {
+    private void requestVerifyCode(String mobile) throws InterruptedException {
         /*Map<String,Object> map = new HashMap<String, Object>();
         map.put("event", mess.EVENT_GET_VERIFICATION);
         map.put(mess.getData(),mobile);*/
@@ -289,10 +286,10 @@ public class Login extends Activity implements View.OnClickListener{
             e.printStackTrace();
         }
 
-        try {
-            PhoneNumLogin re = (PhoneNumLogin) collector.nextResult(SmackConfiguration.getDefaultReplyTimeout());
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+        //PhoneNumLogin response = collector.nextResult(SmackConfiguration.getDefaultPacketReplyTimeout());
+
+        if (collector.nextResult(SmackConfiguration.getDefaultPacketReplyTimeout()) == null) {
+            SmackException.NoResponseException.newWith(mConnection, collector);
         }
         collector.cancel();// 停止请求results（是否成功的结果）
 
@@ -313,10 +310,14 @@ public class Login extends Activity implements View.OnClickListener{
             new AlertDialog.Builder(this).setTitle("提示").setMessage("请输入正确的手机号码").setCancelable(true).show();
         } else {
             Log.e("tag", "输入了正确的手机号");
-            requestVerifyCode(mobile);
+            try {
+                requestVerifyCode(mobile);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
             phone_number_lin.setVisibility(View.GONE);
             ver_lin.setVisibility(View.VISIBLE);
-            phone_number_tips.setText("验证码已发送至 "+admin.getText().toString());
+            phone_number_tips.setText("验证码已发送至 " + admin.getText().toString());
         }
     }
 
@@ -345,7 +346,7 @@ public class Login extends Activity implements View.OnClickListener{
         @Override
         public void onTick(long l) {
             runningThree = true;
-            ver_action.setText("重新发送"+(l / 1000));
+            ver_action.setText("重新发送" + (l / 1000));
         }
 
         @Override
@@ -363,10 +364,10 @@ public class Login extends Activity implements View.OnClickListener{
     et_id="134255" snippet_file_name="blog_20131230_5_2676678"
     name="code" class="java" style="color: rgb(51, 51, 51);
     font-size: 13px; line-height: 19px;">*/
-    static class PhoneNumLogin extends IQ {
+    public static class PhoneNumLogin extends IQ {
         private String username;
 
-        public PhoneNumLogin(){
+        public PhoneNumLogin() {
             super("query");
         }
 
@@ -404,11 +405,11 @@ public class Login extends Activity implements View.OnClickListener{
         }
     }
 
-    public static class PhoneProvider extends IQProvider {
+    public static class PhoneProvider extends IQProvider<PhoneNumLogin> {
         private static final String PREFERRED_ENCODING = "UTF-8";
 
         @Override
-        public Element parse(XmlPullParser parser, int initialDepth) throws Exception {
+        public PhoneNumLogin parse(XmlPullParser parser, int initialDepth) throws Exception {
             final StringBuilder sb = new StringBuilder();
             int event = parser.getEventType();
             while (true) {
@@ -418,6 +419,24 @@ public class Login extends Activity implements View.OnClickListener{
                         break;
                     case XmlPullParser.START_TAG:
                         sb.append('<').append(parser.getName()).append('>');
+
+                        //验证码获取请求---结果
+                        if (parser.getName().equals("reqver")) {
+                            String reqverrsp = parser.nextText();
+                            if (reqverrsp != null && reqverrsp.equals("verrspsend")) {
+
+                            } else {
+
+                            }
+                        } else if (parser.getName().equals("matchver")) {
+                            //验证码匹配结果
+                            String matchrsp = parser.nextText();
+                            if (matchrsp != null && matchrsp.equals("matched")) {
+
+                            } else {
+                                //Toast.makeText(getApplicationContext(),"验证码错误",Toast.LENGTH_SHORT).show();
+                            }
+                        }
                         break;
                     case XmlPullParser.END_TAG:
                         sb.append("</").append(parser.getName()).append('>');
@@ -445,9 +464,9 @@ public class Login extends Activity implements View.OnClickListener{
         super.onDestroy();
     }
 
-    public void print(String massage){
-        Toast toast = Toast.makeText(this,massage, Toast.LENGTH_LONG);
-        toast.setGravity(Gravity.TOP , 0, 80);
+    public void print(String massage) {
+        Toast toast = Toast.makeText(this, massage, Toast.LENGTH_LONG);
+        toast.setGravity(Gravity.TOP, 0, 80);
         toast.show();
     }
 }
