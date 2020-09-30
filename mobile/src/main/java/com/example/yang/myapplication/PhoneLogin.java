@@ -16,9 +16,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.yang.Activity.VerifyCodeView;
 import com.example.yang.network.OkHttpManager;
-
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -120,7 +118,7 @@ public class PhoneLogin extends Activity implements View.OnClickListener{
 
         http.postKeyValuePaires(user.host_url, map, new HttpResponse() {
             @Override
-            public void succesd(Call call, Map<String, Object> response) {
+            public void succesd(Call call, String response) {
                 if (!response.toString().isEmpty()) {
 
                         if (response.equals("success")) {
@@ -150,22 +148,7 @@ public class PhoneLogin extends Activity implements View.OnClickListener{
         } else {
             downTimer.start();
         }
-        http.postKeyValuePaires(user.host_url, map, new HttpResponse() {
-            @Override
-            public void succesd(Call call,Map<String, Object> response) {
-                if(!response.toString().isEmpty()) {
-
-                        response.equals("success");
-                    Log.e("tag", "获取验证码==" +response);
-                }
-            }
-
-            @Override
-            public void failed(Call call,IOException e) {
-
-            }
-        });
-
+        http.postKeyValuePaires(user.host_url, map, null);
     }
 
     //获取验证码信息，判断是否有手机号码

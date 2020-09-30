@@ -1,17 +1,12 @@
 package com.amap.map3d.demo.basic;
 
+import android.content.Context;
+import android.util.Log;
+
 import com.baidu.location.BDAbstractLocationListener;
 import com.baidu.location.LocationClient;
 import com.baidu.location.LocationClientOption;
 import com.baidu.location.LocationClientOption.LocationMode;
-
-import android.app.NotificationChannel;
-import android.app.Service;
-import android.content.Context;
-import android.content.Intent;
-import android.os.IBinder;
-import android.support.annotation.Nullable;
-import android.util.Log;
 
 /**
  * 
@@ -32,7 +27,6 @@ public class LocationService {
 		synchronized (objLock) {
 			if(client == null){
 				client = new LocationClient(locationContext);
-				client.setLocOption(getDefaultLocationClientOption());
 				Log.d(TAG,"LocationService");
 			}
 		}
@@ -74,6 +68,21 @@ public class LocationService {
 			client.setLocOption(option);
 		}
 		return isSuccess;
+	}
+
+	/***
+	 *
+	 * @param
+	 * @return isSuccessSetOption
+	 */
+	public void setDefaultLocationOption(){
+		if(client == null){
+			Log.d(TAG,"the client is null");
+			return ;
+		}
+		if(client.isStarted())
+			client.stop();
+		client.setLocOption(getDefaultLocationClientOption());
 	}
 
 	/***

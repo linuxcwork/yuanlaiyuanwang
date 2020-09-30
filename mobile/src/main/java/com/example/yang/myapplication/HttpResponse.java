@@ -1,7 +1,6 @@
 package com.example.yang.myapplication;
 
 import java.io.IOException;
-import java.util.Map;
 
 import okhttp3.Call;
 
@@ -14,6 +13,6 @@ import okhttp3.Call;
 *   时间：2018/05/27*/
 
 public interface HttpResponse {
-    void succesd(Call call,Map<String, Object> response);
+    void succesd(Call call,String response);
     void failed(Call call, IOException e);
 }

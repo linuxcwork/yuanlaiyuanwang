@@ -118,6 +118,14 @@ public class CheckPermission {
         }
     }
 
+    public static boolean checkBluetooth(Context mcontext) {
+        if (!mcontext.getPackageManager().hasSystemFeature(
+                PackageManager.FEATURE_BLUETOOTH_LE)) {
+            return false;
+        }
+        return true;
+    }
+
 
 
 }

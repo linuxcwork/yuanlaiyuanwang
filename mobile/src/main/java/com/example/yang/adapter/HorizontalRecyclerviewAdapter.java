@@ -9,8 +9,7 @@ import android.widget.ImageView;
 
 import com.example.yang.myapplication.R;
 import com.example.yang.myapplication.ScreenUtils;
-import com.example.yang.ui.ImageModel;
-
+import com.example.yang.item.ImageModel;
 
 import java.util.List;
 

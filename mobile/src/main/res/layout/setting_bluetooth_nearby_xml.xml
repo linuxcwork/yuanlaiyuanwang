@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="@color/white"
+        android:id="@+id/announce_activity_top">
+        <ImageView
+            android:id="@+id/anounce_add_activity_return"
+            android:layout_width="40dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:src="@drawable/personreturn"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_toRightOf="@+id/anounce_add_activity_return"
+            android:gravity="center"
+            android:text="位置设置"/>
+    </RelativeLayout>
+    <RelativeLayout
+        android:id="@+id/own_fragment_nearby_personal_relativelayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:background="@color/white">
+
+        <ImageView
+            android:id="@+id/own_fragment_nearby_personal_image"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/collect"
+            android:layout_marginEnd="10dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/own_fragment_nearby_personal_image"
+            android:layout_centerInParent="true"
+            android:text="推荐附近的人"
+            android:textSize="16sp"
+            android:layout_toEndOf="@+id/own_fragment_nearby_personal_image" />
+
+        <com.suke.widget.SwitchButton
+            android:id="@+id/start_recommend_SwitchCompat"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:theme="@style/MySwitchTheme" />
+    </RelativeLayout>
+    <RelativeLayout
+        android:id="@+id/own_fragment_nearby_personal_nolimit_relativelayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:background="@color/white">
+
+        <ImageView
+            android:id="@+id/own_fragment_nearby_personal_nolimit_image"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/collect"
+            android:layout_marginEnd="10dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/own_fragment_nearby_personal_nolimit_image"
+            android:layout_centerInParent="true"
+            android:text="无限制推荐"
+            android:textSize="16sp"
+            android:layout_toEndOf="@+id/own_fragment_nearby_personal_nolimit_image" />
+
+        <com.suke.widget.SwitchButton
+            android:id="@+id/recommend_no_limit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:theme="@style/MySwitchTheme" />
+    </RelativeLayout>
+    <RelativeLayout
+        android:id="@+id/own_fragment_nearby_personal_nolimit_1_relativelayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:background="@color/white">
+
+        <ImageView
+            android:id="@+id/own_fragment_nearby_personal_nolimit_1_image"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/collect"
+            android:layout_marginEnd="10dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/own_fragment_nearby_personal_nolimit_1_image"
+            android:layout_centerInParent="true"
+            android:text="每周一人"
+            android:textSize="16sp"
+            android:layout_toEndOf="@+id/own_fragment_nearby_personal_nolimit_1_image" />
+
+        <com.suke.widget.SwitchButton
+            android:id="@+id/recommend_no_limit_1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:theme="@style/MySwitchTheme" />
+    </RelativeLayout>
+    <RelativeLayout
+        android:id="@+id/own_fragment_nearby_personal_nolimit_3_relativelayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:background="@color/white">
+
+        <ImageView
+            android:id="@+id/own_fragment_nearby_personal_nolimit_3_image"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/collect"
+            android:layout_marginEnd="10dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/own_fragment_nearby_personal_nolimit_3_image"
+            android:layout_centerInParent="true"
+            android:text="每周3人"
+            android:textSize="16sp"
+            android:layout_toEndOf="@+id/own_fragment_nearby_personal_nolimit_3_image" />
+
+        <com.suke.widget.SwitchButton
+            android:id="@+id/recommend_no_limit_3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true" />
+    </RelativeLayout>
+
+
+</LinearLayout>

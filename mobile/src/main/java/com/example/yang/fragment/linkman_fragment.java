@@ -1,31 +1,32 @@
 package com.example.yang.fragment;
 
 
+import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
-import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
-
 
 import com.amap.map3d.demo.basic.MapLocationPosition;
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.target.BitmapImageViewTarget;
-import com.example.yang.myapplication.Linkman_Listview_Adapt;
+import com.example.yang.Activity.AnnounceActivity;
+import com.example.yang.Activity.ConditionalLookupActivity;
+import com.example.yang.Activity.LandOfThought;
+import com.example.yang.adapter.ContactAdapter;
+import com.example.yang.adapter.ContactScrollerAdapter;
 import com.example.yang.myapplication.R;
+import com.example.yang.util.Contact;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+
+import cdflynn.android.library.scroller.BubbleScroller;
+import cdflynn.android.library.scroller.ScrollerListener;
 
 /**
  * Created by yang on 2018/3/18.
@@ -33,11 +34,45 @@ import java.util.Map;
 
 public class linkman_fragment extends Fragment implements View.OnClickListener {
 
-    private LinearLayout map_search;
-    private LinearLayout game_get_fri;
-    private LinearLayout announ_get_fri;
-    private LinearLayout condition_find;
-    ListView listView;
+    private Views mViews;
+    private ContactScrollerAdapter mContactScrollerAdapter;
+    private ContactAdapter mContactAdapter;
+    private LinearLayoutManager mLayoutManager;
+    private boolean mProgrammaticScroll = true;
+    private final ScrollerListener mScrollerListener = new ScrollerListener() {
+        @Override
+        public void onSectionClicked(int sectionPosition) {
+            int position = mContactScrollerAdapter.positionFromSection(sectionPosition);
+            if(position != 10000){
+                mViews.recycler.smoothScrollToPosition(
+                        mContactScrollerAdapter.positionFromSection(sectionPosition));
+                mProgrammaticScroll = true;
+            }
+
+        }
+
+        @Override
+        public void onScrollPositionChanged(float percentage, int sectionPosition) {
+            int position = mContactScrollerAdapter.positionFromSection(sectionPosition);
+            if(position != 10000){
+                mViews.recycler.smoothScrollToPosition(
+                        mContactScrollerAdapter.positionFromSection(sectionPosition));
+                mProgrammaticScroll = true;
+            }
+
+        }
+    };
+
+    static class Views {
+        BubbleScroller scroller;
+        RecyclerView recycler;
+
+        Views(View activity) {
+            scroller = (BubbleScroller) activity.findViewById(R.id.bubble_scroller);
+            recycler = (RecyclerView) activity.findViewById(R.id.recycler);
+        }
+    }
+
     public linkman_fragment(){
 
     }
@@ -46,11 +81,40 @@ public class linkman_fragment extends Fragment implements View.OnClickListener {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
 
         View view= inflater.inflate(R.layout.fragment_linkmanxml, container, false);
-        link_init(view);
-        List<Map<String, Object>> list=getData();
-        listView.setAdapter(new Linkman_Listview_Adapt(getActivity(), list));
+        LinearLayout map = view.findViewById(R.id.map_search);
+        map.setOnClickListener(this);
+        LinearLayout article = view.findViewById(R.id.game_makefri);
+        article.setOnClickListener(this);
+        LinearLayout gathering = view.findViewById(R.id.announ_fri);
+        gathering.setOnClickListener(this);
+        LinearLayout condition = view.findViewById(R.id.searchfri_bycond);
+        condition.setOnClickListener(this);
+
+        mViews = new Views(view);
+        List<Contact> contactList = Contact.mocks(getActivity());
+        mContactScrollerAdapter = new ContactScrollerAdapter(contactList);
+        mContactAdapter = new ContactAdapter(getActivity(), contactList, mContactScrollerAdapter);
+        mLayoutManager = new LinearLayoutManager(getContext());
+        mViews.scroller.setScrollerListener(mScrollerListener);
+        mViews.scroller.setSectionScrollAdapter(mContactScrollerAdapter);
+        mViews.recycler.setLayoutManager(mLayoutManager);
+        mViews.recycler.setAdapter(mContactAdapter);
+        mViews.scroller.showSectionHighlight(0);
+        mViews.recycler.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                if (mProgrammaticScroll) {
+                    mProgrammaticScroll = false;
+                    return;
+                }
+             /*   final int firstVisibleItemPosition = mLayoutManager.findFirstCompletelyVisibleItemPosition();
+                mViews.scroller.showSectionHighlight(
+                        mContactScrollerAdapter.sectionFromPosition(firstVisibleItemPosition));*/
+            }
+        });
         return view;
     }
+
 
     @Override
     public void onStart() {
@@ -62,53 +126,6 @@ public class linkman_fragment extends Fragment implements View.OnClickListener {
         super.onResume();
     }
 
-    private void link_init(View view){
-        //mImgGlide = (ImageView) findViewById(R.id.img_glide);
-        listView = (ListView)view.findViewById(R.id.list_linkman);
-        map_search = view.findViewById(R.id.map_search);
-        game_get_fri = view.findViewById(R.id.game_makefri);
-        announ_get_fri = view.findViewById(R.id.announ_fri);
-        condition_find = view.findViewById(R.id.searchfri_bycond);
-        map_search.setOnClickListener(this);
-        game_get_fri.setOnClickListener(this);
-        announ_get_fri.setOnClickListener(this);
-        condition_find.setOnClickListener(this);
-    }
-
-    /**************************************************************************
-     * Name ：      Circleimage
-     * descript ：  设置圆形图像
-     * return ：    void
-    ***************************************************************************/
-    private void Circleimage(String mImgUrl, ImageView mImgGlide){
-        // 使用 Glide 设置圆形画像
-        Glide.with(this)
-                .load(mImgUrl)
-                .asBitmap()
-                .centerCrop()
-                .into(new BitmapImageViewTarget(mImgGlide) {
-                    @Override
-                    protected void setResource(Bitmap resource) {
-                        super.setResource(resource);
-                        RoundedBitmapDrawable roundedBitmapDrawable =
-                                RoundedBitmapDrawableFactory.create(getResources(), resource);
-                        roundedBitmapDrawable.setCircular(true);
-                        mImgGlide.setImageDrawable(roundedBitmapDrawable);
-                    }
-                });
-    }
-    private List<Map<String, Object>> getData(){
-        List<Map<String, Object>> list=new ArrayList<Map<String,Object>>();
-        for (int i = 0; i < 10; i++) {
-            Map<String, Object> map=new HashMap<String, Object>();
-            map.put("image", R.drawable.ic_launcher_background);
-            map.put("title", "这是一个标题"+i);
-            list.add(map);
-        }
-
-        return list;
-    }
-
     @Override
     public void onClick(View v) {
         switch (v.getId()){
@@ -118,12 +135,17 @@ public class linkman_fragment extends Fragment implements View.OnClickListener {
                 startActivity(intent_map);
                 break;
             case R.id.game_makefri:
-
+                Intent intent_thought = new Intent(getContext(), LandOfThought.class);
+                intent_thought.putExtra("mapresource","linkman_fragment");
+                startActivity(intent_thought);
                 break;
             case R.id.announ_fri:
-
+                Intent intent_announce = new Intent(getContext(), AnnounceActivity.class);
+                startActivity(intent_announce);
                 break;
             case R.id.searchfri_bycond:
+                Intent intent_cond = new Intent(getContext(), ConditionalLookupActivity.class);
+                startActivity(intent_cond);
                 break;
                 default:
                     System.out.println("no id");

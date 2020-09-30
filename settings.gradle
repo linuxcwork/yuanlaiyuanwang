@@ -1,1 +1,1 @@
-include ':mobile'
+include ':mobile',':image_lib',':lib-todaystepcounter',':scroll'

@@ -8,14 +8,13 @@ import android.view.ViewGroup;
 import android.widget.GridView;
 import android.widget.LinearLayout;
 
-
 import com.example.yang.adapter.DisplayUtils;
 import com.example.yang.adapter.EmojiIndicatorView;
 import com.example.yang.adapter.EmotionGridViewAdapter;
 import com.example.yang.adapter.EmotionPagerAdapter;
 import com.example.yang.adapter.GlobalOnItemClickManagerUtils;
 import com.example.yang.myapplication.R;
-import com.example.yang.ui.EmotionUtils;
+import com.example.yang.util.EmotionUtils;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -10,9 +10,15 @@ import com.baidu.ocr.sdk.exception.OCRError;
 import com.baidu.ocr.sdk.model.AccessToken;
 import com.baidu.ocr.sdk.model.IDCardParams;
 import com.baidu.ocr.sdk.model.IDCardResult;
+import com.example.yang.util.SharedPreferencedUtils;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.File;
-import java.lang.reflect.Array;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 /****************************************************************
  * @name MyApplication
@@ -26,7 +32,9 @@ import java.lang.reflect.Array;
  *****************************************************************/
 public class IdCardIdtfcation {
     private final String MTAG = "IdCardIdtfcation";
-    Context context;
+    private Context context;
+    boolean success = false;
+    private SharedPreferencedUtils sharedPreferencedUtils = new SharedPreferencedUtils();
     public IdCardIdtfcation(Context context){
         this.context = context;
         OCR.getInstance(context).initAccessTokenWithAkSk(new OnResultListener<AccessToken>() {
@@ -41,10 +49,10 @@ public class IdCardIdtfcation {
                 Log.e(MTAG,"IdCardIdtfcation"+error);
                 // 调用失败，返回OCRError子类SDKError对象
             }
-        }, context, "O2ygXFpcAkiOh7iuwsxZ2pE0", "b1Sqee3dBB5hMMEtmiI8HHcZQPDN8nGi");
+        }, context, "h14tS8nu1K3lVccKVTwVklV2", "IhpQ1vHlB1Ns6MfHyleT4ri1jSFyOX6T");
     }
 
-    public void identificationAction(String filePath,Context context,String idCardSide){
+    public boolean identificationAction(String filePath,Context context,String idCardSide){
         File file = new File(filePath);
         if(file == null){
             System.out.println("file is null");
@@ -61,51 +69,46 @@ public class IdCardIdtfcation {
         // 设置图像参数压缩质量0-100, 越大图像质量越好但是请求时间越长。 不设置则默认值为20
         param.setImageQuality(20);
 
-        // 调用身份证识别服务
-        new Thread(new Runnable() {
+        OCR.getInstance(context).recognizeIDCard(param, new OnResultListener<IDCardResult>() {
             @Override
-            public void run() {
-
-                OCR.getInstance(context).recognizeIDCard(param, new OnResultListener<IDCardResult>() {
-                    @Override
-                    public void onResult(IDCardResult result) {
-                        // 调用成功，返回IDCardResult对象
-                        System.out.println(result);
-                        Toast.makeText(context, "chenggong", Toast.LENGTH_LONG).show();
-                    }
-
-                    @Override
-                    public void onError(OCRError error) {
-                        Log.e(MTAG,"identificationAction"+error);
-                        // 调用失败，返回OCRError对象
-                    }
-                });
-
+            public void onResult(IDCardResult result) {
+                // 调用成功，返回IDCardResult对象
+                System.out.println(result);
+                Map<String, Object> map = getJsonObject(result.toString());
+                if(map.get("idNumber") != null) {
+                    map.put("isrealname", "yes");
+                    sharedPreferencedUtils.UpdateFile(context, map);
+                    Toast.makeText(context, "chenggong", Toast.LENGTH_LONG).show();
+                    success = true;
+                }else {
+                    success = false;
+                }
             }
-        }).start();
+
+            @Override
+            public void onError(OCRError error) {
+                Log.e(MTAG,"identificationAction"+error);
+                // 调用失败，返回OCRError对象
+                success = false;
+            }
+        });
+        return success;
     }
 
-    class ResultIdCard{
-        //图像方向，当detect_direction=true时存在。-1:未定义，0:正向，1: 逆时针90度， 2:逆时针180度， 3:逆时针270度
-        private int direction;
-        //唯一的log id，用于问题定位
-        private long log_id;
-        //定位和识别结果数组，数组元素的key是身份证的主体字段（正面支持：住址、公民身份号码、出生、姓名、性别、
-        // 民族，背面支持：签发机关、签发日期、失效日期）。只返回识别出的字段。若身份证号码校验不通过，则不返回
-        private Array words_result;
-        //识别结果数，表示words_result的元素个数
-        private int words_result_num;
-        //位置数组（坐标0点为左上角）
-        private Array location;
-        //表示定位位置的长方形左上顶点的水平坐标
-        private int left;
-        //表示定位位置的长方形左上顶点的垂直坐标
-        private int top;
-        //表示定位位置的长方形的宽度
-        private int width;
-        //表示定位位置的长方形的高度
-        private int height;
-        //识别结果字符串
-        private String words;
+    public Map<String, Object> getJsonObject(String responseData) {
+        Map<String, Object> map = new HashMap<String, Object>();
+        try {
+            JSONObject jsonArray = new JSONObject(responseData);
+
+            Iterator iterator = jsonArray.keys();
+            while (iterator.hasNext()) {
+                String key = (String) iterator.next();
+                String value = jsonArray.getString(key);
+                map.put(key, value);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return map;
     }
 }

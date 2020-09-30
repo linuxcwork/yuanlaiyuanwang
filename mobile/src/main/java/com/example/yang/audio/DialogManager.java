@@ -64,6 +64,7 @@ public class DialogManager {
     public boolean DialogIsShowing(){
         return ((mDialog != null) && (mDialog.isShowing()));
     }
+
     public void recording(){
         if(mDialog != null && mDialog.isShowing()){
             //mIcon.setVisibility(View.VISIBLE);

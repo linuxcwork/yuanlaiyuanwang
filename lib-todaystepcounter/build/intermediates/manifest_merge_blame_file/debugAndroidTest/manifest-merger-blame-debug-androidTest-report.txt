@@ -1,0 +1,143 @@
+1<?xml version="1.0" encoding="utf-8"?>
+2<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+3    package="com.today.step.lib.test" >
+4
+5    <uses-sdk
+5-->D:\work\MyApplication\lib-todaystepcounter\build\intermediates\tmp\manifest\androidTest\debug\manifestMerger2337515883341679112.xml:5:5-74
+6        android:minSdkVersion="16"
+6-->D:\work\MyApplication\lib-todaystepcounter\build\intermediates\tmp\manifest\androidTest\debug\manifestMerger2337515883341679112.xml:5:15-41
+7        android:targetSdkVersion="26" />
+7-->D:\work\MyApplication\lib-todaystepcounter\build\intermediates\tmp\manifest\androidTest\debug\manifestMerger2337515883341679112.xml:5:42-71
+8
+9    <instrumentation
+9-->D:\work\MyApplication\lib-todaystepcounter\build\intermediates\tmp\manifest\androidTest\debug\manifestMerger2337515883341679112.xml:11:5-15:73
+10        android:name="android.test.InstrumentationTestRunner"
+10-->D:\work\MyApplication\lib-todaystepcounter\build\intermediates\tmp\manifest\androidTest\debug\manifestMerger2337515883341679112.xml:11:22-75
+11        android:functionalTest="false"
+11-->D:\work\MyApplication\lib-todaystepcounter\build\intermediates\tmp\manifest\androidTest\debug\manifestMerger2337515883341679112.xml:14:22-52
+12        android:handleProfiling="false"
+12-->D:\work\MyApplication\lib-todaystepcounter\build\intermediates\tmp\manifest\androidTest\debug\manifestMerger2337515883341679112.xml:13:22-53
+13        android:label="Tests for com.today.step.lib.test"
+13-->D:\work\MyApplication\lib-todaystepcounter\build\intermediates\tmp\manifest\androidTest\debug\manifestMerger2337515883341679112.xml:15:22-71
+14        android:targetPackage="com.today.step.lib.test" />
+14-->D:\work\MyApplication\lib-todaystepcounter\build\intermediates\tmp\manifest\androidTest\debug\manifestMerger2337515883341679112.xml:12:22-69
+15
+16    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+16-->[__tested_artifact__::lib-todaystepcounter] D:\work\MyApplication\lib-todaystepcounter\build\intermediates\library_manifest\debug\AndroidManifest.xml:11:5-80
+16-->[__tested_artifact__::lib-todaystepcounter] D:\work\MyApplication\lib-todaystepcounter\build\intermediates\library_manifest\debug\AndroidManifest.xml:11:22-77
+17    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+17-->[__tested_artifact__::lib-todaystepcounter] D:\work\MyApplication\lib-todaystepcounter\build\intermediates\library_manifest\debug\AndroidManifest.xml:12:5-81
+17-->[__tested_artifact__::lib-todaystepcounter] D:\work\MyApplication\lib-todaystepcounter\build\intermediates\library_manifest\debug\AndroidManifest.xml:12:22-78
+18    <uses-permission android:name="android.permission.WAKE_LOCK" />
+18-->[__tested_artifact__::lib-todaystepcounter] D:\work\MyApplication\lib-todaystepcounter\build\intermediates\library_manifest\debug\AndroidManifest.xml:13:5-68
+18-->[__tested_artifact__::lib-todaystepcounter] D:\work\MyApplication\lib-todaystepcounter\build\intermediates\library_manifest\debug\AndroidManifest.xml:13:22-65
+19    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+19-->[__tested_artifact__::lib-todaystepcounter] D:\work\MyApplication\lib-todaystepcounter\build\intermediates\library_manifest\debug\AndroidManifest.xml:14:5-81
+19-->[__tested_artifact__::lib-todaystepcounter] D:\work\MyApplication\lib-todaystepcounter\build\intermediates\library_manifest\debug\AndroidManifest.xml:14:22-78
+20    <uses-permission android:name="com.android.launcher.permission.READ_SETTINGS" /> <!-- 协处理器计步权限 -->
+20-->[__tested_artifact__::lib-todaystepcounter] D:\work\MyApplication\lib-todaystepcounter\build\intermediates\library_manifest\debug\AndroidManifest.xml:15:5-85
+20-->[__tested_artifact__::lib-todaystepcounter] D:\work\MyApplication\lib-todaystepcounter\build\intermediates\library_manifest\debug\AndroidManifest.xml:15:22-82
+21    <uses-feature
+21-->[__tested_artifact__::lib-todaystepcounter] D:\work\MyApplication\lib-todaystepcounter\build\intermediates\library_manifest\debug\AndroidManifest.xml:18:5-20:35
+22        android:name="android.hardware.sensor.stepcounter"
+22-->[__tested_artifact__::lib-todaystepcounter] D:\work\MyApplication\lib-todaystepcounter\build\intermediates\library_manifest\debug\AndroidManifest.xml:19:9-59
+23        android:required="true" />
+23-->[__tested_artifact__::lib-todaystepcounter] D:\work\MyApplication\lib-todaystepcounter\build\intermediates\library_manifest\debug\AndroidManifest.xml:20:9-32
+24    <uses-feature
+24-->[__tested_artifact__::lib-todaystepcounter] D:\work\MyApplication\lib-todaystepcounter\build\intermediates\library_manifest\debug\AndroidManifest.xml:21:5-23:35
+25        android:name="android.hardware.sensor.stepdetector"
+25-->[__tested_artifact__::lib-todaystepcounter] D:\work\MyApplication\lib-todaystepcounter\build\intermediates\library_manifest\debug\AndroidManifest.xml:22:9-60
+26        android:required="true" />
+26-->[__tested_artifact__::lib-todaystepcounter] D:\work\MyApplication\lib-todaystepcounter\build\intermediates\library_manifest\debug\AndroidManifest.xml:23:9-32
+27
+28    <application android:debuggable="true" >
+28-->D:\work\MyApplication\lib-todaystepcounter\build\intermediates\tmp\manifest\androidTest\debug\manifestMerger2337515883341679112.xml:7:5-9:19
+28-->D:\work\MyApplication\lib-todaystepcounter\build\intermediates\tmp\manifest\androidTest\debug\manifestMerger2337515883341679112.xml:7:18-43
+29        <uses-library android:name="android.test.runner" />
+29-->D:\work\MyApplication\lib-todaystepcounter\build\intermediates\tmp\manifest\androidTest\debug\manifestMerger2337515883341679112.xml:8:9-60
+29-->D:\work\MyApplication\lib-todaystepcounter\build\intermediates\tmp\manifest\androidTest\debug\manifestMerger2337515883341679112.xml:8:23-57
+30        <!-- 计步Service -->
+31        <service
+31-->[__tested_artifact__::lib-todaystepcounter] D:\work\MyApplication\lib-todaystepcounter\build\intermediates\library_manifest\debug\AndroidManifest.xml:28:9-46:19
+32            android:name="com.today.step.lib.TodayStepService"
+32-->[__tested_artifact__::lib-todaystepcounter] D:\work\MyApplication\lib-todaystepcounter\build\intermediates\library_manifest\debug\AndroidManifest.xml:29:13-63
+33            android:enabled="true"
+33-->[__tested_artifact__::lib-todaystepcounter] D:\work\MyApplication\lib-todaystepcounter\build\intermediates\library_manifest\debug\AndroidManifest.xml:30:13-35
+34            android:exported="false"
+34-->[__tested_artifact__::lib-todaystepcounter] D:\work\MyApplication\lib-todaystepcounter\build\intermediates\library_manifest\debug\AndroidManifest.xml:31:13-37
+35            android:launchMode="singleInstance"
+35-->[__tested_artifact__::lib-todaystepcounter] D:\work\MyApplication\lib-todaystepcounter\build\intermediates\library_manifest\debug\AndroidManifest.xml:32:13-48
+36            android:priority="1000"
+36-->[__tested_artifact__::lib-todaystepcounter] D:\work\MyApplication\lib-todaystepcounter\build\intermediates\library_manifest\debug\AndroidManifest.xml:33:13-36
+37            android:process=":todaystep" >
+37-->[__tested_artifact__::lib-todaystepcounter] D:\work\MyApplication\lib-todaystepcounter\build\intermediates\library_manifest\debug\AndroidManifest.xml:34:13-41
+38            <intent-filter>
+38-->[__tested_artifact__::lib-todaystepcounter] D:\work\MyApplication\lib-todaystepcounter\build\intermediates\library_manifest\debug\AndroidManifest.xml:35:13-45:29
+39
+40                <!-- 系统启动完成后会调用 -->
+41                <action android:name="android.intent.action.BOOT_COMPLETED" />
+41-->[__tested_artifact__::lib-todaystepcounter] D:\work\MyApplication\lib-todaystepcounter\build\intermediates\library_manifest\debug\AndroidManifest.xml:38:17-79
+41-->[__tested_artifact__::lib-todaystepcounter] D:\work\MyApplication\lib-todaystepcounter\build\intermediates\library_manifest\debug\AndroidManifest.xml:38:25-76
+42                <action android:name="android.intent.action.DATE_CHANGED" />
+42-->[__tested_artifact__::lib-todaystepcounter] D:\work\MyApplication\lib-todaystepcounter\build\intermediates\library_manifest\debug\AndroidManifest.xml:39:17-77
+42-->[__tested_artifact__::lib-todaystepcounter] D:\work\MyApplication\lib-todaystepcounter\build\intermediates\library_manifest\debug\AndroidManifest.xml:39:25-74
+43                <action android:name="android.intent.action.MEDIA_MOUNTED" />
+43-->[__tested_artifact__::lib-todaystepcounter] D:\work\MyApplication\lib-todaystepcounter\build\intermediates\library_manifest\debug\AndroidManifest.xml:40:17-78
+43-->[__tested_artifact__::lib-todaystepcounter] D:\work\MyApplication\lib-todaystepcounter\build\intermediates\library_manifest\debug\AndroidManifest.xml:40:25-75
+44                <action android:name="android.intent.action.USER_PRESENT" />
+44-->[__tested_artifact__::lib-todaystepcounter] D:\work\MyApplication\lib-todaystepcounter\build\intermediates\library_manifest\debug\AndroidManifest.xml:41:17-77
+44-->[__tested_artifact__::lib-todaystepcounter] D:\work\MyApplication\lib-todaystepcounter\build\intermediates\library_manifest\debug\AndroidManifest.xml:41:25-74
+45                <action android:name="android.intent.action.ACTION_TIME_TICK" />
+45-->[__tested_artifact__::lib-todaystepcounter] D:\work\MyApplication\lib-todaystepcounter\build\intermediates\library_manifest\debug\AndroidManifest.xml:42:17-81
+45-->[__tested_artifact__::lib-todaystepcounter] D:\work\MyApplication\lib-todaystepcounter\build\intermediates\library_manifest\debug\AndroidManifest.xml:42:25-78
+46                <action android:name="android.intent.action.ACTION_POWER_CONNECTED" />
+46-->[__tested_artifact__::lib-todaystepcounter] D:\work\MyApplication\lib-todaystepcounter\build\intermediates\library_manifest\debug\AndroidManifest.xml:43:17-87
+46-->[__tested_artifact__::lib-todaystepcounter] D:\work\MyApplication\lib-todaystepcounter\build\intermediates\library_manifest\debug\AndroidManifest.xml:43:25-84
+47                <action android:name="android.intent.action.ACTION_POWER_DISCONNECTED" />
+47-->[__tested_artifact__::lib-todaystepcounter] D:\work\MyApplication\lib-todaystepcounter\build\intermediates\library_manifest\debug\AndroidManifest.xml:44:17-90
+47-->[__tested_artifact__::lib-todaystepcounter] D:\work\MyApplication\lib-todaystepcounter\build\intermediates\library_manifest\debug\AndroidManifest.xml:44:25-87
+48            </intent-filter>
+49        </service> <!-- 开机自启动 -->
+50        <receiver
+50-->[__tested_artifact__::lib-todaystepcounter] D:\work\MyApplication\lib-todaystepcounter\build\intermediates\library_manifest\debug\AndroidManifest.xml:49:9-56:20
+51            android:name="com.today.step.lib.TodayStepBootCompleteReceiver"
+51-->[__tested_artifact__::lib-todaystepcounter] D:\work\MyApplication\lib-todaystepcounter\build\intermediates\library_manifest\debug\AndroidManifest.xml:50:13-76
+52            android:enabled="true"
+52-->[__tested_artifact__::lib-todaystepcounter] D:\work\MyApplication\lib-todaystepcounter\build\intermediates\library_manifest\debug\AndroidManifest.xml:51:13-35
+53            android:exported="false" >
+53-->[__tested_artifact__::lib-todaystepcounter] D:\work\MyApplication\lib-todaystepcounter\build\intermediates\library_manifest\debug\AndroidManifest.xml:52:13-37
+54            <intent-filter>
+54-->[__tested_artifact__::lib-todaystepcounter] D:\work\MyApplication\lib-todaystepcounter\build\intermediates\library_manifest\debug\AndroidManifest.xml:53:13-55:29
+55                <action android:name="android.intent.action.BOOT_COMPLETED" />
+55-->[__tested_artifact__::lib-todaystepcounter] D:\work\MyApplication\lib-todaystepcounter\build\intermediates\library_manifest\debug\AndroidManifest.xml:38:17-79
+55-->[__tested_artifact__::lib-todaystepcounter] D:\work\MyApplication\lib-todaystepcounter\build\intermediates\library_manifest\debug\AndroidManifest.xml:38:25-76
+56            </intent-filter>
+57        </receiver> <!-- 关机广播 -->
+58        <receiver android:name="com.today.step.lib.TodayStepShutdownReceiver" >
+58-->[__tested_artifact__::lib-todaystepcounter] D:\work\MyApplication\lib-todaystepcounter\build\intermediates\library_manifest\debug\AndroidManifest.xml:59:9-65:20
+58-->[__tested_artifact__::lib-todaystepcounter] D:\work\MyApplication\lib-todaystepcounter\build\intermediates\library_manifest\debug\AndroidManifest.xml:59:19-78
+59            <intent-filter>
+59-->[__tested_artifact__::lib-todaystepcounter] D:\work\MyApplication\lib-todaystepcounter\build\intermediates\library_manifest\debug\AndroidManifest.xml:60:13-64:29
+60
+61                <!-- 关机广播 -->
+62                <action android:name="android.intent.action.ACTION_SHUTDOWN" />
+62-->[__tested_artifact__::lib-todaystepcounter] D:\work\MyApplication\lib-todaystepcounter\build\intermediates\library_manifest\debug\AndroidManifest.xml:63:17-80
+62-->[__tested_artifact__::lib-todaystepcounter] D:\work\MyApplication\lib-todaystepcounter\build\intermediates\library_manifest\debug\AndroidManifest.xml:63:25-77
+63            </intent-filter>
+64        </receiver>
+65
+66        <meta-data
+66-->[com.android.support:appcompat-v7:26.1.0] C:\Users\yangz\.gradle\caches\transforms-2\files-2.1\c589bb7ec2d841c67ae68a3682166223\appcompat-v7-26.1.0\AndroidManifest.xml:26:9-28:38
+67            android:name="android.support.VERSION"
+67-->[com.android.support:appcompat-v7:26.1.0] C:\Users\yangz\.gradle\caches\transforms-2\files-2.1\c589bb7ec2d841c67ae68a3682166223\appcompat-v7-26.1.0\AndroidManifest.xml:27:13-51
+68            android:value="26.1.0" />
+68-->[com.android.support:appcompat-v7:26.1.0] C:\Users\yangz\.gradle\caches\transforms-2\files-2.1\c589bb7ec2d841c67ae68a3682166223\appcompat-v7-26.1.0\AndroidManifest.xml:28:13-35
+69        <meta-data
+69-->[android.arch.lifecycle:runtime:1.0.0] C:\Users\yangz\.gradle\caches\transforms-2\files-2.1\d0f6449185399ce77e6ff49656abaac3\runtime-1.0.0\AndroidManifest.xml:25:9-27:47
+70            android:name="android.arch.lifecycle.VERSION"
+70-->[android.arch.lifecycle:runtime:1.0.0] C:\Users\yangz\.gradle\caches\transforms-2\files-2.1\d0f6449185399ce77e6ff49656abaac3\runtime-1.0.0\AndroidManifest.xml:26:13-58
+71            android:value="27.0.0-SNAPSHOT" />
+71-->[android.arch.lifecycle:runtime:1.0.0] C:\Users\yangz\.gradle\caches\transforms-2\files-2.1\d0f6449185399ce77e6ff49656abaac3\runtime-1.0.0\AndroidManifest.xml:27:13-44
+72    </application>
+73
+74</manifest>

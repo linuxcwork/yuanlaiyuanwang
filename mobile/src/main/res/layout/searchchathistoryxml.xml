@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="@color/white">
+
+        <ImageView
+            android:id="@+id/search_history_person_return"
+            android:src="@drawable/personreturn"
+            android:layout_width="30dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true" />
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/search_history_person_return"
+            android:layout_toLeftOf="@+id/search_history_start_search"
+            android:background="@drawable/shape_bg_reply_edittext"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/search_history_activity_sponsor"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="#0000"
+                android:clickable="true"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:maxLines="3"
+                android:minHeight="36dp"
+                android:textSize="16sp" />
+
+            <ImageView
+                android:id="@+id/search_history_delete"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:clickable="true"
+                android:src="@drawable/ic_emotion" />
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/search_history_start_search"
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:text="搜索"/>
+    </RelativeLayout>
+    <ListView
+        android:id="@+id/search_history_search_result"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+</LinearLayout>

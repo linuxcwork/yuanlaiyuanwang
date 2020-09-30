@@ -14,14 +14,14 @@ import com.example.yang.myapplication.MainActivity;
 public class life_Fragment_Adapt extends FragmentPagerAdapter{
 
     private final int PAGER_COUNT = 2;
-    private installed_fragment installed=null;
-    private popular_fragment popular=null;
+    private FrequentlyUsedFragment installed=null;
+    private ServiceMarketFragment popular=null;
 
     public life_Fragment_Adapt(FragmentManager fm) {
         super(fm);
 
-        installed = new installed_fragment();
-        popular = new popular_fragment();
+        installed = new FrequentlyUsedFragment();
+        popular = new ServiceMarketFragment();
     }
 
     @Override

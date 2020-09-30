@@ -2,8 +2,11 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/MyApplication.iml" filepath="$PROJECT_DIR$/MyApplication.iml" />
-      <module fileurl="file://$PROJECT_DIR$/mobile/mobile.iml" filepath="$PROJECT_DIR$/mobile/mobile.iml" />
+      <module fileurl="file://$PROJECT_DIR$/MyApplication.iml" filepath="$PROJECT_DIR$/MyApplication.iml" group="MyApplication" />
+      <module fileurl="file://$PROJECT_DIR$/image_lib/image_lib.iml" filepath="$PROJECT_DIR$/image_lib/image_lib.iml" group="MyApplication/image_lib" />
+      <module fileurl="file://$PROJECT_DIR$/lib-todaystepcounter/lib-todaystepcounter.iml" filepath="$PROJECT_DIR$/lib-todaystepcounter/lib-todaystepcounter.iml" group="MyApplication/lib-todaystepcounter" />
+      <module fileurl="file://$PROJECT_DIR$/mobile/mobile.iml" filepath="$PROJECT_DIR$/mobile/mobile.iml" group="MyApplication/mobile" />
+      <module fileurl="file://$PROJECT_DIR$/scroll/scroll.iml" filepath="$PROJECT_DIR$/scroll/scroll.iml" group="MyApplication/scroll" />
     </modules>
   </component>
 </project>

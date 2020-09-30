@@ -5,6 +5,8 @@ public class User {
     private String userName;                  //用户名
     private String userPwd;                   //用户密码
     private int userId;                       //用户ID号
+    private final String AGE = "age";
+    private final String SEX = "sex";
     public int pwdresetFlag=0;
     private static Integer LOGIN= 1;
     private static Integer NOTLOGIN = 2;

@@ -8,6 +8,7 @@ import android.support.v4.app.ActivityCompat;
 import android.telephony.TelephonyManager;
 
 import java.util.Locale;
+import java.util.Random;
 
 /****************************************************************
  * @name MyApplication
@@ -70,7 +71,7 @@ public class SystemUtil {
      *
      * @return 手机IMEI
      */
-    public static String getIMEI(Context ctx,Activity activity) {
+    public static String getIMEI(Context ctx) {
         String[] pen = {Manifest.permission.READ_PHONE_STATE};
         TelephonyManager tm = (TelephonyManager) ctx.getSystemService(Activity.TELEPHONY_SERVICE);
         if (tm != null) {
@@ -82,12 +83,28 @@ public class SystemUtil {
                 //                                          int[] grantResults)
                 // to handle the case where the user grants the permission. See the documentation
                 // for ActivityCompat#requestPermissions for more details.
-                ActivityCompat.requestPermissions(activity,pen,
-                        1);;
+                return null;
             }
             return tm.getDeviceId();
         }
         return null;
     }
 
+    /**
+     * 数字与小写字母混编字符串
+     * @param size
+     * @return
+     */
+    public static String getNumSmallLetter(int size){
+        StringBuffer buffer = new StringBuffer();
+        Random random = new Random();
+        for(int i=0; i<size;i++){
+            if(random.nextInt(2) % 2 == 0){//字母
+                buffer.append((char) (random.nextInt(27) + 'a'));
+            }else{//数字
+                buffer.append(random.nextInt(10));
+            }
+        }
+        return buffer.toString();
+    }
 }

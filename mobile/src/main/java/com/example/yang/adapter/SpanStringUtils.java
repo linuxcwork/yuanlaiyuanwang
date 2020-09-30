@@ -12,7 +12,7 @@ import android.text.SpannableString;
 import android.text.style.ImageSpan;
 import android.widget.TextView;
 
-import com.example.yang.ui.EmotionUtils;
+import com.example.yang.util.EmotionUtils;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

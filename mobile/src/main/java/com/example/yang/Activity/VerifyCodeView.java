@@ -11,13 +11,7 @@ import android.widget.TextView;
 
 import com.example.yang.myapplication.R;
 
-    /*
-    * 功能：手机验证码、
-    * 时间：2018/06/01
-    * 作者：杨正强
-    * */
-
-public class VerifyCodeView extends RelativeLayout{
+public class VerifyCodeView extends RelativeLayout {
     private EditText editText;
     private TextView[] textViews;
     private static int MAX = 6;
@@ -87,5 +81,4 @@ public class VerifyCodeView extends RelativeLayout{
     public String getEditContent() {
         return inputContent;
     }
-
 }

@@ -3,13 +3,13 @@ package com.example.yang.myapplication;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
+import android.support.annotation.RequiresApi;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -17,19 +17,17 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.yang.Activity.VerifyCodeView;
-import com.example.yang.Aichar.IdCardActivity;
 import com.example.yang.Loger.LocalInfo;
 import com.example.yang.network.OkHttpManager;
 import com.example.yang.network.ServerResponse;
-import com.example.yang.util.SMSCore;
-import com.example.yang.util.SMS_Receiver;
+import com.example.yang.util.SharedPreferencedUtils;
 import com.example.yang.util.UrlListdb;
+import com.example.yang.util.XmppConnection;
 
-import java.io.IOException;
+import org.jxmpp.stringprep.XmppStringprepException;
+
 import java.util.HashMap;
 import java.util.Map;
-
-import okhttp3.Call;
 
 public class UserRegister extends Activity implements View.OnClickListener{
     private EditText account;
@@ -38,11 +36,12 @@ public class UserRegister extends Activity implements View.OnClickListener{
     private VerifyCodeView ver;
     private Button  getver;
     private Button reg;
+    private final String TAG = "UserRegister";
 
     private mMessage mess = new mMessage();
     private User user;
     private Context mContext;
-    private OkHttpManager http;
+    private OkHttpManager http  = new OkHttpManager();
 
     private ServerResponse serverResponse = new ServerResponse();
     private Boolean runningThree = false;
@@ -50,14 +49,14 @@ public class UserRegister extends Activity implements View.OnClickListener{
     private UrlListdb urlListdb = new UrlListdb();
     private final int REGRESPONSE = 1;
 
+    private SharedPreferencedUtils sharedPreferencedUtils = new SharedPreferencedUtils();
+
     @SuppressLint("HandlerLeak")
     private Handler mhandler = new Handler(){
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case REGRESPONSE:
-                    Map<String, Object> response =(Map<String, Object>) msg.obj;
-                    String mstr = (String)response.get("register");
-                    RegisterRsp(mstr);
+                    String mstr = (String) msg.obj;
                     break;
             }
             super.handleMessage(msg);
@@ -75,7 +74,8 @@ public class UserRegister extends Activity implements View.OnClickListener{
     @Override
     public void onClick(View v) {
         switch (v.getId()){
-            case R.id.register_getver:
+
+       /*     case R.id.register_getver:
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
@@ -90,7 +90,7 @@ public class UserRegister extends Activity implements View.OnClickListener{
                 //发送短信
                 SMSCore smscore=new SMSCore();
                 smscore.SendSMS2("10001", "501", UserRegister.this);
-                break;
+                break;*/
             case R.id.register_button:
                 new Thread(new Runnable() {
                     @Override
@@ -119,47 +119,19 @@ public class UserRegister extends Activity implements View.OnClickListener{
         }
 
 
-        Map<String,Object> map = new HashMap<String, Object>();
-        map.put("username", useraccount);
+        Map<String,String> map = new HashMap<String, String>();
+        map.put("account", useraccount);
        // map.put("event", mess.EVENT_REGISTER);
-        map.put("phone", mobile);
-        map.put("verification", ver_send);
-        map.put("passwd",passwd);
+        //map.put("phone", mobile);
+        //map.put("verification", ver_send);
+        map.put("password",passwd);
 
-        http.postKeyValuePaires(urlListdb.register, map, new HttpResponse() {
-            @Override
-            public void succesd(Call call, Map<String, Object> response) {
-                Message message = new Message();
-                message.what = REGRESPONSE;
-                message.obj = response;
-                mhandler.sendMessage(message);
-            }
-
-            @Override
-            public void failed(Call call,IOException e) {
-                System.out.println(e + call.request().toString());
-            }
-        });
-    }
-
-    private void RegisterRsp(String serrsp){
-        /*Bundle bundle = new Bundle();
-        bundle.putString("username", useraccount);
-        bundle.putString("phone", mobile);
-        bundle.putString("passwd",passwd);
-        bundle.putString("from","userregister");*/
-        if(serrsp == null){
-            return ;
-        }
-        if (serrsp.equals("succeed")) {
-            Intent main = new Intent(UserRegister.this, IdCardActivity.class);
-            //main.putExtras(bundle);
-            startActivity(main);
-            finish();
-        } else if (serrsp.equals("failed")) {
-            Looper.prepare();
-            Toast.makeText(UserRegister.this, "手机号已注册", Toast.LENGTH_SHORT).show();
-            Looper.loop();
+        XmppConnection xmppConnection = XmppConnection.getInstance();
+        boolean ret = false;
+        try {
+            ret = xmppConnection.RegisterAc(map);
+        } catch (XmppStringprepException e) {
+            e.printStackTrace();
         }
     }
 
@@ -167,8 +139,8 @@ public class UserRegister extends Activity implements View.OnClickListener{
         account = (EditText) findViewById(R.id.register_acount);
         passwd1 = (EditText) findViewById(R.id.register_passwd);
         phone = (EditText) findViewById(R.id.register_phonenumber);
-        ver = (VerifyCodeView) findViewById(R.id.register_verify_code_view);
-        getver = (Button) findViewById(R.id.register_getver);
+     /*   ver = (VerifyCodeView) findViewById(R.id.register_verify_code_view);
+        getver = (Button) findViewById(R.id.register_getver);*/
         reg = (Button) findViewById(R.id.register_button);
 
         getver.setOnClickListener(this);
@@ -196,18 +168,7 @@ public class UserRegister extends Activity implements View.OnClickListener{
             downTimer.start();
         }
 
-        http.postKeyValuePaires(urlListdb.register, map, new HttpResponse() {
-            @Override
-            public void succesd(Call call,Map<String, Object> response) {
-                String verrsp = response.toString();
-                System.out.println("ls");
-            }
-
-            @Override
-            public void failed(Call call,IOException e) {
-
-            }
-        });
+        http.postKeyValuePaires(urlListdb.register, map, null);
 
     }
 
@@ -248,6 +209,7 @@ public class UserRegister extends Activity implements View.OnClickListener{
     * descript ： 检查注册信息是否有空值，以及两次密码是否相同
     * return ：   true 信息正常 false 信息异常
    ***************************************************************************/
+    @RequiresApi(api = Build.VERSION_CODES.GINGERBREAD)
     private boolean info_check(){
         if(account.getText().toString().isEmpty() ||
                 passwd1.getText().toString().isEmpty() ||
@@ -275,10 +237,4 @@ public class UserRegister extends Activity implements View.OnClickListener{
             getver.setText("重新发送");
         }
     };
-
-    @Override
-    public void onBackPressed() {
-        Intent before = new Intent(this,Login.class);
-        startActivity(before);
-    }
 }

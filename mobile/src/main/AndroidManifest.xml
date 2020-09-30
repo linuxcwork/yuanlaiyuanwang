@@ -1,42 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     package="com.example.yang.myapplication">
 
     <permission
         android:name="com.example.yang.myapplication.permission.JPUSH_MESSAGE"
-        android:protectionLevel="signature"/>
-    <!-- 允许程序打开网络套接字 -->
-    <uses-permission android:name="android.permission.INTERNET" />
-    <!-- 允许程序获取网络状态 -->
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <!-- 允许程序设置内置sd卡的读/写权限 -->
+        android:protectionLevel="signature" /> <!-- 允许程序打开网络套接字 -->
+    <uses-permission android:name="android.permission.INTERNET" /> <!-- 允许程序获取网络状态 -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" /> <!-- 允许程序设置内置sd卡的读/写权限 -->
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <!-- 允许程序使用录音功能 -->
-    <uses-permission android:name="android.permission.RECORD_AUDIO" />
-    <!-- 允许程序读写手机状态和身份 -->
-    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-    <!-- 允许使用相机功能 -->
-    <uses-permission android:name="android.permission.CAMERA" />
-    <!-- 允许程序访问WiFi网络信息 -->
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-    <!-- 用于进行网络定位 -->
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <!-- 用于访问GPS定位 -->
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <!-- 用于获取wifi的获取权限，wifi信息会用来进行网络定位 -->
-    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
-    <!-- 用于申请调用A-GPS模块 -->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" /> <!-- 允许程序使用录音功能 -->
+    <uses-permission android:name="android.permission.RECORD_AUDIO" /> <!-- 允许程序读写手机状态和身份 -->
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" /> <!-- 允许使用相机功能 -->
+    <uses-permission android:name="android.permission.CAMERA" /> <!-- 允许程序访问WiFi网络信息 -->
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" /> <!-- 用于进行网络定位 -->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" /> <!-- 用于访问GPS定位 -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" /> <!-- 用于获取wifi的获取权限，wifi信息会用来进行网络定位 -->
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" /> <!-- 用于申请调用A-GPS模块 -->
     <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS" />
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
-    <uses-permission android:name="android.permission.SEND_SMS"/>
+    <uses-permission android:name="android.permission.SEND_SMS" />
     <uses-permission android:name="android.permission.VIBRATE" />
-    <uses-permission android:name="com.example.yang.myapplication.permission.JPUSH_MESSAGE" />
-    <!--允许应用可以接收点亮屏幕或解锁广播-->
+    <uses-permission android:name="com.example.yang.myapplication.permission.JPUSH_MESSAGE" /> <!-- 允许应用可以接收点亮屏幕或解锁广播 -->
     <uses-permission android:name="android.permission.RECEIVE_USER_PRESENT" />
-
 
     <application
         android:allowBackup="true"
@@ -46,11 +32,15 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <service android:name="com.baidu.location.f" android:enabled="true" android:process=":remote"> </service>
+
+        <service
+            android:name="com.baidu.location.f"
+            android:enabled="true"
+            android:process=":remote" />
+
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
-            android:value="9MhkkWQvZ4eNmXquH8F9rYObXr54lnfS" >
-        </meta-data>
+            android:value="9MhkkWQvZ4eNmXquH8F9rYObXr54lnfS" />
 
         <activity android:name=".chat_contrue" />
         <activity android:name=".MainActivity" />
@@ -61,18 +51,50 @@
         <activity android:name=".UserRegister" />
         <activity android:name=".CurrentFriend" />
         <activity android:name="com.example.yang.Activity.NewPasswd" />
-        <activity android:name="com.example.yang.ui.AlbumSelectChat" />
-        <activity android:name="com.example.yang.ui.PicturePreview" />
+        <activity android:name="com.example.yang.Activity.AlbumSelectChat" />
+        <activity android:name="com.example.yang.Activity.PicturePreview" />
         <activity android:name="com.amap.map3d.demo.basic.MapLocationPosition" />
-        <activity android:name="com.example.yang.Aichar.IdCardActivity" />
-        <activity android:name="com.example.yang.Activity.SettingActivity"/>
+        <activity android:name="com.example.yang.Activity.SettingActivity" />
+        <activity android:name="com.example.yang.Activity.LandOfThought" />
+        <activity android:name="com.example.yang.Activity.PDFReadActivity" />
+        <activity android:name="com.example.yang.Activity.RichEditorText" />
+        <activity
+            android:name="com.example.yang.Activity.AnnounceActivity"
+            android:theme="@style/DefaultCityPickerTheme" />
+        <activity android:name="com.example.yang.Activity.AnnounceAddActivity" />
+        <activity android:name="com.example.yang.Activity.AnnounceDetialedActivity" />
+        <activity android:name="com.example.yang.Activity.ConditionalLookupActivity" />
+        <activity android:name="com.example.yang.Activity.PersonalInfoActivity" />
+        <activity android:name="com.example.yang.Activity.PersonalInfoModifitionActivity"/>
+        <activity android:name="com.example.yang.Activity.SearchChatHistory"/>
+        <activity android:name="com.example.yang.Activity.SelectbackgroundActivity"/>
+        <activity android:name="com.example.yang.Activity.CommectFriendActivity"/>
+        <activity android:name="com.example.yang.Activity.SettingRelationshipActivity"/>
+        <activity android:name="com.example.yang.Activity.PositionSettingActivity"/>
+        <activity android:name="com.example.yang.Activity.BluetoothSettingActivity"/>
+        <activity android:name="com.example.yang.Activity.SettingMarryCondition"/>
+        <activity android:name="com.example.yang.Activity.ThirdPartServiceAppraise"/>
+        <activity android:name="com.example.yang.Activity.AddThirdPartService"/>
+        <activity android:name="com.example.yang.Activity.OwnAuthenticationActivity"/>
+        <activity android:name="com.example.yang.Activity.OwnCreditValueActivity"/>
+        <activity android:name="com.example.yang.Activity.OwnCreditMoneyActivity"/>
+        <activity android:name="com.example.yang.Activity.OwnParticipateInActivities"/>
+        <activity android:name="com.example.yang.Activity.AccountAndSecureActivity"/>
+        <activity android:name="com.example.yang.Activity.AppLanguageSettingActivity"/>
+        <activity android:name="com.example.yang.Activity.RecommendFriendActivity"/>
+        <activity android:name="com.example.yang.Activity.AcademicCertificationActivity"/>
+        <activity android:name="com.example.yang.Activity.ChatRTCVoiceActivity"/>
+        <activity android:name="com.example.yang.Activity.ChatRTCVoiceIncommingActivity"/>
+        <activity android:name="com.example.yang.Activity.CountryActivity"/>
 
         <activity
             android:name=".StartLogo"
             android:label="@string/app_name"
+            android:configChanges="locale"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.intent.action.VIEW" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
@@ -82,23 +104,16 @@
             android:name="com.google.android.gms.car.application"
             android:resource="@xml/automotive_app_desc" />
 
-        <!--
- Main music service, provides media browsing and media playback services to
-         consumers through MediaBrowserService and MediaSession. Consumers connect to it through
-         MediaBrowser (for browsing) and MediaController (for playback control)
-        -->
         <service
             android:name=".MyMusicService"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.media.browse.MediaBrowserService" />
             </intent-filter>
-        </service>
-
-        <!-- Required SDK 核心功能-->
-
+        </service> <!-- Required SDK 核心功能 -->
         <!-- 可配置android:process参数将PushService放在其他进程中 -->
         <!-- 如果JCore使用的是2.0.0及以上版本可移除本配置 -->
+
         <service
             android:name="cn.jpush.android.service.PushService"
             android:enabled="true"
@@ -109,24 +124,22 @@
                 <action android:name="cn.jpush.android.intent.PushService" />
                 <action android:name="cn.jpush.android.intent.PUSH_TIME" />
             </intent-filter>
-        </service>
-
-        <!-- Since JCore2.0.0 Required SDK核心功能-->
+        </service> <!-- Since JCore2.0.0 Required SDK核心功能 -->
         <!-- 这个Service要继承JCommonService -->
-        <service android:name="com.example.yang.util.mJCommonService"
+        <service
+            android:name="com.example.yang.util.mJCommonService"
             android:process=":pushcore">
             <intent-filter>
                 <action android:name="cn.jiguang.user.service.action" />
             </intent-filter>
-        </service>
-
-        <!-- Required SDK核心功能-->
+        </service> <!-- Required SDK核心功能 -->
         <receiver
             android:name="cn.jpush.android.service.PushReceiver"
             android:enabled="true"
             android:exported="false">
             <intent-filter android:priority="1000">
                 <action android:name="cn.jpush.android.intent.NOTIFICATION_RECEIVED_PROXY" />
+
                 <category android:name="com.example.yang.myapplication" />
             </intent-filter>
             <intent-filter>
@@ -140,60 +153,58 @@
 
                 <data android:scheme="package" />
             </intent-filter>
-        </receiver>
-
-        <!--极光sdk start-->
-        <!-- Required SDK核心功能-->
+        </receiver> <!-- 极光sdk start -->
+        <!-- Required SDK核心功能 -->
         <receiver
             android:name="cn.jpush.android.service.AlarmReceiver"
-            android:exported="false" />
-
-        <!-- Required since JCore 1.1.7. SDK 核心功能-->
+            android:exported="false" /> <!-- Required since JCore 1.1.7. SDK 核心功能 -->
         <provider
             android:name="cn.jpush.android.service.DataProvider"
             android:authorities="com.example.yang.myapplication.DataProvider"
-            android:exported="false" />
-
-        <!-- Required since JMessage 2.7.0 SDK 核心功能-->
+            android:exported="false" /> <!-- Required since JMessage 2.7.0 SDK 核心功能 -->
         <provider
             android:name="cn.jpush.im.android.helpers.ipc.IMProvider"
             android:authorities="com.example.yang.myapplication.IMProvider"
-            android:exported="false" />
-
-        <!-- Required JMessage SDK核心功能-->
+            android:exported="false" /> <!-- Required JMessage SDK核心功能 -->
         <receiver
             android:name="cn.jpush.im.android.helpers.IMReceiver"
             android:enabled="true"
-            android:exported="false">
-        </receiver>
-
-        <!-- since JCore 1.8.0 option 可选项。用于同一设备中不同应用的 jiguang 服务相互拉起的功能。 -->
+            android:exported="false" /> <!-- since JCore 1.8.0 option 可选项。用于同一设备中不同应用的 jiguang 服务相互拉起的功能。 -->
         <!-- 若不启用该功能可删除该组件，或把 enabled 设置成 false ；拉起服务被关闭，App 不会通过拉起服务拉起其他的 App，也不会被其他 App 拉起。 -->
         <service
             android:name="cn.jpush.android.service.DaemonService"
             android:enabled="true"
             android:exported="true">
-            <intent-filter >
+            <intent-filter>
                 <action android:name="cn.jpush.android.intent.DaemonService" />
-                <category android:name="com.example.yang.myapplication"/>
-            </intent-filter>
-        </service>
 
-        <!-- Required. For publish channel feature -->
-        <!-- JPUSH_CHANNEL 是为了方便开发者统计APK分发渠道。-->
+                <category android:name="com.example.yang.myapplication" />
+            </intent-filter>
+        </service> <!-- Required. For publish channel feature -->
+        <!-- JPUSH_CHANNEL 是为了方便开发者统计APK分发渠道。 -->
         <!-- 例如: -->
         <!-- 发到 Google Play 的APK可以设置为 google-play; -->
         <!-- 发到其他市场的 APK 可以设置为 xxx-market。 -->
-        <!-- 目前这个渠道统计功能的报表还未开放。-->
+        <!-- 目前这个渠道统计功能的报表还未开放。 -->
         <meta-data
             android:name="JPUSH_CHANNEL"
-            android:value="developer-default" />
-
-        <!-- Required. AppKey copied from Portal -->
+            android:value="developer-default" /> <!-- Required. AppKey copied from Portal -->
         <meta-data
             android:name="JPUSH_APPKEY"
             android:value="4f658b0f535ea56055dd191dMaster" />
+        <meta-data
+            android:name="com.baidu.speech.APP_ID"
+            android:value="15858198" />
+        <meta-data
+            android:name="com.baidu.speech.API_KEY"
+            android:value="9MhkkWQvZ4eNmXquH8F9rYObXr54lnfS" />
+        <meta-data
+            android:name="com.baidu.speech.SECRET_KEY"
+            android:value="biYoSwdUiNB4SVrxt8ZWHnUnVX3jdSuM" />
+
+        <service
+            android:name="com.baidu.speech.VoiceRecognitionService"
+            android:exported="false" />
     </application>
 
-    <!--极光sdk end-->
 </manifest>

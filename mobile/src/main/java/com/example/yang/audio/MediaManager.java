@@ -1,6 +1,7 @@
 package com.example.yang.audio;
 
-import android.media.*;
+import android.media.MediaPlayer;
+
 import java.io.IOException;
 /**
   * 播放管理类

@@ -72,11 +72,11 @@ public class AudioRecordButton extends android.support.v7.widget.AppCompatButton
             }
         }
     };
-    private Handler mHandler = new Handler(){
+    private Handler mHandler = new Handler(new Handler.Callback() {
         @Override
-        public void handleMessage(Message msg) {
-            switch (msg.what){
-                case MSG_AUDIO_PREPARED:
+        public boolean handleMessage(Message msg) {
+            switch (msg.what) {
+                      case MSG_AUDIO_PREPARED:
                     //显示应该在audio end prepared以后
                     //mDialogManager.showRecordingDialog();
                     isRecording = true;
@@ -95,17 +95,19 @@ public class AudioRecordButton extends android.support.v7.widget.AppCompatButton
                     break;
                 default:
                     break;
-            }
+                }
+            return false;
         }
-    };
+	});
 
-    //@Override
-    public void wellPrepared() {
-        mHandler.sendEmptyMessage(MSG_AUDIO_PREPARED);
+    @Override
+    public boolean performClick() {
+        return super.performClick();
     }
+
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-       int action = event.getAction();
+        int action = event.getAction();
         int x = (int) event.getX();
         int y = (int) event.getY();
         switch (action){
@@ -144,6 +146,7 @@ public class AudioRecordButton extends android.support.v7.widget.AppCompatButton
         }
         return super.onTouchEvent(event);
     }
+
     /**
      * 正常录制结束
      */
@@ -186,26 +189,6 @@ public class AudioRecordButton extends android.support.v7.widget.AppCompatButton
     private void changeState(int state) {
         if(mCurState != state){
             mCurState = state;
-           /* switch (state){
-                case STATE_NORMAL:
-                    setBackgroundResource(R.drawable.btn_recorder_normal);
-                    setText(R.string.str_recorder_normal);
-                    break;
-                case STATE_RECORDING:
-                    setBackgroundResource(R.drawable.btn_recorder_recording);
-                    setText(R.string.str_recorder_recording);
-                    if(isRecording){
-                        mDialogManager.recording();
-                    }
-                    break;
-                case STATE_WANT_CANCEL:
-                    setBackgroundResource(R.drawable.btn_recorder_recording);
-                    setText(R.string.str_recorder_want_cancel);
-                    mDialogManager.wantToCancel();
-                    break;
-                default:
-                    break;
-            }*/
         }
     }
 }

@@ -2,33 +2,38 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center">
+
         <SearchView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"/>
+            android:layout_centerHorizontal="true" />
     </RelativeLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
+
         <LinearLayout
             android:id="@+id/map_search"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:padding="2dp"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:padding="2dp">
+
             <com.example.yang.Activity.ZQImageViewRoundOval
+                style="@style/link_funtion_image_style"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:src="@mipmap/map_search"
-                style="@style/link_funtion_image_style"/>
+                android:src="@mipmap/map_search" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -36,77 +41,100 @@
                 android:gravity="center"
                 android:paddingTop="8dp"
                 android:paddingBottom="8dp"
-                android:text="地图"/>
+                android:text="地图" />
         </LinearLayout>
+
         <LinearLayout
             android:id="@+id/game_makefri"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:padding="2dp"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:padding="2dp">
+
             <com.example.yang.Activity.ZQImageViewRoundOval
+                style="@style/link_funtion_image_style"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                style="@style/link_funtion_image_style"
-                android:src="@mipmap/map_search"
-                />
+                android:src="@mipmap/map_search" />
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:paddingTop="8dp"
                 android:paddingBottom="8dp"
-                android:text="游戏"/>
-    </LinearLayout>
+                android:text="心灵之窗" />
+        </LinearLayout>
+
         <LinearLayout
             android:id="@+id/announ_fri"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:padding="2dp"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:padding="2dp">
+
             <com.example.yang.Activity.ZQImageViewRoundOval
+                style="@style/link_funtion_image_style"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                style="@style/link_funtion_image_style"
-                android:src="@mipmap/map_search"
-                />
+                android:src="@mipmap/map_search" />
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:paddingTop="8dp"
                 android:paddingBottom="8dp"
-                android:text="公告"/>
+                android:text="活动" />
         </LinearLayout>
+
         <LinearLayout
             android:id="@+id/searchfri_bycond"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:padding="2dp"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:padding="2dp">
+
             <com.example.yang.Activity.ZQImageViewRoundOval
+                style="@style/link_funtion_image_style"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                style="@style/link_funtion_image_style"
-                android:src="@mipmap/map_search"
-                />
+                android:src="@mipmap/map_search" />
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:paddingTop="8dp"
                 android:paddingBottom="8dp"
-                android:text="条件查找"/>
+                android:text="条件查找" />
         </LinearLayout>
     </LinearLayout>
 
-    <ListView
-        android:id="@+id/list_linkman"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        />
+        android:layout_height="wrap_content">
 
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycler"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <cdflynn.android.library.scroller.BubbleScroller
+            android:id="@+id/bubble_scroller"
+            app:bubbleScroller_highlightColor="@color/blue"
+            app:bubbleScroller_textColor="@android:color/darker_gray"
+            android:layout_width="60dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentEnd="true"
+            android:paddingTop="@dimen/activity_vertical_margin"
+            android:paddingEnd="@dimen/activity_horizontal_margin"
+            android:paddingBottom="@dimen/activity_vertical_margin"
+            android:layout_alignParentRight="true"
+            android:paddingRight="@dimen/activity_horizontal_margin" />
+
+    </RelativeLayout>
 </LinearLayout>

@@ -6,14 +6,6 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.baidu.speech.EventListener;
-import com.baidu.speech.EventManager;
-import com.baidu.speech.asr.SpeechConstant;
-
-
-import org.json.JSONObject;
-
-import java.util.Map;
-import java.util.TreeMap;
 
 /**
  * Created by fujiayi on 2017/8/15.

@@ -1,24 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:focusable="false">
 
 
-        <ImageView
-            android:id="@+id/any_friend_image"
-            android:layout_width="45dip"
-            android:layout_height="45dip"
-            android:layout_margin="10px"
-            />
+    <LinearLayout
+        android:id="@+id/linkman_listviewtitle_index_linearlayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/wheat">
         <TextView
-            android:id="@+id/any_friend_textview"
+            android:id="@+id/title_index"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_margin="10dp"
-            android:textColor="@color/black"
-            android:gravity="left|center_vertical"
-            android:textSize="20dp"
-            />
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:textColor="@color/gray"
+            android:textSize="12sp"
+            tools:text="A" />
+    </LinearLayout>
+
+
+    <View
+        android:id="@+id/link_listview_divider"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginLeft="57dp"
+        android:background="@color/gray"
+        android:visibility="gone"/>
+
+    <LinearLayout
+        android:id="@+id/linkman_listview_friend_linearlayout"
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content"
+         android:orientation="horizontal">
+             <com.example.yang.Activity.ZQImageViewRoundOval
+                 android:id="@+id/any_friend_image"
+                 android:layout_width="40dip"
+                 android:layout_height="40dip"
+                 android:layout_marginLeft="10dp"
+                 android:layout_marginRight="7dp"
+                 android:layout_marginBottom="3dp"
+                 android:layout_marginTop="2dp"
+                 android:focusable="false"
+                 />
+             <TextView
+                 android:id="@+id/any_friend_textview"
+                 android:layout_width="wrap_content"
+                 android:layout_height="match_parent"
+                 android:textColor="@color/black"
+                 android:gravity="center"
+                 android:textSize="15sp"
+                 android:focusable="false"
+                 />
+     </LinearLayout>
+
+
 
 
 </LinearLayout>

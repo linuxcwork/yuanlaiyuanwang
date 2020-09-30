@@ -13,12 +13,13 @@ import android.support.v4.app.ActivityCompat;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.example.yang.myapplication.MainActivity;
 import com.example.yang.myapplication.R;
 import com.example.yang.myapplication.UserRegister;
-import com.example.yang.ui.AlbumSelectChat;
+import com.example.yang.Activity.AlbumSelectChat;
 import com.example.yang.util.AuthService;
 import com.example.yang.util.RotateTransformation;
 
@@ -39,7 +40,7 @@ public class IdCardActivity extends Activity implements View.OnClickListener {
     private ImageButton idcardback;
     private Button next;
     private Button jump;
-    private ImageButton back;
+    private ImageView back;
     private IdCardIdtfcation idCardIdtfcation;
     private Bundle bundle = null;
     private int from = 0;
@@ -47,10 +48,9 @@ public class IdCardActivity extends Activity implements View.OnClickListener {
     private int backcode = 1;
 
     @SuppressLint("HandlerLeak")
-    private Handler handler = new Handler(){
+    private Handler handler = new Handler(new Handler.Callback() {
         @Override
-        public void handleMessage(Message msg) {
-            super.handleMessage(msg);
+        public boolean handleMessage(Message msg) {
             String path= (String) msg.obj;
             switch (msg.what){
                 case 0:
@@ -71,27 +71,17 @@ public class IdCardActivity extends Activity implements View.OnClickListener {
                     break;
                     default:
             }
+            return false;
         }
-    };
+	});
+	
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_idcard);
         AuthService authService = new AuthService();
         authService.getAuth("O2ygXFpcAkiOh7iuwsxZ2pE0","b1Sqee3dBB5hMMEtmiI8HHcZQPDN8nGi ");
-        /*OCR.getInstance(this).initAccessTokenWithAkSk(new OnResultListener<AccessToken>() {
-            @Override
-            public void onResult(AccessToken result) {
-                // 调用成功，返回AccessToken对象
 
-                String token = result.getAccessToken();
-            }
-            @Override
-            public void onError(OCRError error) {
-                System.out.println("dwwwwwwwwwwwwwwwwwwwwww"+error);
-                // 调用失败，返回OCRError子类SDKError对象
-            }
-        }, getApplicationContext(), "h14tS8nu1K3lVccKVTwVklV2", "IhpQ1vHlB1Ns6MfHyleT4ri1jSFyOX6T");*/
         init_activity();
 
         Intent incomming = getIntent();
@@ -133,20 +123,12 @@ public class IdCardActivity extends Activity implements View.OnClickListener {
                 break;
             case R.id.id_card_front_button:
                 Intent fronintent = new Intent(this,AlbumSelectChat.class);
-                //Intent intent = new Intent();
-                //intent.setType("image/*");
-                /*使用Intent.ACTION_GET_CONTENT这个Action */
-                //intent.setAction(Intent.ACTION_PICK);
                 /* 取得相片后返回本画面 */
                 fronintent.putExtra("activity","idcard");
                 startActivityForResult(fronintent,froncode);
                 break;
             case R.id.id_card_back_button:
                 Intent backintent = new Intent(this,AlbumSelectChat.class);
-                //Intent intent = new Intent();
-                //intent.setType("image/*");
-                /*使用Intent.ACTION_GET_CONTENT这个Action */
-                //intent.setAction(Intent.ACTION_PICK);
                 /* 取得相片后返回本画面 */
                 backintent.putExtra("activity","idcard");
                 startActivityForResult(backintent,backcode);

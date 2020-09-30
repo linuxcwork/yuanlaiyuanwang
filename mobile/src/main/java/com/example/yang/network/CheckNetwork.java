@@ -25,7 +25,7 @@ public class CheckNetwork {
      * descript ： 判断是否有网络连接
      * return ：   true or false
     ***************************************************************************/
-    public boolean isNetworkConnected(Context context)
+    public static boolean isNetworkConnected(Context context)
     {
         if (context != null) {
             ConnectivityManager mConnectivityManager = (ConnectivityManager) context
@@ -43,7 +43,7 @@ public class CheckNetwork {
      * descript ： 判断WIFI是否连接
      * return ：   true or false
     ***************************************************************************/
-    public boolean isWifiConnected(Context context) {
+    public static boolean isWifiConnected(Context context) {
         if (context != null) {
             ConnectivityManager mConnectivityManager = (ConnectivityManager) context
                     .getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -61,7 +61,7 @@ public class CheckNetwork {
      * descript ：  判断当前MOBILE连接是否可用
      * return ：    true or false
     ***************************************************************************/
-    public boolean isMobileConnected(Context context) {
+    public static boolean isMobileConnected(Context context) {
         if (context != null) {
             ConnectivityManager mConnectivityManager = (ConnectivityManager) context
                     .getSystemService(Context.CONNECTIVITY_SERVICE);

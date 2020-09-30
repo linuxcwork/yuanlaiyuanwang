@@ -6,10 +6,10 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.os.Environment;
 import android.util.Log;
 
-import java.io.File;
+import com.example.yang.util.FileOperationUtil;
+
 import java.util.Map;
 
 
@@ -18,52 +18,72 @@ import java.util.Map;
  */
 
 public class sqlite_linkmanmss{
+    public final String TAG = "DBAdapter" ;
+    //头像
+    public static final String KEY_ROWID = "image";
+    //昵称
+    public static final String KEY_NAME = "name";
+	//称谓
+	public static final String KEY_APPELLATION = "appellation";
+    //账号
+    public static final String KEY_ACTNB = "actnb";
+    //手机
+    public static final String KEY_EMAIL = "telphone";
+    //信用值
+    public static final String KEY_CREDIT_VALUES = "creditvalues";
+    //关系
+    public static final String KEY_RELATION = "relation";
+    //类型
+    public static final String EKY_MESSAGETYPE = "messagetype";
+    public static final String KEY_MESSAGE_TYPE_STRING = "text";
+    public static final String KEY_MESSAGE_TYPE_IMAGE  = "image";
+    public static final String KEY_MESSAGE_TYPE_GIF    = "gif";
+    public static final String KEY_MESSAGE_TYPE_VOICE  = "voice";
+    public static final String KEY_MESSAGE_TYPE_CALL = "startcall";
+    public static final String KEY_MESSAGE_TYPE_REJECT_CALL = "rejectcall";
+    public static final String KEY_MESSAGE_TYPE_FINESH_CALL = "finesgcall";
+    public static final String KEY_MESSAGE_TYPE_VIDEO  = "video";
+    public static final String KEY_MESSAGE_TYPE_FILE   = "file";
+    public static final String KEY_MESSAGE_TYPE_EMJ_AND_STRING   = "mut";
+    //是否是新消息
+    public static final String KEY_ISNEWMESSAGE = "isnew";
+    //聊天内容
+    public static final String KEY_CONTENT = "content";
+    //时间
+    public static final String KEY_TIME = "time";
+    //消息走向
+    public static final String KEY_DIRECTION = "direction";
 
-    static final String KEY_ROWID = "image";  //头像
-    static final String KEY_NAME = "name";    //昵称
-    static final String KEY_ACTNB = "actnb";  //账号
-    static final String KEY_EMAIL = "telphone";  //手机
-    static final String KEY_IDCARD = "id_card";  //身份证号
-    static final String KEY_POSTON = "postion";  //位置
-    static final String KEY_SIGNATURE = "the_signature";  //签名
-    static final String KEY_MARRIAGE = "marriage";  //结婚与否
-    static final String KEY_CONTENT = "content"; //聊天内容
-    static final String KEY_TIME = "time";  //时间
-    static final String KEY_DIRECTION = "direction";
-    static final String TAG = "DBAdapter" ;
+    public final String DATABASE_NAME = "Message.db";
+    public static final String DATABASE_TABLE = "contacts";
+    public final int DATABASE_VERSION = 1;
 
 
-    static final String DATABASE_NAME = "MyDB.db";
-    static final String DATABASE_TABLE = "contacts";
-    static final int DATABASE_VERSION = 1;
-    static final int OLD_VERSION = 0;
+    public final String CREATE_MESSAGE_DATABASE =
+            "create table if not exists "+DATABASE_TABLE+"( _id integer primary key autoincrement, " +
+                    KEY_ROWID+" text, " +
+                    KEY_NAME+" text," +
+                    KEY_ACTNB+" text," +
+                    KEY_EMAIL+" text," +
+                    KEY_RELATION+" INTEGER," +
+                    EKY_MESSAGETYPE+" text," +
+                    KEY_CREDIT_VALUES+" INTEGER,"+
+                    KEY_ISNEWMESSAGE+" INTEGER," +
+                    KEY_CONTENT+" text," +
+                    KEY_TIME+" TEXT,"+
+                    KEY_DIRECTION+" TEXT);";
 
+    private Context context;
 
-    static final String DATABASE_CREATE =
-            "create table contacts( _id integer primary key autoincrement, " +
-                    "name text, " +
-                    "email text," +
-                    "actnb text," +
-                    "telphone text," +
-                    "id_card text," +
-                    "the_signature text," +
-                    "marriage text," +
-                    "content BLOB," +
-                    "time text," +
-                    "direction text);";
-    final Context context;
-
-    DatabaseHelper DBHelper;
-    SQLiteDatabase db=null;
-    String path=null;
-    public sqlite_linkmanmss(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
-
+    private DatabaseHelper DBHelper;
+    private SQLiteDatabase db=null;
+    public sqlite_linkmanmss(Context context, String table, SQLiteDatabase.CursorFactory factory, Integer version) {
         this.context = context;
-        path = Environment.getExternalStorageDirectory().getPath()+File.separator+"YLYW"+File.separator+"data";
+        FileOperationUtil.CreateDir(FileOperationUtil.SECONDMESSAFEDIRPATH);
         DBHelper = new DatabaseHelper(context,DATABASE_NAME,null,DATABASE_VERSION);
     }
 
-    private static class DatabaseHelper extends SQLiteOpenHelper
+    private class DatabaseHelper extends SQLiteOpenHelper
     {
 
         public DatabaseHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
@@ -75,7 +95,7 @@ public class sqlite_linkmanmss{
             // TODO Auto-generated method stub
             try
             {
-                db.execSQL(DATABASE_CREATE);
+                db.execSQL(CREATE_MESSAGE_DATABASE);
             }
             catch(SQLException e)
             {
@@ -93,8 +113,12 @@ public class sqlite_linkmanmss{
         }
     }
 
-    public void CreateTable(String tablename){
-        db.execSQL(tablename);
+    public void CreateTable(String table){
+        if(table == null) {
+            db.execSQL(CREATE_MESSAGE_DATABASE);
+        }else {
+            db.execSQL(table);
+        }
     }
 
     //open the database
@@ -110,51 +134,58 @@ public class sqlite_linkmanmss{
         DBHelper.close();
     }
 
-    //insert a contact into the database
-    public long insertContact(String itable,Map<String, String> map)
+    /***********************************************************************
+     * insert a contact into the database
+     * ********************************************************************/
+    public long insertContact(String table,Map<String, Object> map)
     {
         ContentValues initialValues = new ContentValues();
         if (map != null) {
             //增强for循环遍历
-            for (Map.Entry<String, String> entry : map.entrySet()) {
-                initialValues.put(entry.getKey(),  entry.getValue());
+            for (Map.Entry<String, Object> entry : map.entrySet()) {
+                if(entry.getValue() != null) {
+                    initialValues.put(entry.getKey(), entry.getValue().toString());
+                    System.out.println(entry.getValue().toString());
+                }
             }
         }
 
-        return db.insert(itable, null, initialValues);
+        return db.insert(table, null, initialValues);
     }
-    //delete a particular contact
-    public boolean deleteContact(String rowId)
+
+    /***********************************************************************
+     * delete a particular contact
+     * ********************************************************************/
+    public boolean deleteContact(String table,String rowId,String key)
     {
-        return db.delete(DATABASE_TABLE,"name = ?", new String[]{rowId}) > 0;
+        return db.delete(table,key+" = ?", new String[]{rowId}) > 0;
     }
-    //retreves all the contacts
-    public Cursor getAllContacts()
+
+    /********************************************************************
+     * retreves all the contacts
+     * ******************************************************************/
+    public Cursor getAllContacts(String tablename)
     {
-        return db.query(DATABASE_TABLE, new String[]{KEY_CONTENT,KEY_TIME,KEY_DIRECTION}, null, null, null, null, null);
+        return db.query(tablename, null, null, null, null, null, null);
     }
 
     /*******************************************************************
      * 获取指定的内容
      * *****************************************************************/
-    public Cursor getContact(String gettable,String rowId,String condition) throws SQLException
+    public Cursor getContact(String table,String key,String rowId) throws SQLException
     {
-        String[] querycontact = new String[100];
-        if(condition.equals(KEY_CONTENT)){
-            querycontact=new String[]{KEY_CONTENT,KEY_TIME,KEY_DIRECTION};
-        }else if(false){
-          Log.i(TAG,"SEARCH");
+        if(db == null){
+            Log.e(TAG,"not open the sql");
         }
-
         Cursor mCursor=
-                db.query(true, gettable, querycontact, "name = ?", new String[]{rowId}, null, null, null, null);
-        if (mCursor != null)
-            mCursor.moveToFirst();
+                db.query(true, table,null , key+" = ?", new String[]{rowId}, null, null, null, null);
         return mCursor;
     }
 
-    //updates a contact
-    public boolean updateContact(Map<String, String> map)
+    /******************************************************************
+     * updates a contact
+     * ****************************************************************/
+    public boolean updateContact(String table,String key,String value,Map<String, String> map)
     {
         ContentValues args = new ContentValues();
         if (map != null) {
@@ -163,7 +194,7 @@ public class sqlite_linkmanmss{
                 args.put(entry.getKey(), entry.getValue());
             }
         }
-        return db.update(DATABASE_TABLE, args, "name = ?", null) > 0;
+        return db.update(table, args, key+" = ?",  new String[]{value}) > 0;
     }
 
 }
