@@ -13,11 +13,11 @@ import com.example.yang.myapplication.MainActivity;
 
 public class MenuFragmentpageAdapt extends FragmentPagerAdapter{
 
-    private messageoff_fragment messageoff=null;
+    private messageoff_fragment messageoff;
     private final int PAGER_COUNT = 4;
-    private linkman_fragment linkman=null;
-    private lifemain_fragment lifemain=null;
-    private ownmain_fragment ownmain=null;
+    private linkman_fragment linkman;
+    private lifemain_fragment lifemain;
+    private ownmain_fragment ownmain;
 
     public MenuFragmentpageAdapt(FragmentManager gm){
         super(gm);
@@ -55,6 +55,7 @@ public class MenuFragmentpageAdapt extends FragmentPagerAdapter{
                 break;
             case MainActivity.PAGE_FOUR:
                 fragment = ownmain;
+                ownmain.onResume();
                 break;
         }
         return fragment;

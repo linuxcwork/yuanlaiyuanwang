@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="week">
+        <item>Within three days</item>
+        <item>within a week</item>
+        <item>Within two weeks</item>
+        <item>Within a month</item>
+    </string-array>
+</resources>

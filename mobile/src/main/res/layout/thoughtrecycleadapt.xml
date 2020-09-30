@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/thought_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:textSize="28sp"
+        android:layout_marginTop="5dp"
+        android:textColor="@color/black"
+        android:text="fffffffffffff"/>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        >
+        <TextView
+            android:id="@+id/thought_username"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_marginLeft="10dp"
+            android:textSize="14sp"
+            android:text="ggggggggggggg"/>
+        <TextView
+            android:id="@+id/thought_grade"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/thought_username"
+            android:layout_marginLeft="15dp"
+            android:textSize="14sp"
+            />
+        <TextView
+            android:id="@+id/thought_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_marginRight="10dp"
+            android:textSize="14sp"
+            android:textColor="@color/gray"
+            android:text="hhhhhhhhhhhhhhhhhhh"/>
+    </RelativeLayout>
+</LinearLayout>

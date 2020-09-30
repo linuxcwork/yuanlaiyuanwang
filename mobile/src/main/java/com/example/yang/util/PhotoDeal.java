@@ -2,8 +2,13 @@ package com.example.yang.util;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.provider.MediaStore;
+import android.util.Log;
+
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 
 /****************************************************************
  * @name MyApplication
@@ -48,6 +53,22 @@ public class PhotoDeal {
     ***************************************************************************/
     public void delteImageUri(Context context, Uri uri) {
         context.getContentResolver().delete(uri, null, null);
+
+    }
+
+    public static byte[] flattenBitmap(Bitmap bitmap) {
+        int size = bitmap.getWidth() * bitmap.getHeight() * 4; //每个像素占32bit，所以*4
+        ByteArrayOutputStream out = new ByteArrayOutputStream(size);
+        try {
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
+            out.flush();
+            out.close();
+            return out.toByteArray();
+        } catch (IOException e) {
+            Log.w("Favorite", "Could not write icon");
+            return null;
+
+        }
 
     }
 

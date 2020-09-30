@@ -1,30 +1,111 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" >
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
 
-    <ImageView
-        android:id="@+id/Header"
+    <com.makeramen.roundedimageview.RoundedImageView
+        android:id="@+id/sendHeader"
         android:layout_width="45dip"
         android:layout_height="45dip"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true"
-        android:layout_margin="3dp" />
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="5dp"
+        android:layout_marginEnd="8dp"
+        android:src="@mipmap/main_add_png"
+        app:riv_corner_radius="10dp"
+        app:riv_mutate_background="true"
+        app:riv_oval="false"
+        app:riv_tile_mode="repeat"
+        android:layout_alignParentRight="true" />
 
-    <LinearLayout
+    <RelativeLayout
+        android:id="@+id/chat_item_layout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toLeftOf="@+id/Header">
+        android:layout_toLeftOf="@id/sendHeader">
 
-        <com.example.yang.ui.GifTextView
-            android:id="@+id/To_Content"
+        <com.makeramen.roundedimageview.RoundedImageView
+            android:id="@+id/chat_send_image"
+            android:layout_width="80dp"
+            android:layout_height="160dp"
+            android:scaleType="centerCrop"
+            app:riv_corner_radius="10dp"
+            android:visibility="gone"
+            app:riv_mutate_background="true"
+            app:riv_oval="false"
+            app:riv_tile_mode="repeat" />
+
+        <VideoView
+            android:id="@+id/chat_send_mvideo"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="3dp"
+            android:textIsSelectable="false"
+            android:visibility="gone"
+            android:padding="8dp"
+            android:gravity="center"  />
+        <LinearLayout
+            android:id="@+id/chat_item_layout_content"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:background="@drawable/app_lvjian_chat_right"
-            android:textIsSelectable="false"
-            android:padding="8dp"
-            android:gravity="center" />
-    </LinearLayout>
+            android:background="@mipmap/chatto_bg_normal"
+            android:gravity="right|center_vertical"
+            android:orientation="horizontal"
+            android:visibility="gone"
+            tools:ignore="RtlHardcoded">
+
+            <com.example.yang.item.GifTextView
+                android:id="@+id/To_Content"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textIsSelectable="false"
+                android:background="@null"
+                android:visibility="gone"
+                android:padding="5dp"
+                android:gravity="center" />
+
+            <TextView
+                android:id="@+id/chat_item_voice_time"
+                style="@style/text_body"
+                android:layout_marginEnd="3dp"
+                android:layout_marginStart="5dp"
+                android:gravity="center"
+                android:visibility="gone"/>
+            <ImageView
+                android:id="@+id/chat_item_voice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="10dp"
+                android:scaleType="fitCenter"
+                android:layout_gravity="center"
+                android:src="@mipmap/icon_voice_right3"
+                android:visibility="gone"
+                android:padding="5dp" />
+        </LinearLayout>
+    </RelativeLayout>
+
+    <ImageView
+        android:id="@+id/chat_item_fail"
+        android:layout_width="18dp"
+        android:layout_height="18dp"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="@dimen/content_vertical_margin"
+        android:layout_toLeftOf="@+id/chat_item_layout_content"
+        android:focusable="false"
+        android:src="@drawable/msg_state_fail_resend"
+        android:visibility="gone"
+        tools:ignore="NotSibling" />
+
+    <ProgressBar
+        android:id="@+id/chat_item_progress"
+        style="@android:style/Widget.ProgressBar.Small.Inverse"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="@dimen/content_vertical_margin"
+        android:layout_toLeftOf="@+id/chat_item_voice_time"
+        android:visibility="gone" />
+
 </RelativeLayout>

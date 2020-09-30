@@ -1,16 +1,25 @@
 package com.amap.map3d.demo.basic;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.Matrix;
+import android.graphics.BitmapFactory;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Base64;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.baidu.location.BDAbstractLocationListener;
@@ -19,23 +28,50 @@ import com.baidu.location.LocationClient;
 import com.baidu.location.LocationClientOption;
 import com.baidu.mapapi.CoordType;
 import com.baidu.mapapi.SDKInitializer;
+import com.baidu.mapapi.http.HttpClient;
 import com.baidu.mapapi.map.BaiduMap;
+import com.baidu.mapapi.map.BitmapDescriptor;
+import com.baidu.mapapi.map.BitmapDescriptorFactory;
+import com.baidu.mapapi.map.InfoWindow;
+import com.baidu.mapapi.map.MapPoi;
 import com.baidu.mapapi.map.MapStatus;
-import com.baidu.mapapi.map.MapStatusUpdate;
 import com.baidu.mapapi.map.MapStatusUpdateFactory;
 import com.baidu.mapapi.map.MapView;
+import com.baidu.mapapi.map.Marker;
 import com.baidu.mapapi.map.MarkerOptions;
 import com.baidu.mapapi.map.MyLocationData;
+import com.baidu.mapapi.map.Overlay;
 import com.baidu.mapapi.map.OverlayOptions;
+import com.baidu.mapapi.map.PolylineOptions;
 import com.baidu.mapapi.model.LatLng;
+import com.baidu.tts.loopj.HttpGet;
+import com.example.yang.Activity.PositionSettingActivity;
+import com.example.yang.myapplication.HttpResponse;
 import com.example.yang.myapplication.R;
+import com.example.yang.myapplication.chat_contrue;
+import com.example.yang.network.OkHttpManager;
 import com.example.yang.util.CheckPermission;
+import com.example.yang.util.XmppConnection;
 
+import org.jivesoftware.smack.SmackException;
+import org.jivesoftware.smack.XMPPException;
+import org.jivesoftware.smackx.vcardtemp.packet.VCard;
+import org.jxmpp.stringprep.XmppStringprepException;
+
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
+
+import okhttp3.Call;
 
 /****************************************************************
  * @name MyApplication
@@ -47,9 +83,10 @@ import java.util.Map;
  * @chang time
  * @class describe
  *****************************************************************/
-public class MapLocationPosition extends AppCompatActivity implements View.OnClickListener {
+public class MapLocationPosition extends AppCompatActivity implements View.OnClickListener,BaiduMap.SnapshotReadyCallback {
     private final String MTAG = "MapLocationPosition";
-    public String MAPRESOURCE = "mapresource";
+    private String MAPRESOURCE = "mapresource";
+    private static String preActivity;
     //标识，用于判断是否只显示一次定位信息和用户重新定位
     private boolean isFirstLoc = true;
 
@@ -57,27 +94,84 @@ public class MapLocationPosition extends AppCompatActivity implements View.OnCli
 
     //截图保存的名称
     private String screeshotname = null;
-    private ImageButton returnimageButton;
+    private ImageView returnimageButton;
     private Button sendbutton;
     private TheadAMapLocation theadAMapLocation = new TheadAMapLocation();
     private MyLocationListener myLocationListener;
     private MapView mapView;
-    private BaiduMap mBaiduMap;
-    //服务器返回消息
-    public final int LOCALFRIENDS = 1;
-    Handler handler = new Handler(){
-        @Override
-        public void handleMessage(Message msg) {
-            int w = msg.what;
-            switch (w) {
-                case LOCALFRIENDS:    //case里不能用变量
+    private static BaiduMap mBaiduMap;
+    private Map<String, Object> map = new HashMap<String, Object>();
+    private List<LatLng> points = new ArrayList<LatLng>();
+    private Bitmap mapsnapshot;
+    private OkHttpManager okHttpManager;
 
+    private String urlposition = "http://api.map.baidu.com/geosearch/v3/nearby?ak=9MhkkWQvZ4eNmXquH8F9rYObXr54lnfS" +
+            "&geotable_id=201098" +
+            "&radius=1000"+
+            "&mcode=BB:6B:F0:7A:3A:B3:8A:5B:D8:B9:93:1C:03:D8:24:F8:60:80:3F:A4;com.example.yang.myapplication";
+
+    private List<Map<String, Object>> nerposlist = new ArrayList<>();
+    //服务器返回消息
+    private final int LOCALFRIENDS = 1;
+    private final int MAPSENDPOSITION = 2;
+    Handler handler = new Handler(new Handler.Callback() {
+        @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+        @Override
+        public boolean handleMessage(Message msg) {
+            switch (msg.what) {
+                case LOCALFRIENDS:
+                    if(okHttpManager != null) {
+                        nerposlist.clear();
+                        nerposlist = okHttpManager.getJsonArray(msg.obj.toString());
+
+                        //创建OverlayOptions的集合
+                        List<OverlayOptions> options = new ArrayList<OverlayOptions>();
+                        BitmapDescriptor bitmap = BitmapDescriptorFactory.fromResource(R.drawable.ic_room_black_24dp);
+                        //Bitmap bitmap = BitmapFactory.decodeResource(getResources(),R.drawable.ic_room_black_24dp);
+                        for(int i = 0;i<nerposlist.size();i++) {
+                            String sex = (String) nerposlist.get(i).get("sex");
+                            //构造大量坐标数据
+                            LatLng point = new LatLng((double)nerposlist.get(i).get("latitude"),(double)nerposlist.get(i).get("longitude"));
+
+                           /* BitmapDescriptor bitmap;
+                            if(sex == null){
+                                continue;
+                            }else if(sex.equals("0")){
+                                bitmap = BitmapDescriptorFactory.fromResource(R.drawable.ic_room_black_24dp);
+                            }else {
+                                bitmap = BitmapDescriptorFactory.fromResource(R.drawable.ic_mic_off_black_24dp);
+                            }*/
+                            //创建OverlayOptions属性
+                            OverlayOptions option = new MarkerOptions()
+                                    .title(nerposlist.get(i).get("title").toString())
+                                    .position(point)
+                                    .position(point)
+                                    .icon(bitmap);
+                            options.add(option);
+                        }
+                        //在地图上批量添加
+                        mBaiduMap.addOverlays(options);
+                    }
                     break;
+                case  MAPSENDPOSITION:
+                    Bundle bundle = new Bundle();
+                    bundle.putString("image", Base64.encodeToString(flattenBitmap((Bitmap) msg.obj),0));
+                    Intent sendmap;
+                    if(preActivity != null && preActivity.equals("chat_contrue")) {
+                         sendmap = new Intent(MapLocationPosition.this, chat_contrue.class);
+                    }else {
+                         sendmap = new Intent(MapLocationPosition.this, PositionSettingActivity.class);
+                    }
+                    sendmap.putExtras(bundle);
+                    MapLocationPosition.this.setResult(Activity.RESULT_OK,sendmap);
+                    MapLocationPosition.this.finish();
+                break;
                 default:
                     break;
             }
+            return false;
         }
-    };
+        });
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -88,23 +182,50 @@ public class MapLocationPosition extends AppCompatActivity implements View.OnCli
         SDKInitializer.setCoordType(CoordType.BD09LL);
         setContentView(R.layout.map_postion);
         CheckPermission.isGPSpermission(MapLocationPosition.this);
-        if (CheckPermission.isGPSOpen(this) == true){
+        if (CheckPermission.isGPSOpen(this)){
             CheckPermission.openGPS(this);
         }
 
-        mapView = (MapView) findViewById(R.id.map);//找到地图控件
+        mapView = findViewById(R.id.map);//找到地图控件
         mBaiduMap = mapView.getMap();
         mBaiduMap.setMyLocationEnabled(true);
+        mBaiduMap.setOnMarkerClickListener(marklistener);
         initActivity();
 
+        okHttpManager = new OkHttpManager();
+
         Intent intent = getIntent();
-        if(intent.getExtras().getString(MAPRESOURCE).equals("linkman_fragment"))
+        preActivity = intent.getStringExtra(MAPRESOURCE);
+        if(preActivity != null && Objects.requireNonNull(preActivity.equals("linkman_fragment")))
         {
             returnimageButton.setVisibility(View.GONE);
             sendbutton.setVisibility(View.GONE);
+        }else if(Objects.requireNonNull(preActivity.equals("PositionSettingActivity"))){
+            System.out.println("PositionSettingActivity");
+            //设置地图单击事件监听
+            mBaiduMap.setOnMapClickListener(singlelistener);
+            //设置触摸地图事件监听者
+            mBaiduMap.setOnMapTouchListener(listener);
+        }else if(Objects.requireNonNull(preActivity.equals("chat_contrue"))){
+            System.out.println("chat_contrue");
         }
 
         initLocation();
+    }
+
+    private static byte[] flattenBitmap(Bitmap bitmap) {
+        int size = bitmap.getWidth() * bitmap.getHeight() * 4; //每个像素占32bit，所以*4
+        ByteArrayOutputStream out = new ByteArrayOutputStream(size);
+        try {
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
+            out.flush();
+            out.close();
+            return out.toByteArray();
+        } catch (IOException e) {
+            Log.w("Favorite", "Could not write icon");
+            return null;
+
+        }
     }
 
     /**************************************************************************
@@ -116,19 +237,8 @@ public class MapLocationPosition extends AppCompatActivity implements View.OnCli
     {
         returnimageButton = findViewById(R.id.map_return);
         returnimageButton.setOnClickListener(this);
-        sendbutton = findViewById(R.id.map_send);
+        sendbutton = findViewById(R.id.editreport);
         sendbutton.setOnClickListener(this);
-    }
-
-    public static Bitmap zoomBitmap(Bitmap bitmap,int w,int h){
-        int width = bitmap.getWidth();
-        int height = bitmap.getHeight();
-        Matrix matrix = new Matrix();
-        float scaleWidht = ((float)w / width);
-        float scaleHeight = ((float)h / height);
-        matrix.postScale(scaleWidht, scaleHeight);
-        Bitmap newbmp = Bitmap.createBitmap(bitmap, 0, 0, width, height, matrix, true);
-        return newbmp;
     }
 
     /**************************************************************************
@@ -185,7 +295,6 @@ public class MapLocationPosition extends AppCompatActivity implements View.OnCli
     private class MyLocationListener extends BDAbstractLocationListener {
         @Override
         public void onReceiveLocation(BDLocation bdLocation) {
-            System.out.println("dddddddddddddddddddddddddddddd");
             //mapView 销毁后不在处理新接收的位置
             if (bdLocation == null || mapView == null){
                 return;
@@ -204,28 +313,64 @@ public class MapLocationPosition extends AppCompatActivity implements View.OnCli
                 mBaiduMap.animateMapStatus(MapStatusUpdateFactory.newMapStatus(builder.build()));
             }
 
-            Map<String, Object> map = new HashMap<String, Object>();
-            map.put("id", "00000000001");//用户id
-            map.put("latitude", bdLocation.getLatitude());
-            map.put("longitude", bdLocation.getLongitude());
-            map.put("requestcode","getposition");
-            Toast.makeText(MapLocationPosition.this,bdLocation.getAddrStr(),Toast.LENGTH_SHORT);
-            new Thread(new Runnable() {
+            String url = urlposition+"&location="+bdLocation.getLongitude()+","+bdLocation.getLatitude();
+            HttpGet httpRequest = new HttpGet(url);
+
+            okHttpManager.async_get(url, new HttpResponse() {
                 @Override
-                public void run() {
-                    ArrayList<MapNearbyInfo> mapinfoarrayList = theadAMapLocation.HTTPAMapRequst(map);
-                    Message msg = new Message();
-                    msg.obj = mapinfoarrayList;
-                    msg.what = LOCALFRIENDS;
-                    handler.sendMessage(msg);
+                public void succesd(Call call, String response) {
+                    Message message = new Message();
+                    message.obj = response;
+                    message.what = LOCALFRIENDS;
+                    handler.sendMessage(message);
                 }
-            }).start();
+
+                @Override
+                public void failed(Call call, IOException e) {
+
+                }
+            });
         }
     }
 
-
-
-
+    BaiduMap.OnMarkerClickListener marklistener = new BaiduMap.OnMarkerClickListener() {
+        /**
+         * 地图 Marker 覆盖物点击事件监听函数
+         * @param marker 被点击的 marker
+         */
+        public boolean onMarkerClick(Marker marker){
+            XmppConnection xmppConnection = XmppConnection.getInstance();
+            VCard vCard = null;
+            try {
+                vCard = xmppConnection.getFriendunisInfo(marker.getTitle());
+            } catch (XmppStringprepException e) {
+                e.printStackTrace();
+            } catch (XMPPException.XMPPErrorException e) {
+                e.printStackTrace();
+            } catch (SmackException.NotConnectedException e) {
+                e.printStackTrace();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } catch (SmackException.NoResponseException e) {
+                e.printStackTrace();
+            }
+            View mView = LayoutInflater.from(MapLocationPosition.this).inflate(R.layout.map_marker_tips, null);
+            TextView nickname = mView.findViewById(R.id.map_marker_tips_nickname);
+            nickname.setText(vCard.getNickName());
+            TextView age = mView.findViewById(R.id.map_marker_tips_age);
+            //age.setText(vCard.getage());
+            TextView married = mView.findViewById(R.id.map_marker_tips_marryed);
+            //married.setText(vCard.getmarried());
+            TextView creditvalues = mView.findViewById(R.id.map_marker_tips_credit_values);
+            //creditvalues.setText(vCard.getcreditvalues());
+            TextView creditmoney = mView.findViewById(R.id.map_marker_tips_credit_money);
+            //creditmoney.setText(vCard.getcreditmoney());
+            InfoWindow infoWindow = new InfoWindow(mView,marker.getPosition(),-30);
+            mBaiduMap.showInfoWindow(infoWindow);
+            System.out.println(marker.getTitle());
+            return false;
+        }
+    };
 
     @Override
     public void onClick(View v) {
@@ -236,150 +381,148 @@ public class MapLocationPosition extends AppCompatActivity implements View.OnCli
                 setResult(1);
                 finish();
                 break;
-            case R.id.map_send:
-
+            case R.id.editreport:
+                mBaiduMap.snapshot(this);
                 break;
                 default:
                     System.out.println("MapLocationPosition:onClick");
         }
     }
+    public File getFile(Bitmap bitmap) {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 50, baos);
+        File file = new File(Environment.getExternalStorageDirectory() + "/temp.jpg");
+        try {
+            file.createNewFile();
+            FileOutputStream fos = new FileOutputStream(file);
+            InputStream is = new ByteArrayInputStream(baos.toByteArray());
+            int x = 0;
+            byte[] b = new byte[1024 * 100];
+            while ((x = is.read(b)) != -1) {
+                fos.write(b, 0, x);
+            }
+            fos.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return file;
+    }
+
+    @Override
+    public void onSnapshotReady(Bitmap bitmap) {
+        Bundle bundle = new Bundle();
+        bundle.putString("image", getFile(bitmap).getPath());
+        Intent sendmap = getIntent();
+       /* if(preActivity != null && preActivity.equals("chat_contrue")) {
+            sendmap = new Intent(this, chat_contrue.class);
+        }else {
+            sendmap = new Intent(this, PositionSettingActivity.class);
+        }*/
+        sendmap.putExtras(bundle);
+        setResult(Activity.RESULT_OK,sendmap);
+        finish();
+    }
+
+
+    //点击则发送定位
+    private void onSendAddress(){
+
+        Bundle bundle = new Bundle();
+        bundle.putString("image", Base64.encodeToString(flattenBitmap(mapsnapshot),0));
+        Intent sendmap;
+        if(preActivity != null && preActivity.equals("chat_contrue")) {
+            sendmap = new Intent(MapLocationPosition.this, chat_contrue.class);
+        }else {
+            sendmap = new Intent(MapLocationPosition.this, PositionSettingActivity.class);
+        }
+        sendmap.putExtras(bundle);
+        setResult(Activity.RESULT_OK,sendmap);
+        finish();
+       /* //如果不延时，截图上没有marker
+        mapView.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                //截图动作
+                mBaiduMap.snapshot(new BaiduMap.SnapshotReadyCallback() {
+                    @Override
+                    public void onSnapshotReady(Bitmap bitmap){
+                        System.out.println("12111111111111111111111111111111111111111111");
+                        mapsnapshot = bitmap;
+                        isok = false;
+                }
+            });
+        }
+    },50);*/
+
+   }
+    BaiduMap.OnMapTouchListener listener = new BaiduMap.OnMapTouchListener() {
+
+        /**
+         * 当用户触摸地图时回调函数
+         *
+         * @param motionEvent 触摸事件
+         */
+        @Override
+        public void onTouch(MotionEvent motionEvent) {
+            System.out.println(motionEvent);
+        }
+    };
+
+    BaiduMap.OnMapClickListener singlelistener = new BaiduMap.OnMapClickListener() {
+        /**
+         * 地图单击事件回调函数
+         *
+         * @param point 点击的地理坐标
+         */
+        @Override
+        public void onMapClick(LatLng point) {
+            Drawingline(point);
+        }
+
+        /**
+         * 地图内 Poi 单击事件回调函数
+         *
+         * @param mapPoi 点击的 poi 信息
+         */
+        @Override
+        public boolean onMapPoiClick(MapPoi mapPoi) {
+            Toast.makeText(MapLocationPosition.this,""+mapPoi,Toast.LENGTH_LONG).show();
+            return false;
+        }
+    };
+
+    public void Drawingline(LatLng point){
+        points.add(point);
+        points.add(point);
+        //设置折线的属性
+        OverlayOptions mOverlayOptions = new PolylineOptions()
+                .width(10)
+                .color(0xAAFF0000)
+                .points(points);
+        //在地图上绘制折线
+        //mPloyline 折线对象
+        Overlay mPolyline = mBaiduMap.addOverlay(mOverlayOptions);
+    }
+
 
     @Override
     protected void onResume() {
         super.onResume();
-        //在activity执行onResume时执行mMapView. onResume ()，实现地图生命周期管理
         mapView.onResume();
     }
     @Override
     protected void onPause() {
-        super.onPause();
-        //在activity执行onPause时执行mMapView. onPause ()，实现地图生命周期管理
         mapView.onPause();
+        super.onPause();
     }
     @Override
     protected void onDestroy() {
-        super.onDestroy();
         locationClient.unRegisterLocationListener(myLocationListener);
         locationClient.stop();
         mBaiduMap.setMyLocationEnabled(false);
         mapView.onDestroy();
         mapView = null;
-        //在activity执行onDestroy时执行mMapView.onDestroy()，实现地图生命周期管理
-
-    }
-
-    class MapNearbyInfo{
-        //头像
-        private File nearbyicon;
-        //是否结婚
-        private String ismarry;
-        //姓名
-        private String name;
-        //情感状况
-        private short emotion;
-        //是否实名认证
-        private Boolean isreal;
-        //信用值
-        private int reliablecount;
-        //诚意金
-        private Boolean ispay;
-        //性别
-        private String sex;
-        //年龄
-        private int age;
-        //纬度
-        private double mapLatitude;
-        //经度
-        private double mapLongitude;
-
-
-        public File getNearbyicon() {
-            return nearbyicon;
-        }
-
-        public void setNearbyicon(File nearbyicon) {
-            this.nearbyicon = nearbyicon;
-        }
-
-        public String getIsmarry() {
-            return ismarry;
-        }
-
-        public void setIsmarry(String ismarry) {
-            this.ismarry = ismarry;
-        }
-
-        public String getSex() {
-            return sex;
-        }
-
-        public void setSex(String sex) {
-            this.sex = sex;
-        }
-
-        public int getAge() {
-            return age;
-        }
-
-        public void setAge(int age) {
-            this.age = age;
-        }
-
-        public double getMapLatitude() {
-            return mapLatitude;
-        }
-
-        public void setMapLatitude(double mapLatitude) {
-            this.mapLatitude = mapLatitude;
-        }
-
-        public double getMapLongitude() {
-            return mapLongitude;
-        }
-
-        public void setMapLongitude(double mapLongitude) {
-            this.mapLongitude = mapLongitude;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public void setName(String name) {
-            this.name = name;
-        }
-
-        public short getEmotion() {
-            return emotion;
-        }
-
-        public void setEmotion(short emotion) {
-            this.emotion = emotion;
-        }
-
-        public Boolean getIsreal() {
-            return isreal;
-        }
-
-        public void setIsreal(Boolean isreal) {
-            this.isreal = isreal;
-        }
-
-        public int getReliablecount() {
-            return reliablecount;
-        }
-
-        public void setReliablecount(int reliablecount) {
-            this.reliablecount = reliablecount;
-        }
-
-        public Boolean getIspay() {
-            return ispay;
-        }
-
-        public void setIspay(Boolean ispay) {
-            this.ispay = ispay;
-        }
+        super.onDestroy();
     }
 
 }

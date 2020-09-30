@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="@color/white"
+        android:id="@+id/announce_activity_top">
+        <ImageView
+            android:id="@+id/add_service_activity_return"
+            android:layout_width="40dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:src="@drawable/personreturn"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:textColor="@color/black"
+            android:layout_toRightOf="@+id/add_service_activity_return"
+            android:text="信用金"/>
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/gray"
+        android:gravity="center_vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:background="@drawable/shape_corner"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:id="@+id/own_credit_money_pay_type_rel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="2dp"
+                android:layout_marginTop="2dp">
+                <TextView
+                    android:id="@+id/own_credit_money_pay_type_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_alignParentStart="true"
+                    android:textSize="18sp"
+                    android:text="工商银行 储蓄卡 1771"
+                    android:layout_alignParentLeft="true" />
+                <ImageView
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginRight="5dp"
+                    android:src="@drawable/detailedinformation"
+                    android:layout_alignParentRight="true" />
+            </RelativeLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/gray"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:gravity="center"
+                android:text="金额："
+                android:textSize="@dimen/font_18" />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginLeft="10dp"
+                android:gravity="center"
+                android:hint="输入数额"
+                android:textColor="@color/black"
+                android:textSize="32sp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="40dp"
+                android:layout_marginBottom="20dp"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center_horizontal">
+                    <Button
+                        android:id="@+id/credit_money_add"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentLeft="true"
+                        android:textColor="@color/white"
+                        android:background="@color/yellow"
+                        android:textSize="@dimen/font_18"
+                        android:text="转入" />
+                </LinearLayout>
+               <LinearLayout
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:layout_weight="1"
+                   android:gravity="center_horizontal">
+                   <Button
+                       android:id="@+id/credit_money_reduce"
+                       android:layout_width="wrap_content"
+                       android:layout_height="match_parent"
+                       android:layout_alignParentEnd="true"
+                       android:layout_centerInParent="true"
+                       android:text="提取"
+                       android:textSize="@dimen/font_18"
+                       android:textColor="@color/yellow"
+                       android:background="@color/gray"
+                       android:layout_alignParentRight="true" />
+               </LinearLayout>
+
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

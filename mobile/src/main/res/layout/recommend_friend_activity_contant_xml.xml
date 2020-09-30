@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        app:cardCornerRadius="10dp"
+        app:cardElevation="20dp"
+        app:cardPreventCornerOverlap="false"
+        app:cardUseCompatPadding="true">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginStart="10dp">
+                <ImageView
+                    android:id="@+id/reconmmend_friend_activity_sex"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_create_black_24dp"/>
+
+                <TextView
+                    android:id="@+id/reconmmend_friend_txt_age"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="#005fb0"
+                    android:layout_marginStart="5dp"
+                    android:textSize="18sp"
+                    android:typeface="sans"
+                    tools:text="23"
+                    android:layout_marginLeft="5dp" />
+
+                <TextView
+                    android:id="@+id/reconmmend_friend_activity_marital_tatus"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:layout_marginLeft="15dp"
+                    android:text="徐汇区"
+                    android:layout_marginStart="5dp" />
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/reconmmend_friend_txt_card_status"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="10dp"
+                android:gravity="center"
+                android:src="@drawable/ic_create_black_24dp"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:visibility="gone"/>
+        </RelativeLayout>
+
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <com.makeramen.roundedimageview.RoundedImageView
+                android:id="@+id/reconmmend_friend_img_avatar"
+                android:layout_width="180dp"
+                android:layout_height="180dp"
+                android:layout_margin="10dp"
+                app:riv_corner_radius="10dp"
+                app:riv_mutate_background="true"
+                app:riv_oval="false"
+                app:riv_tile_mode="repeat"
+                android:src="@drawable/position" />
+
+            <TextView
+                android:id="@+id/reconmmend_friend_txt_nickname"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:textColor="#005fb0"
+                android:textSize="18sp"
+                android:typeface="sans"
+                tools:text="杨正强"/>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <TextView
+                    android:id="@+id/reconmmend_friend_txt_realname"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="26dp"
+                    android:layout_marginRight="10dp"
+                    android:textColor="#005fb0"
+                    android:textSize="20sp"
+                    android:typeface="sans"
+                    tools:text="已实名"
+                    android:layout_marginEnd="10dp" />
+                <TextView
+                    android:id="@+id/reconmmend_friend_txt_temperature_of_human_nature"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="26dp"
+                    android:layout_marginRight="10dp"
+                    android:textColor="#005fb0"
+                    android:textSize="20sp"
+                    android:typeface="sans"
+                    tools:text="100"
+                    android:layout_marginEnd="10dp" />
+                <TextView
+                    android:id="@+id/reconmmend_friend_txt_credit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="26dp"
+                    android:textColor="#005fb0"
+                    android:textSize="20sp"
+                    android:typeface="sans"
+                    tools:text="100000"/>
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:layout_marginBottom="30dp"
+            android:orientation="horizontal">
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_weight="1">
+                <Button
+                    android:id="@+id/reconmmend_friend_txt_remove"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="删除" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_weight="1">
+                <Button
+                    android:id="@+id/reconmmend_friend_txt_chat_with"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="闯进他的世界" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom">
+            <TextView
+                android:id="@+id/reconmmend_friend_txt_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_marginRight="10dp"
+                android:layout_marginBottom="3dp"
+                android:textSize="12sp"
+                android:text="2020/01/05"
+                android:layout_alignParentRight="true"
+                android:layout_marginEnd="10dp" />
+        </RelativeLayout>
+
+    </android.support.v7.widget.CardView>
+
+</LinearLayout>

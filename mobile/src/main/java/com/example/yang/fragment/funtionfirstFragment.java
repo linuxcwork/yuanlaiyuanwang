@@ -2,9 +2,9 @@ package com.example.yang.fragment;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,8 +12,6 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import com.example.yang.myapplication.R;
-
-
 
 import static com.baidu.speech.audio.MicrophoneServer.TAG;
 
@@ -37,9 +35,9 @@ public class funtionfirstFragment extends Fragment{
         LinearLayout lfuntiontakepicture = view.findViewById(R.id.funtiontakepicture);
         lfuntiontakepicture.setOnClickListener((View.OnClickListener) mcontext);
         LinearLayout lfuntionvideochat = view.findViewById(R.id.funtionvideochat);
-
+        lfuntionvideochat.setOnClickListener((View.OnClickListener) mcontext);
         LinearLayout lfuntionmakecall = view.findViewById(R.id.funtionmakecall);
-
+        lfuntionmakecall.setOnClickListener((View.OnClickListener) mcontext);
         LinearLayout lfuntionposition = view.findViewById(R.id.funtionposition);
         lfuntionposition.setOnClickListener((View.OnClickListener) mcontext);
         return view;

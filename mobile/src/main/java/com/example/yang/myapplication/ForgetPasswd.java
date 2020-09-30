@@ -1,13 +1,14 @@
 package com.example.yang.myapplication;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.os.Handler;
 import android.os.Looper;
+import android.os.Message;
 import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.View;
@@ -40,6 +41,13 @@ public class ForgetPasswd extends Activity implements View.OnClickListener{
     private User user;
     private mMessage mess;
 
+    Handler handler = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            String response =(String) msg.obj;
+            ServerRsponseforget(response);
+        }
+    };
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,6 +72,19 @@ public class ForgetPasswd extends Activity implements View.OnClickListener{
             }
         });
         Intent forget = getIntent();
+    }
+
+    public void ServerRsponseforget(String response){
+        Map<String, Object> map= http.getJsonObject(response);
+        if(map.get("forgetpasswd") != null){
+            if (map.get("forgetpasswd").toString().equals("success")) {
+                Intent newpasswd = new Intent(ForgetPasswd.this, NewPasswd.class);
+                startActivity(newpasswd);
+                finish();
+            }else{
+                Toast.makeText(ForgetPasswd.this,"验证码错误",Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 
     @Override
@@ -107,16 +128,11 @@ public class ForgetPasswd extends Activity implements View.OnClickListener{
 
         http.postKeyValuePaires(user.host_url, map, new HttpResponse() {
             @Override
-            public void succesd(Call call, Map<String, Object> response) {
-                if (!response.toString().isEmpty()) {
-
-                        if (response.equals("success")) {
-                            Intent newpasswd = new Intent(ForgetPasswd.this, NewPasswd.class);
-                            startActivity(newpasswd);
-                            finish();
-                        }else{
-                            Toast.makeText(ForgetPasswd.this,"验证码错误",Toast.LENGTH_SHORT).show();
-                        }
+            public void succesd(Call call, String response) {
+                if (!response.isEmpty()) {
+                    Message mes = new Message();
+                    mes.obj = response;
+                    handler.sendMessage(mes);
                 }
             }
 
@@ -138,20 +154,7 @@ public class ForgetPasswd extends Activity implements View.OnClickListener{
             downTimer.start();
         }
 
-        http.postKeyValuePaires(user.host_url, map, new HttpResponse() {
-            @Override
-            public void succesd(Call call,Map<String, Object> response) {
-                if(!response.toString().isEmpty()) {
-                        response.equals("success");
-                    Log.e("tag", "获取验证码==" +response);
-                }
-            }
-
-            @Override
-            public void failed(Call call,IOException e) {
-
-            }
-        });
+        http.postKeyValuePaires(user.host_url, map, null);
 
     }
 

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
+
+    <com.makeramen.roundedimageview.RoundedImageView
+        android:id="@+id/recvHeader"
+        android:layout_width="45dip"
+        android:layout_height="45dip"
+        android:layout_alignParentStart="true"
+        android:src="@mipmap/main_add_png"
+        android:layout_margin="5dp"
+        app:riv_corner_radius="10dp"
+        app:riv_mutate_background="true"
+        app:riv_oval="false"
+        app:riv_tile_mode="repeat"
+        android:layout_alignParentLeft="true" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/recvHeader">
+
+        <com.example.yang.ui.GifTextView
+            android:id="@+id/From_Content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="3dp"
+            android:background="@drawable/app_lvjian_other_chat_background"
+            android:textIsSelectable="false"
+            android:padding="8dp"
+            android:gravity="center" />
+        <ImageView
+            android:id="@+id/chat_recv_image"
+            android:layout_width="120dp"
+            android:layout_height="160dp"
+            android:layout_margin="3dp"
+            android:textIsSelectable="false"
+            android:padding="8dp"
+            android:gravity="center"  />
+        <VideoView
+            android:id="@+id/chat_recv_mvideo"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_margin="3dp"
+            android:textIsSelectable="false"
+            android:padding="8dp"
+            android:gravity="center"  />
+
+    </LinearLayout>
+</RelativeLayout>

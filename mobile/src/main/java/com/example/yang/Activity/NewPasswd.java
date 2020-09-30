@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.Button;
@@ -28,10 +30,19 @@ public class NewPasswd extends Activity {
     private EditText passwd;
     private EditText passwd_check;
     private Button nextstep;
-    mMessage mess;
-    private OkHttpManager http;
+    private mMessage mess;
+    private OkHttpManager http = new OkHttpManager();
     private User user;
 
+    Handler handler = new Handler(new Handler.Callback() {
+        @Override
+        public boolean handleMessage(Message msg) {
+            String response =(String) msg.obj;
+            ServerRsponse(response);
+            return false;
+        }
+	});
+	
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,17 +73,10 @@ public class NewPasswd extends Activity {
 
                                     http.postKeyValuePaires(user.host_url, map, new HttpResponse() {
                                         @Override
-                                        public void succesd(Call call, Map<String, Object> response) {
-                                            if (!response.toString().isEmpty()) {
-                                                    if (response.equals("success")) {
-                                                        Intent newpasswd = new Intent(NewPasswd.this, MainActivity.class);
-                                                        startActivity(newpasswd);
-                                                        finish();
-                                                    }else{
-                                                        Toast.makeText(NewPasswd.this,"验证码错误",Toast.LENGTH_SHORT).show();
-                                                    }
-
-                                            }
+                                        public void succesd(Call call, String response) {
+                                            Message message = new Message();
+                                            message.obj = response;
+                                            handler.sendMessage(message);
                                         }
 
                                         @Override
@@ -87,6 +91,19 @@ public class NewPasswd extends Activity {
                 }
             }
         });
+    }
+
+    public void ServerRsponse(String response){
+        Map<String, Object> map= http.getJsonObject(response);
+        if(map.get("newpasswd") != null){
+            if(map.get("newpasswd").toString().equals("success")){
+                Intent newpasswd = new Intent(NewPasswd.this, MainActivity.class);
+                startActivity(newpasswd);
+                finish();
+            }else{
+                Toast.makeText(NewPasswd.this,"验证码错误",Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 
     @Override

@@ -1,6 +1,7 @@
 package com.example.yang.fragment;
 
 
+import android.graphics.drawable.Icon;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -10,7 +11,6 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 
-import com.example.yang.myapplication.Icon;
 import com.example.yang.myapplication.R;
 
 import java.util.ArrayList;
@@ -33,11 +33,6 @@ public class installed_fragment extends Fragment {
         return view;
     }
     public void data(){
-        mData = new ArrayList<Icon>();
-        /*mData.add(new Icon(R.mipmap.iv_icon_1, "图标1"));
-        mData.add(new Icon(R.mipmap.iv_icon_2, "图标2"));
-        mData.add(new Icon(R.mipmap.iv_icon_3, "图标3"));
-        mData.add(new Icon(R.mipmap.iv_icon_4, "图标4"));
-        mData.add(new Icon(R.mipmap.iv_icon_5, "图标5"));*/
+
     }
 }

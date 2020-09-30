@@ -2,134 +2,425 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/gray"
-    android:orientation="vertical"
-    >
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/bg_indicator_point_normal"
+    android:orientation="vertical">
 
-    <LinearLayout
-        android:id="@+id/person_return"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/black"
-        android:orientation="horizontal">
+        android:layout_height="40dp"
+        android:background="@color/white">
 
+            <ImageView
+                android:id="@+id/person_return"
+                android:src="@drawable/personreturn"
+                android:layout_width="30dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentLeft="true" />
+
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="20dp"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp">
-            <ImageButton
-                android:background="@drawable/personreturn"
-                android:layout_width="20dp"
+            android:orientation="vertical">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white">
+                <com.makeramen.roundedimageview.RoundedImageView
+                    android:id="@+id/current_friend_image"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:layout_margin="15dp"
+                    app:riv_corner_radius="10dp"
+                    app:riv_mutate_background="true"
+                    app:riv_oval="false"
+                    app:riv_tile_mode="repeat"
+                    style="@style/ui_stytle"/>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="80dp"
+                    android:layout_toRightOf="@+id/current_friend_image"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginTop="12dp"
+                    android:orientation="vertical">
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:layout_weight="1">
+                        <TextView
+                            android:id="@+id/current_friend_petname"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/black"
+                            android:text="杨正强"
+                            android:textSize="@dimen/font_18"/>
+                        <ImageView
+                            android:id="@+id/current_friend_sex"
+                            android:layout_width="20dp"
+                            android:layout_height="25dp"
+                            android:layout_marginLeft="5dp"
+                            android:src="@mipmap/main_add_png"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:text="地址:" />
+                        <TextView
+                            android:id="@+id/current_friend_addr_text"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5dp"
+                            android:text="上海市徐汇区"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:layout_weight="1">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="年龄:" />
+                        <TextView
+                            android:id="@+id/current_friend_account"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5dp"
+                            android:text="12"/>
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <ImageView
+                    android:id="@+id/current_friend_sincere_heart_image"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_margin="10dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentTop="true"
+                    android:src="@mipmap/main_add_png"/>
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
                 android:layout_height="20dp" />
 
-            <TextView
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                style="@style/ui_stytle"
-                android:textColor="@color/white"
-                android:text="聊天信息"/>
+                android:orientation="horizontal"
+                android:background="@color/white">
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="30dp"
+                        android:src="@mipmap/main_add_png"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="10dp"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="3dp"
+                        android:layout_gravity="center"
+                        android:textColor="@color/black"
+                        android:text="实名认证"/>
+                    <TextView
+                        android:id="@+id/current_friend_authentication_state"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="3dp"
+                        android:layout_gravity="center"
+                        android:layout_marginBottom="10dp"
+                        android:textSize="12sp"
+                        android:text="未完成"/>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="30dp"
+                        android:src="@mipmap/main_add_png"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="10dp"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="3dp"
+                        android:layout_gravity="center"
+                        android:textColor="@color/black"
+                        android:text="信用金"/>
+                    <TextView
+                        android:id="@+id/current_friend_credit_value_amount"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="3dp"
+                        android:layout_gravity="center"
+                        android:layout_marginBottom="10dp"
+                        android:textSize="12sp"
+                        android:text="未完成"/>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="30dp"
+                        android:src="@mipmap/main_add_png"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="10dp"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="3dp"
+                        android:layout_gravity="center"
+                        android:textColor="@color/black"
+                        android:text="信用值"/>
+                    <TextView
+                        android:id="@+id/current_friend_credit_money_amount"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="3dp"
+                        android:layout_gravity="center"
+                        android:layout_marginBottom="10dp"
+                        android:textSize="12sp"
+                        android:text="未完成"/>
+                </LinearLayout>
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="20dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:orientation="vertical">
+
+                <RelativeLayout
+                    android:id="@+id/current_friend_chat_history"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="15dp"
+                        android:textSize="@dimen/font_18"
+                        android:text="查找聊天记录"/>
+
+                    <ImageView
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_centerVertical="true"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginRight="5dp"
+                        android:src="@drawable/detailedinformation"
+                        android:layout_alignParentRight="true" />
+                </RelativeLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="5dp"
+                    android:background="@color/gray"/>
+                <RelativeLayout
+                    android:id="@+id/current_friend_chat_background"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="15dp"
+                        android:textSize="@dimen/font_18"
+                        android:text="设置当前聊天背景"/>
+
+                    <ImageView
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_centerVertical="true"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginRight="5dp"
+                        android:src="@drawable/detailedinformation"
+                        android:layout_alignParentRight="true" />
+                </RelativeLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="5dp"
+                    android:background="@color/gray"/>
+                <RelativeLayout
+                    android:id="@+id/current_friend_clear_chat_history"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="15dp"
+                        android:textSize="@dimen/font_18"
+                        android:text="清除历史聊天信息"/>
+
+                    <ImageView
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_centerVertical="true"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginRight="5dp"
+                        android:src="@drawable/detailedinformation"
+                        android:layout_alignParentRight="true" />
+                </RelativeLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="5dp"
+                    android:background="@color/gray"/>
+                <RelativeLayout
+                    android:id="@+id/current_friend_comment"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="15dp"
+                        android:textSize="@dimen/font_18"
+                        android:text="点评"/>
+
+                    <ImageView
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_centerVertical="true"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginRight="5dp"
+                        android:src="@drawable/detailedinformation"
+                        android:layout_alignParentRight="true" />
+                </RelativeLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="5dp"
+                    android:background="@color/gray"/>
+                <RelativeLayout
+                    android:id="@+id/current_friend_relation"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="15dp"
+                        android:textSize="@dimen/font_18"
+                        android:text="关系认证"/>
+
+                    <ImageView
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_centerVertical="true"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginRight="5dp"
+                        android:src="@drawable/detailedinformation"
+                        android:layout_alignParentRight="true" />
+                </RelativeLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="5dp"
+                    android:background="@color/gray"/>
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="20dp"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="15dp"
+                    android:textSize="@dimen/font_18"
+                    android:text="@string/detailed_information"
+                    style="@style/ui_stytle"/>
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="20dp"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/current_friend_blacklist"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:gravity="center"
+                    android:textSize="@dimen/font_18"
+                    style="@style/ui_stytle"
+                    android:text="@string/blacklist"/>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/gray" />
+
+                <TextView
+                    android:id="@+id/current_friend_addfriend_sendmessage"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:textSize="@dimen/font_18"
+                    android:background="@color/white"
+                    style="@style/ui_stytle"
+                    android:text="@string/addfriend"/>
+
+            </LinearLayout>
         </LinearLayout>
-
-    </LinearLayout>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="20dp"/>
-
-    <GridView
-        android:id="@+id/gview"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:numColumns="auto_fit"
-        android:columnWidth="80dp"
-        android:stretchMode="columnWidth"
-        android:background="@color/white"
-        />
-
-   <View
-        android:layout_width="match_parent"
-        android:layout_height="20dp"/>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/white">
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            style="@style/ui_stytle"
-            android:text="聊天小程序"/>
-
-    </LinearLayout>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="20dp"/>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/white">
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            style="@style/ui_stytle"
-            android:text="查找聊天记录"/>
-
-    </LinearLayout>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="20dp"/>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/white">
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            style="@style/ui_stytle"
-            android:text="设置当前聊天背景"/>
-
-    </LinearLayout>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="20dp"/>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/white">
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            style="@style/ui_stytle"
-            android:text="清空聊天记录"/>
-
-    </LinearLayout>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="20dp"/>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/white">
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            style="@style/ui_stytle"
-            android:text="投诉"/>
-
-    </LinearLayout>
+    </ScrollView>
 
 
 </LinearLayout>

@@ -1,9 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="@color/white"
+        android:id="@+id/announce_activity_top">
+        <ImageView
+            android:id="@+id/anounce_add_activity_return"
+            android:layout_width="40dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:src="@drawable/personreturn"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_toRightOf="@+id/anounce_add_activity_return"
+            android:gravity="center"
+            android:textSize="@dimen/font_18"
+            android:text="@string/register"/>
+    </RelativeLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -12,9 +33,6 @@
         android:layout_marginRight="20sp"
         android:orientation="vertical">
 
-        <View
-            android:layout_width="wrap_content"
-            android:layout_height="20dp"/>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -23,19 +41,17 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="18sp"
-            android:text="@string/admin"/>
+            android:text="@string/personal_info_stagename_string"/>
         <EditText
             android:id="@+id/register_acount"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:hint="请填写昵称"
             android:ems="10"
             android:inputType="textPersonName"
             />
     </LinearLayout>
-        <View
-            android:layout_width="wrap_content"
-            android:layout_height="20dp"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -52,6 +68,7 @@
                 android:layout_width="match_parent"
                 android:layout_weight="1"
                 android:ems="11"
+                android:hint="请填写手机号"
                 android:layout_height="wrap_content"
                 android:inputType="phone"/>
         </LinearLayout>
@@ -76,6 +93,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:hint="请填写密码"
             android:ems="10"
             android:inputType="textPassword" />
     </LinearLayout>
@@ -89,15 +107,15 @@
         android:orientation="horizontal"
         >
 
-        <com.example.yang.Activity.VerifyCodeView
+  <!--      <com.example.yang.Activity.VerifyCodeView
             android:id="@+id/register_verify_code_view"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:layout_marginLeft="30dp"
             android:layout_marginRight="30dp"
-            android:layout_marginTop="10dp"/>
-
+            android:layout_marginTop="10dp"/>-->
+<!--
         <Button
             android:id="@+id/register_getver"
             android:layout_width="match_parent"
@@ -105,7 +123,8 @@
             android:layout_weight="3"
             android:layout_marginEnd="10dp"
             android:background="@color/green"
-            android:text="@string/getver"/>
+            android:text="@string/getver"
+            android:layout_marginRight="10dp" />-->
     </LinearLayout>
     </LinearLayout>
     <View

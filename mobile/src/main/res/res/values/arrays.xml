@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="week">
+        <item>三天内</item>
+        <item>一周内</item>
+        <item>两周内</item>
+        <item>一个月</item>
+    </string-array>
+    <string-array name="ischarge">
+        <item>否</item>
+        <item>是</item>
+    </string-array>
+</resources>

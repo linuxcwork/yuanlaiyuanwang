@@ -19,6 +19,6 @@ public class ViewHolder extends RecyclerView.ViewHolder{
     public ViewHolder(View arg0) {
         super(arg0);
     }
-    public  ImageView mImg;
-    public  CheckBox checkBox;
+    public ImageView mImg;
+    public CheckBox checkBox;
 }

@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="@color/white"
+        android:id="@+id/announce_activity_top">
+        <ImageView
+            android:id="@+id/add_service_activity_return"
+            android:layout_width="40dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:src="@drawable/personreturn"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true" />
+    </RelativeLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="@color/gray"/>
+
+    <RelativeLayout
+        android:id="@+id/authentication_list_real_name_relativelayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="2dp"
+        android:layout_marginTop="2dp">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginBottom="15dp"
+            android:layout_marginTop="15dp"
+            android:layout_alignParentStart="true"
+            android:textSize="20sp"
+            android:gravity="left"
+            android:text="@string/real_name_string"
+            android:textColor="@color/black"
+            android:layout_alignParentLeft="true" />
+
+        <ImageView
+            android:id="@+id/authentication_list_real_name_is"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerInParent="true"
+            android:layout_marginRight="15dp"
+            android:src="@drawable/ic_check_circle_black_24dp"
+            android:layout_alignParentRight="true"
+            android:visibility="gone"
+            android:gravity="right"
+            android:layout_marginEnd="15dp"
+            android:contentDescription="TODO" />
+    </RelativeLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="@color/gray"/>
+
+    <RelativeLayout
+        android:id="@+id/authentication_list_academic_certification_relativelayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="2dp"
+        android:layout_marginTop="2dp">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginBottom="15dp"
+            android:layout_marginTop="15dp"
+            android:layout_alignParentStart="true"
+            android:textSize="20sp"
+            android:gravity="left"
+            android:text="@string/personal_info_educational_string"
+            android:textColor="@color/black"
+            android:layout_alignParentLeft="true" />
+        <ImageView
+            android:id="@+id/authentication_list_academic_certification_is"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerInParent="true"
+            android:layout_marginRight="15dp"
+            android:src="@drawable/ic_check_circle_black_24dp"
+            android:layout_alignParentRight="true"
+            android:visibility="gone"
+            android:gravity="right"
+            android:layout_marginEnd="15dp"
+            android:contentDescription="TODO" />
+    </RelativeLayout>
+</LinearLayout>

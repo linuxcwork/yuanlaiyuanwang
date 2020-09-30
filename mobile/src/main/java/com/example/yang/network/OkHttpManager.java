@@ -3,9 +3,7 @@ package com.example.yang.network;
 import android.util.Log;
 
 import com.example.yang.myapplication.HttpResponse;
-import com.example.yang.myapplication.chat_contrue;
 import com.example.yang.util.FileOperationUtil;
-
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -15,6 +13,10 @@ import java.io.File;
 import java.io.IOException;
 import java.net.FileNameMap;
 import java.net.URLConnection;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
@@ -28,34 +30,34 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
-import okhttp3.ResponseBody;
 
 /**
  * Created by yang on 2018/4/16.
  */
 
-public class OkHttpManager{
+public class OkHttpManager {
     public static final String TAG = "OkHttpManger";
     private static OkHttpClient okHttpClient;
     private static OkHttpManager manager;
     //private LocalBinder binder = new LocalBinder();
     private String ret;
     HttpResponse responsehandle;
+
     public OkHttpManager() {
-       super();
+        super();
         okHttpClient = new OkHttpClient();
 
-        File cacheDir = FileOperationUtil.CreateDir(FileOperationUtil.getMainDir()+File.separator+"cache");
+        File cacheDir = FileOperationUtil.CreateDir(FileOperationUtil.SECONDCACHEDIRPATH);
         Cache cache = new Cache(cacheDir, 10 * 1024 * 1024);
 
         okHttpClient = new OkHttpClient.Builder()
-                .connectTimeout(5*1000, TimeUnit.MILLISECONDS) //链接超时
-                .readTimeout(10*1000,TimeUnit.MILLISECONDS) //读取超时
-                .writeTimeout(10*1000,TimeUnit.MILLISECONDS) //写入超时
+                .connectTimeout(5 * 1000, TimeUnit.MILLISECONDS) //链接超时
+                .readTimeout(10 * 1000, TimeUnit.MILLISECONDS) //读取超时
+                .writeTimeout(10 * 1000, TimeUnit.MILLISECONDS) //写入超时
                 .cache(cache) //设置缓存
-              //  .addInterceptor(new HttpHeadInterceptor()) //应用拦截器：统一添加消息头
-               // .addNetworkInterceptor(new NetworkspaceInterceptor())//网络拦截器
-              //  .addInterceptor(loggingInterceptor)//应用拦截器：打印日志*/
+                //  .addInterceptor(new HttpHeadInterceptor()) //应用拦截器：统一添加消息头
+                // .addNetworkInterceptor(new NetworkspaceInterceptor())//网络拦截器
+                //  .addInterceptor(loggingInterceptor)//应用拦截器：打印日志*/
                 .build();
     }
 
@@ -115,9 +117,10 @@ public class OkHttpManager{
         }
         return manager;
     }
-/*
-* 使用时要在线程,同步get请求*/
-    public void sync_get(String url) throws Exception{
+
+    /*
+     * 使用时要在线程,同步get请求*/
+    public void sync_get(String url) throws Exception {
 
         //通过Builder辅助类构建一个Request对象
         Request request = new Request.Builder().get().url(url).build();
@@ -135,9 +138,10 @@ public class OkHttpManager{
             Log.i(TAG, "getData: " + response.body().charStream());
         }
     }
-/*
-* 异步 get请求*/
-    public void async_get(String url){
+
+    /*
+     * 异步 get请求*/
+    public void async_get(String url,HttpResponse responsehandle) {
         //通过Builder辅助类构建一个Request对象
         Request request = new Request.Builder().get().url(url).build();
         //通过入队的方式,进行异步操作
@@ -145,30 +149,26 @@ public class OkHttpManager{
             @Override
             public void onFailure(Call call, IOException e) {
                 Log.i(TAG, "onFailure: 请求失败的时候调用该方法!");
+                responsehandle.failed(call, e);
             }
+
             @Override
             public void onResponse(Call call, Response response) throws IOException {
-                //字符串类型
-                Log.i(TAG, "getData: " + response.body().string());
-                //字节数组类型
-                Log.i(TAG, "getData: " + response.body().bytes());
-                //字节流类型
-                Log.i(TAG, "getData: " + response.body().byteStream());
-                //字符流类型
-                Log.i(TAG, "getData: " + response.body().charStream());
+                String responseData = response.body().string();
+                responsehandle.succesd(call,responseData);
             }
         });
     }
 
     /**
      * 使用post方式提交json字符串
-     *  @param url     提交的路径
+     *
+     * @param url     提交的路径
      * @param content 提交的内容
      */
-    public String postString(String url, String content,HttpResponse responsehandle) {
+    public String postString(String url,String content, HttpResponse responsehandle) {
         //构建一个RequestBody对象,,因为提交的是json字符串需要添加一个MediaType为"application/json",
         // 普通的字符串直接是null就可以了
-
         RequestBody requestBody = RequestBody.create(
                 MediaType.parse("application/json,charset=UTF-8"), content);
         Request request = new Request.Builder()
@@ -178,13 +178,15 @@ public class OkHttpManager{
         okHttpClient.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
+                responsehandle.failed(call, e);
                 Log.i(TAG, "onFailure: " + e.getMessage());
             }
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
-                Log.i(TAG, "onResponse: " + response.body().string());
-                ret = response.body().string();
+               // Log.i(TAG, "onResponse: " + response.body().string());
+                String responseData = response.body().string();
+                responsehandle.succesd(call,responseData);
             }
         });
         return ret;
@@ -197,12 +199,12 @@ public class OkHttpManager{
      * @param //key
      * @param //value
      */
-    public static void postKeyValuePaire(String url, chat_contrue.WeChatMessage mesg,HttpResponse responsehandle) {
+    public static void postKeyValuePaire(String url, Map<String, String> map, HttpResponse responsehandle) {
         //提交键值对需要用到FormBody,因为FormBody是继承RequestBody的,所以拥有RequestBody的一切属性
         FormBody formBody = new FormBody.Builder()
                 //添加键值对
-                .add("id", mesg.getValue())
-                .add("content",mesg.getContent().toString())
+                .add("id", map.get("key"))
+                .add("content", "kjey")
                 .build();
         Request request = new Request.Builder()
                 .post(formBody)
@@ -211,7 +213,7 @@ public class OkHttpManager{
         okHttpClient.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
-                responsehandle.failed(call,e);
+                responsehandle.failed(call, e);
             }
 
             @Override
@@ -224,17 +226,18 @@ public class OkHttpManager{
 
     /**
      * 提交多个键值对
+     *
      * @param url 提交的路径
      * @param map 用来放置键值对,map的key对应键,value对应值
      */
-    public static void postKeyValuePaires(String url, Map<String, Object> map,HttpResponse responsehandle) {
+    public static void postKeyValuePaires(String url, Map<String, Object> map, HttpResponse responsehandle) {
         FormBody.Builder build = new FormBody.Builder();
 
         if (map != null) {
             //增强for循环遍历
             for (Map.Entry<String, Object> entry : map.entrySet()) {
-                if(entry != null) {
-                    build.add(entry.getKey(), entry.getValue().toString());
+                if (entry != null && entry.getValue() != null) {
+                    build.add(entry.getKey(), String.valueOf(entry.getValue()));
                 }
             }
         }
@@ -247,50 +250,66 @@ public class OkHttpManager{
         okHttpClient.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
-                responsehandle.failed(call,e);
+                responsehandle.failed(call, e);
             }
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 //response 数据流再度去一次后就会关闭
-                ResponseBody body = response.body();
-                //System.out.println(body.string());
-                String responseData=response.body().string();
-                try{
-                    JSONArray jsonArray=new JSONArray(responseData);
-                    for(int i=0;i<jsonArray.length();i++)
-                    {
-                        JSONObject jsonObject=jsonArray.getJSONObject(i);
-                        String id=jsonObject.getString("count");
-                        //String name=jsonObject.getString("name");
-
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                /*int len = new Long(body.contentLength()).intValue();
-                Map<String, Object> map = new HashMap<String, Object>();
-                if(len > 2) {
-                    char[] buf = new char[len];
-
-                    body.charStream().read(buf);
-                    System.out.println(buf);
-                    String p = String.copyValueOf(buf).substring(1, len - 1);
-
-                    String[] temp = p.split(",");
-                    System.out.println(temp);
-
-                    for (String s : temp) {
-                         String[] m = s.trim().split("=");
-                        map.put(m[0], m[1]);
-                    }
-                }else {
-                    map.put("loginstate","fail");
-                }*/
-                responsehandle.succesd(call,map);
+                String responseData = response.body().string();
+                responsehandle.succesd(call, responseData);
             }
         });
 
+    }
+
+    public List<Map<String, Object>> getJsonArray(String responseData) {
+        List<Map<String, Object>> list = new ArrayList<>();
+        try {
+            JSONObject jsonObject = new JSONObject(responseData);
+            //System.out.println("total: "+jsonObject.getJSONArray("total")+" size: "+jsonObject.getJSONArray("size"));
+            JSONArray jsonArray = jsonObject.getJSONArray("contents");
+            if (jsonArray == null) {
+                return null;
+            }
+            for (int i = 0; i < jsonArray.length(); i++) {
+                JSONObject mjsonObject = (JSONObject) jsonArray.get(i);
+                Map<String, Object> map = new HashMap<String, Object>();
+                Iterator iterator = mjsonObject.keys();
+                while (iterator.hasNext()) {
+                    String key = (String) iterator.next();
+                    if(key != null && key.equals("location")){
+                        JSONArray locationArray = mjsonObject.getJSONArray("location");
+                        map.put("longitude",locationArray.getDouble(0));
+                        map.put("latitude",locationArray.getDouble(1));
+                    }else {
+                        String value = mjsonObject.getString(key);
+                        map.put(key, value);
+                    }
+                }
+                list.add(map);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
+    public Map<String, Object> getJsonObject(String responseData) {
+        Map<String, Object> map = new HashMap<String, Object>();
+        try {
+            JSONObject jsonArray = new JSONObject(responseData);
+
+            Iterator iterator = jsonArray.keys();
+            while (iterator.hasNext()) {
+                String key = (String) iterator.next();
+                String value = jsonArray.getString(key);
+                map.put(key, value);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return map;
     }
 
     /**
@@ -384,7 +403,7 @@ public class OkHttpManager{
         okHttpClient.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
-                Log.i(TAG, "onFailure: "+e);
+                Log.i(TAG, "onFailure: " + e);
             }
 
             @Override
@@ -393,6 +412,8 @@ public class OkHttpManager{
             }
         });
     }
+
+
 
 
 }

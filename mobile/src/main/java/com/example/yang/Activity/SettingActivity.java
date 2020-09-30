@@ -12,17 +12,13 @@ import android.util.Log;
 import android.view.View;
 import android.widget.RelativeLayout;
 
-import com.example.yang.myapplication.HttpResponse;
 import com.example.yang.myapplication.Login;
 import com.example.yang.myapplication.R;
 import com.example.yang.network.OkHttpManager;
 import com.example.yang.util.UrlListdb;
+import com.example.yang.util.XmppConnection;
 
-import java.io.IOException;
-import java.util.HashMap;
 import java.util.Map;
-
-import okhttp3.Call;
 
 /****************************************************************
  * @name MyApplication
@@ -42,57 +38,51 @@ public class SettingActivity extends Activity implements View.OnClickListener {
 
     private final int RESPONSE = 1;
     @SuppressLint("HandlerLeak")
-    private Handler mhandler = new Handler() {
-            public void handleMessage(Message msg) {
-                switch (msg.what) {
+    private Handler mhandler = new Handler(new Handler.Callback() {
+        @Override
+        public boolean handleMessage(Message msg) {
+            switch (msg.what) {
                     case RESPONSE:
-                        Map<String, Object> response = (Map<String, Object>) msg.obj;
+                        String response = (String) msg.obj;
                         logoutRsp(response);
                         break;
                 }
-                super.handleMessage(msg);
-            }
-    };
+            return false;
+        }
+	});
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //布局文件 setting_main
         setContentView(R.layout.setting_main);
+        //账号与安全
+        RelativeLayout accountandsec = findViewById(R.id.setting_activity_account_and_secure_RelativeLayout);
+        accountandsec.setOnClickListener(this);
+        RelativeLayout language = findViewById(R.id.setting_activity_language_setting_RelativeLayout);
+        language.setOnClickListener(this);
+
+        //退出
         RelativeLayout relativeLayout = findViewById(R.id.exit_login);
         relativeLayout.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View v) {
-        System.out.println("dddddddddddrrrrrrrrrrrrrrrrrr");
         switch (v.getId()){
+            case R.id.setting_activity_account_and_secure_RelativeLayout:
+                Intent account_sec = new Intent(this,AccountAndSecureActivity.class);
+                startActivity(account_sec);
+                break;
+            case R.id.setting_activity_language_setting_RelativeLayout:
+                Intent intent_lang = new Intent(this,AppLanguageSettingActivity.class);
+                startActivity(intent_lang);
+                break;
             case R.id.exit_login:
-                System.out.println("ddddddddddddddddddddd");
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        SharedPreferences sharedPreferences = getSharedPreferences("userinfo", MODE_PRIVATE);
-                        SharedPreferences.Editor editor = sharedPreferences.edit();
-                        Map<String, Object> map = new HashMap<String, Object>();
-                        map.put("id", sharedPreferences.getString("id", ""));
-                        map.put("telphone", sharedPreferences.getString("telphone", ""));
-                        http.postKeyValuePaires(urlListdb.logout, map, new HttpResponse() {
-                            @Override
-                            public void succesd(Call call, Map<String, Object> response) {
-                                Message message = new Message();
-                                message.what = RESPONSE;
-                                message.obj = response;
-                                mhandler.sendMessage(message);
-                            }
-
-                            @Override
-                            public void failed(Call call, IOException e) {
-                                System.out.println(e + call.request().toString());
-                            }
-                        });
-                    }
-                }).start();
+                XmppConnection xmppConnection = XmppConnection.getInstance();
+                xmppConnection.disConnect();
+                Intent exit_login = new Intent(this,Login.class);
+                startActivity(exit_login);
                 break;
             default:
                 Log.e(TAG,"NO ID");
@@ -100,11 +90,12 @@ public class SettingActivity extends Activity implements View.OnClickListener {
         }
     }
 
-    public void logoutRsp(Map<String, Object> response){
+    public void logoutRsp(String response){
         int count = 0;
         System.out.println("dfdsfsfsdfdsf"+response);
-        if(response.get("count") != null){
-            count = (int)response.get("count");
+        Map<String, Object> map = http.getJsonObject(response);
+        if(map.get("count") != null){
+            count = (int)map.get("count");
         }
         if(count > 0) {
             SharedPreferences sharedPreferences = getSharedPreferences("userinfo", MODE_PRIVATE);

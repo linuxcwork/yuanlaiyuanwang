@@ -8,8 +8,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 
 import com.example.yang.myapplication.R;
-import com.example.yang.ui.EmotionUtils;
-
+import com.example.yang.util.EmotionUtils;
 
 import java.util.List;
 /**

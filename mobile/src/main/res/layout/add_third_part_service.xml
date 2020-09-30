@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="@color/white"
+        android:id="@+id/announce_activity_top">
+        <ImageView
+            android:id="@+id/add_service_activity_return"
+            android:layout_width="40dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:src="@drawable/personreturn"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:textColor="@color/black"
+            android:layout_toRightOf="@+id/add_service_activity_return"
+            android:text="添加服务"/>
+    </RelativeLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="5dp"
+        android:text="@string/third_part_service_brand_string"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center">
+        <com.makeramen.roundedimageview.RoundedImageView
+            android:id="@+id/add_third_part_service_icon"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_margin="10dp"
+            app:riv_corner_radius="10dp"
+            app:riv_mutate_background="true"
+            app:riv_oval="false"
+            app:riv_tile_mode="repeat"
+            android:src="@drawable/d_haha" />
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="5dp"
+        android:text="@string/third_part_service_type_string"/>
+    <EditText
+        android:id="@+id/add_third_part_service_type"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:inputType="phone"
+        android:hint="荣耀手机"
+        android:focusable="true"
+        android:layout_margin="5dp"
+        android:focusableInTouchMode="true"
+        android:marqueeRepeatLimit="marquee_forever"
+        android:scrollHorizontally="true"
+        android:singleLine="true"
+        android:background="@drawable/edit_background" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="5dp"
+        android:text="@string/third_part_service_name_string"/>
+    <EditText
+        android:id="@+id/add_third_part_service_name"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:inputType="phone"
+        android:hint="荣耀手机"
+        android:focusable="true"
+        android:layout_margin="5dp"
+        android:focusableInTouchMode="true"
+        android:marqueeRepeatLimit="marquee_forever"
+        android:scrollHorizontally="true"
+        android:singleLine="true"
+        android:background="@drawable/edit_background" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="5dp"
+        android:text="@string/third_part_service_link_string"/>
+    <EditText
+        android:id="@+id/add_third_part_service_link"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:focusable="true"
+        android:layout_margin="5dp"
+        android:focusableInTouchMode="true"
+        android:marqueeRepeatLimit="marquee_forever"
+        android:scrollHorizontally="true"
+        android:singleLine="true"
+        android:autoLink="all"
+        android:background="@drawable/edit_background" />
+
+</LinearLayout>

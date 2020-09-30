@@ -1,6 +1,6 @@
 package com.example.yang.audio;
 
-import android.media.*;
+import android.media.MediaRecorder;
 import android.util.Log;
 
 import java.io.File;
@@ -46,6 +46,7 @@ public class AudioManager {
         }
         return mInstance;
     }
+
     /**
      * 准备
      */

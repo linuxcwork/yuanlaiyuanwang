@@ -39,4 +39,8 @@ public class NoHorizontalScrollerViewPager extends ViewPager {
     public boolean onTouchEvent(MotionEvent ev) {
         return false;
     }
+    @Override
+    public boolean performClick() {
+        return super.performClick();
+    }
 }

@@ -29,17 +29,6 @@ public class Linkman_Listview_Adapt extends BaseAdapter{
         this.layoutInflater=LayoutInflater.from(context);
     }
 
-    public void maeeage_onClick(View view,int i) {
-        /*String name = (String) data.get(i).get("title");
-        Bundle bundle = new Bundle();
-        bundle.putString("key", name);
-
-        Intent intent = new Intent(context,chat_contrue.class);
-        intent.putExtras(bundle);
-        this.context.startActivity(intent);*/
-
-    }
-
     @Override
     public int getCount() {
         return data.size();
@@ -69,22 +58,8 @@ public class Linkman_Listview_Adapt extends BaseAdapter{
             zujia=(zujia)view.getTag();
         }
         //绑定数据
-
         zujia.image_messagelist.setBackgroundResource((Integer)data.get(i).get("image"));
         zujia.text_offriendname.setText((String)data.get(i).get("title"));
-
-        zujia.image_messagelist.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                maeeage_onClick(view,i);
-            }
-        });
-        zujia.text_offriendname.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                maeeage_onClick(view,i);
-            }
-        });
         return view;
     }
 

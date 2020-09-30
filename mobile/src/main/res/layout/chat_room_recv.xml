@@ -2,30 +2,81 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" >
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
 
-    <ImageView
-        android:id="@+id/Header"
+    <com.makeramen.roundedimageview.RoundedImageView
+        android:id="@+id/recvHeader"
         android:layout_width="45dip"
         android:layout_height="45dip"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:layout_margin="3dp" />
+        android:layout_alignParentStart="true"
+        android:src="@mipmap/main_add_png"
+        android:layout_marginEnd="5dp"
+        android:layout_marginStart="8dp"
+        app:riv_corner_radius="10dp"
+        app:riv_mutate_background="true"
+        app:riv_oval="false"
+        app:riv_tile_mode="repeat"
+        android:layout_alignParentLeft="true" />
 
-    <LinearLayout
+    <RelativeLayout
+        android:id="@+id/chat_item_layout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@+id/Header">
+        android:layout_toRightOf="@id/recvHeader">
 
-        <com.example.yang.ui.GifTextView
-            android:id="@+id/From_Content"
+        <com.makeramen.roundedimageview.RoundedImageView
+            android:id="@+id/chat_recv_image"
+            android:layout_width="80dp"
+            android:layout_height="160dp"
+            android:scaleType="centerCrop"
+            app:riv_corner_radius="10dp"
+            android:visibility="gone"
+            app:riv_mutate_background="true"
+            app:riv_oval="false"
+            app:riv_tile_mode="repeat" />
+
+        <VideoView
+            android:id="@+id/chat_recv_mvideo"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_margin="3dp"
+            android:textIsSelectable="false"
+            android:visibility="gone"
+            android:padding="8dp"
+            android:gravity="center"  />
+        <LinearLayout
+            android:id="@+id/chat_item_layout_content"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="3dp"
-            android:background="@drawable/app_lvjian_other_chat_background"
-            android:textIsSelectable="false"
-            android:padding="8dp"
-            android:gravity="center" />
+            android:background="@mipmap/chatto_bg_normal_right"
+            android:gravity="center"
+            android:visibility="gone"
+            android:orientation="horizontal">
 
-    </LinearLayout>
+            <com.example.yang.item.GifTextView
+                android:id="@+id/From_Content"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:textIsSelectable="false"
+                android:background="@null"
+                android:visibility="gone"/>
+
+            <ImageView
+                android:id="@+id/chat_item_voice"
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:layout_marginStart="72dp"
+                android:scaleType="fitCenter"
+                android:src="@mipmap/icon_chat_voice"
+                android:visibility="gone"
+                />
+            <TextView
+                android:id="@+id/chat_item_voice_time"
+                style="@style/text_body"
+                android:layout_marginStart="5dp"
+                android:visibility="gone"
+                />
+        </LinearLayout>
+    </RelativeLayout>
 </RelativeLayout>

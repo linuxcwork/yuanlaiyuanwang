@@ -12,15 +12,15 @@ package com.amap.map3d.demo.basic;
  *****************************************************************/
 public class MapLBSUrl {
     //创建表（create geotable）接口
-    String create_table = "http://api.map.baidu.com/geodata/v4/geotable/create";
+    public static String create_table = "http://api.map.baidu.com/geodata/v4/geotable/create";
     //查询表（list geotable）接口
-    String list_table = "http://api.map.baidu.com/geodata/v4/geotable/list";
+    public String list_table = "http://api.map.baidu.com/geodata/v4/geotable/list";
     //查询指定id表（detail geotable）接口
-    String detail_table = "http://api.map.baidu.com/geodata/v4/geotable/detail";
+    public String detail_table = "http://api.map.baidu.com/geodata/v4/geotable/detail";
     //修改表（update geotable）接口
-    String update_table = "http://api.map.baidu.com/geodata/v4/geotable/update";
+    public String update_table = "http://api.map.baidu.com/geodata/v4/geotable/update";
     //删除表（delete geotable）接口
-    String delete_table = "http://api.map.baidu.com/geodata/v4/geotable/delete";
+    public String delete_table = "http://api.map.baidu.com/geodata/v4/geotable/delete";
     //创建列（create column）接口
     String create_column = "http://api.map.baidu.com/geodata/v4/column/create";
     //查询列（list column）接口
@@ -32,13 +32,13 @@ public class MapLBSUrl {
     //删除指定条件列（delete column）接口
     public String delete_column = "http://api.map.baidu.com/geodata/v4/column/delete";
     //创建数据（create poi）接口
-    public String create_poi = "http://api.map.baidu.com/geodata/v4/poi/create";
+    public static String create_poi = "http://api.map.baidu.com/geodata/v3/poi/create";
     //查询指定条件的数据（poi）列表接口
-    public String list_poi = "http://api.map.baidu.com/geodata/v4/poi/list";
+    public static String list_poi = "http://api.map.baidu.com/geodata/v4/poi/list";
     //查询指定id的数据（poi）列表接口
     public String list_id_poi = "http://api.map.baidu.com/geodata/v4/poi/detail";
     //修改数据（update poi）列表接口
-    public String update_poi = "http://api.map.baidu.com/geodata/v4/poi/update";
+    public static String update_poi = "http://api.map.baidu.com/geodata/v3/poi/update";
     //删除数据（delete poi）列表接口
     public String delete_poi = "http://api.map.baidu.com/geodata/v4/poi/delete";
     //批量上传数据（upload poi）列表接口

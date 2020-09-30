@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="@color/white"
+        android:id="@+id/announce_activity_top">
+        <ImageView
+            android:id="@+id/marry_condition_activity_return"
+            android:layout_width="40dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:src="@drawable/personreturn"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true" />
+    </RelativeLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:id="@+id/account_and_secure_telephone_RelativeLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="15dp"
+                    android:text="@string/account_and_secure_telephone_string"
+                    android:textSize="@dimen/font_18" />
+
+                <TextView
+                    android:id="@+id/account_and_secure_telephone_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_margin="5dp"
+                    android:layout_toLeftOf="@+id/account_and_secure_telephone_image"
+                    android:text="120"
+                    android:textSize="@dimen/font_18" />
+
+                <ImageView
+                    android:id="@+id/account_and_secure_telephone_image"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="5dp"
+                    android:src="@drawable/ic_keyboard_arrow_right_black_24dp" />
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:background="@color/gray"
+                android:layout_marginRight="5dp"
+                android:layout_marginLeft="5dp"
+                android:layout_height="1dp"/>
+
+            <RelativeLayout
+                android:id="@+id/account_and_secure_passwd_RelativeLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="15dp"
+                    android:text="@string/passwd"
+                    android:textSize="@dimen/font_18" />
+
+                <TextView
+                    android:id="@+id/account_and_secure_passwd_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_margin="5dp"
+                    android:layout_toLeftOf="@+id/account_and_secure_passwd_image"
+                    android:text="120"
+                    android:textSize="@dimen/font_18" />
+
+                <ImageView
+                    android:id="@+id/account_and_secure_passwd_image"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="5dp"
+                    android:src="@drawable/ic_keyboard_arrow_right_black_24dp" />
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:background="@color/gray"
+                android:layout_marginRight="5dp"
+                android:layout_marginLeft="5dp"
+                android:layout_height="1dp"/>
+
+            <RelativeLayout
+                android:id="@+id/account_and_secure_emergency_contact_RelativeLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="15dp"
+                    android:text="@string/account_and_secure_emergency_contact_string"
+                    android:textSize="@dimen/font_18" />
+
+                <TextView
+                    android:id="@+id/account_and_secure_emergency_contact_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_margin="5dp"
+                    android:layout_toLeftOf="@+id/account_and_secure_emergency_contact_image"
+                    android:text="120"
+                    android:textSize="@dimen/font_18" />
+
+                <ImageView
+                    android:id="@+id/account_and_secure_emergency_contact_image"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="5dp"
+                    android:src="@drawable/ic_keyboard_arrow_right_black_24dp" />
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:background="@color/gray"
+                android:layout_marginRight="5dp"
+                android:layout_marginLeft="5dp"
+                android:layout_height="1dp"/>
+
+            <RelativeLayout
+                android:id="@+id/account_and_secure_Login_device_management_RelativeLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="15dp"
+                    android:text="@string/account_and_secure_Login_device_management_string"
+                    android:textSize="@dimen/font_18" />
+
+                <TextView
+                    android:id="@+id/account_and_secure_Login_device_management_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_margin="5dp"
+                    android:layout_toLeftOf="@+id/account_and_secure_Login_device_management_image"
+                    android:text="120"
+                    android:textSize="@dimen/font_18" />
+
+                <ImageView
+                    android:id="@+id/account_and_secure_Login_device_management_image"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="5dp"
+                    android:src="@drawable/ic_keyboard_arrow_right_black_24dp" />
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:background="@color/gray"
+                android:layout_marginRight="5dp"
+                android:layout_marginLeft="5dp"
+                android:layout_height="1dp"/>
+
+            <RelativeLayout
+                android:id="@+id/account_and_secure_security_center_RelativeLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="15dp"
+                    android:text="@string/account_and_secure_security_center_string"
+                    android:textSize="@dimen/font_18" />
+
+                <TextView
+                    android:id="@+id/account_and_secure_security_center_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_margin="5dp"
+                    android:layout_toLeftOf="@+id/account_and_secure_security_center_image"
+                    android:text="120"
+                    android:textSize="@dimen/font_18" />
+
+                <ImageView
+                    android:id="@+id/account_and_secure_security_center_image"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="5dp"
+                    android:src="@drawable/ic_keyboard_arrow_right_black_24dp" />
+            </RelativeLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
+</LinearLayout>

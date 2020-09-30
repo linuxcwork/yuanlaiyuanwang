@@ -2,108 +2,177 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="@color/lightgray">
 
-    <LinearLayout
-        android:id="@+id/person_setting_return"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-        <ImageButton
-            android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:background="@color/white"
+        android:id="@+id/announce_activity_top">
+        <ImageView
+            android:id="@+id/setting_activity_activity_return"
+            android:layout_width="40dp"
             android:layout_height="wrap_content"
-            android:src="@mipmap/return_forylyw"/>
+            android:layout_margin="5dp"
+            android:src="@drawable/personreturn"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true" />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/setting_activity_activity_return"
+            android:gravity="center"
+            android:layout_centerVertical="true"
             android:textSize="@dimen/font_20"
             android:text="@string/setting"/>
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="2dp" />
-    </LinearLayout>
+    </RelativeLayout>
 
     <RelativeLayout
-        android:id="@+id/setting_account_and_secure"
+        android:id="@+id/setting_activity_account_and_secure_RelativeLayout"
         android:layout_width="match_parent"
+        android:background="@color/white"
         android:layout_height="wrap_content">
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="@dimen/font_20"
-            android:layout_marginLeft="12dp"
-            android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
+            android:layout_marginLeft="15dp"
+            android:textSize="@dimen/font_18"
             android:text="@string/account_and_secure"/>
-        <ImageButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:layout_centerVertical="true"
-            android:src="@mipmap/return_forylyw"/>
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="2dp" />
+            android:layout_alignParentEnd="true"
+            android:layout_marginRight="5dp"
+            android:src="@drawable/detailedinformation"
+            android:layout_alignParentRight="true" />
     </RelativeLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="5dp"
+        android:background="@color/gray"/>
 
     <RelativeLayout
-        android:id="@+id/apk_information"
+        android:id="@+id/setting_activity_chat_setting_RelativeLayout"
         android:layout_width="match_parent"
+        android:background="@color/white"
         android:layout_height="wrap_content">
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="@dimen/font_20"
-            android:layout_marginLeft="12dp"
-            android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
+            android:layout_marginLeft="15dp"
+            android:textSize="@dimen/font_18"
+            android:text="@string/setting_activity_chat_setting"/>
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginRight="5dp"
+            android:src="@drawable/detailedinformation"
+            android:layout_alignParentRight="true" />
+    </RelativeLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="5dp"
+        android:background="@color/gray"/>
+    <RelativeLayout
+        android:id="@+id/setting_activity_language_setting_RelativeLayout"
+        android:layout_width="match_parent"
+        android:background="@color/white"
+        android:layout_height="wrap_content">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="15dp"
+            android:textSize="@dimen/font_18"
+            android:text="@string/setting_activity_language_setting"/>
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginRight="5dp"
+            android:src="@drawable/detailedinformation"
+            android:layout_alignParentRight="true" />
+    </RelativeLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="5dp"
+        android:background="@color/gray"/>
+
+    <RelativeLayout
+        android:id="@+id/setting_activity_general_setting_RelativeLayout"
+        android:layout_width="match_parent"
+        android:background="@color/white"
+        android:layout_height="wrap_content">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="15dp"
+            android:textSize="@dimen/font_18"
+            android:text="@string/setting_activity_general_setting"/>
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginRight="5dp"
+            android:src="@drawable/detailedinformation"
+            android:layout_alignParentRight="true" />
+    </RelativeLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="5dp"
+        android:background="@color/gray"/>
+    <RelativeLayout
+        android:id="@+id/setting_activity_apk_information_RelativeLayout"
+        android:layout_width="match_parent"
+        android:background="@color/white"
+        android:layout_height="wrap_content">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="15dp"
+            android:textSize="@dimen/font_18"
             android:text="@string/apk_information"/>
-        <ImageButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:layout_centerVertical="true"
-            android:src="@mipmap/return_forylyw"/>
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="2dp" />
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:id="@+id/setting_help_and_feedback"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="@dimen/font_20"
-            android:layout_marginLeft="12dp"
-            android:layout_alignParentLeft="true"
-            android:layout_centerVertical="true"
-            android:text="@string/help_and_feedback"/>
-        <ImageButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:src="@mipmap/return_forylyw"/>
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="2dp" />
+            android:layout_alignParentEnd="true"
+            android:layout_marginRight="5dp"
+            android:src="@drawable/detailedinformation"
+            android:layout_alignParentRight="true" />
     </RelativeLayout>
 
     <RelativeLayout
         android:id="@+id/exit_login"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:layout_marginTop="10dp">
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="@dimen/font_20"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
             android:layout_centerInParent="true"
             android:text="@string/exit_login"/>
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="2dp" />
     </RelativeLayout>
 </LinearLayout>

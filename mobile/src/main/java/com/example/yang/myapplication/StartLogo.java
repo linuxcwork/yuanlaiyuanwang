@@ -7,20 +7,16 @@ import android.view.View;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 
-import com.baidu.tts.loopj.RequestParams;
-import com.example.yang.util.ChatSDKInit;
-
-import java.util.HashMap;
-import java.util.Map;
-
+import com.example.yang.util.SharedPreferencedUtils;
+import com.example.yang.util.XmppConnection;
 
 
 public class StartLogo extends AppCompatActivity {
 
     private final long SPLASH_LENGTH = 3000;
     private User user;
-    private Integer nextactivity;
-    private ShareHelper preference;
+    private Integer nextactivity= 0;
+    private SharedPreferencedUtils sharedPreferencedUtils = new SharedPreferencedUtils();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,11 +26,10 @@ public class StartLogo extends AppCompatActivity {
         setContentView(view);
         //ChatSDKInit chatSDKInit = new ChatSDKInit(this);
         user = new User();
-        preference = new ShareHelper("tet");
-        nextactivity = (Integer) preference.get(this, "status", user.getStatus());
+        nextactivity =  Integer.parseInt(sharedPreferencedUtils.getUserInfo(this, "status", "0"));
         //渐变展示启动屏
         AlphaAnimation aa = new AlphaAnimation(0.3f, 1.0f);
-        aa.setDuration(2000);
+        aa.setDuration(10000);
         view.startAnimation(aa);
         aa.setAnimationListener(new Animation.AnimationListener() {
             @Override
@@ -55,15 +50,15 @@ public class StartLogo extends AppCompatActivity {
     }
 
     public void Activitychoice(){
-        if (nextactivity == user.getLOGIN()) {
-            Intent main = new Intent(StartLogo.this, MainActivity.class);
-            startActivity(main);
-            finish();
-        } else {
+        XmppConnection xmppConnection = XmppConnection.getInstance();
+        if (xmppConnection.islogin()) {
             Intent login = new Intent(StartLogo.this, Login.class);
             startActivity(login);
             finish();
+        } else {
+            Intent main = new Intent(StartLogo.this, MainActivity.class);
+            startActivity(main);
+            finish();
         }
-
     }
 }

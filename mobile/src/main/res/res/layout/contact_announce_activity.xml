@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="@color/white"
+        android:id="@+id/announce_activity_top">
+        <ImageView
+            android:id="@+id/anounce_activity_return"
+            android:layout_width="40dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:src="@drawable/personreturn"
+            android:layout_alignParentStart="true"/>
+        <LinearLayout
+            android:id="@+id/anounnce_activity_position"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_toEndOf="@+id/anounce_activity_return"
+            android:layout_marginLeft="5dp"
+            >
+            <TextView
+                android:id="@+id/anounnce_activity_position_text"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                android:text="@string/thought_return"/>
+        </LinearLayout>
+
+        <android.support.v7.widget.AppCompatSpinner
+            android:id="@+id/anounnce_activity_spinner_time"
+            android:layout_marginTop="5dp"
+            android:layout_toEndOf="@+id/anounnce_activity_position"
+            android:gravity="center"
+            android:entries="@array/week"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_margin="5dp"
+            android:gravity="center"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            android:text="@string/announce"/>
+    </RelativeLayout>
+
+    <ListView
+        android:id="@+id/contact_announce_listview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/announce_activity_top"
+        android:divider="@drawable/listview_divider"
+        android:dividerHeight="0.6dp"
+        />
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/announce_activity_add"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="30dp"
+        android:src="@drawable/editoridea"/>
+
+</RelativeLayout>
