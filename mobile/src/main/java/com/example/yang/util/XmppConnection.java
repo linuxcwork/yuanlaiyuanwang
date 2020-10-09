@@ -152,7 +152,8 @@ public class XmppConnection  {
                 connection.addConnectionListener(new XMPPConnectionListener());
                 connection.connect();// 连接, 可设置监听
                 this.mConnection = connection;
-                ProviderManager.addIQProvider("query", "hoo.iq.userinfo", new Login.PhoneProvider());
+
+
             }
         } catch (UnknownHostException e) {
             e.printStackTrace();

@@ -35,8 +35,6 @@ import java.util.Set;
  *****************************************************************/
 public class FileOperationUtil {
     private final static String  TAG = "FileOperationUtil";
-    //根目录名
-    public static final String MAIN_FOLDER = "YLYW";
     //主目录
     public static String MAINDIRPATH = "loveyou";
     //二级目录

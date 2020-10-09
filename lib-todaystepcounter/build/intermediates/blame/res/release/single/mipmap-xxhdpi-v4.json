@@ -1,0 +1,10 @@
+[
+    {
+        "merged": "F:\\data\\MyApplication\\lib-todaystepcounter\\build\\intermediates\\res\\merged\\release\\mipmap-xxhdpi-v4\\ic_launcher_round.png",
+        "source": "F:\\data\\MyApplication\\lib-todaystepcounter\\src\\main\\res\\mipmap-xxhdpi\\ic_launcher_round.png"
+    },
+    {
+        "merged": "F:\\data\\MyApplication\\lib-todaystepcounter\\build\\intermediates\\res\\merged\\release\\mipmap-xxhdpi-v4\\ic_launcher.png",
+        "source": "F:\\data\\MyApplication\\lib-todaystepcounter\\src\\main\\res\\mipmap-xxhdpi\\ic_launcher.png"
+    }
+]

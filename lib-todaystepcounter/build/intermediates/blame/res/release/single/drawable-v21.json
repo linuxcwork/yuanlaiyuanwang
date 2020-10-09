@@ -1,0 +1,18 @@
+[
+    {
+        "merged": "F:\\data\\MyApplication\\lib-todaystepcounter\\build\\intermediates\\res\\merged\\release\\drawable-v21\\abc_btn_colored_material.xml",
+        "source": "C:\\Users\\yzq\\.gradle\\caches\\transforms-2\\files-2.1\\eda580d4d1156894c5ca25b06d8a0082\\appcompat-v7-26.1.0\\res\\drawable-v21\\abc_btn_colored_material.xml"
+    },
+    {
+        "merged": "F:\\data\\MyApplication\\lib-todaystepcounter\\build\\intermediates\\res\\merged\\release\\drawable-v21\\notification_action_background.xml",
+        "source": "C:\\Users\\yzq\\.gradle\\caches\\transforms-2\\files-2.1\\c15ffdae8d1a0f8b9e34f8f4ac38cfb2\\support-compat-26.1.0\\res\\drawable-v21\\notification_action_background.xml"
+    },
+    {
+        "merged": "F:\\data\\MyApplication\\lib-todaystepcounter\\build\\intermediates\\res\\merged\\release\\drawable-v21\\abc_action_bar_item_background_material.xml",
+        "source": "C:\\Users\\yzq\\.gradle\\caches\\transforms-2\\files-2.1\\eda580d4d1156894c5ca25b06d8a0082\\appcompat-v7-26.1.0\\res\\drawable-v21\\abc_action_bar_item_background_material.xml"
+    },
+    {
+        "merged": "F:\\data\\MyApplication\\lib-todaystepcounter\\build\\intermediates\\res\\merged\\release\\drawable-v21\\abc_edit_text_material.xml",
+        "source": "C:\\Users\\yzq\\.gradle\\caches\\transforms-2\\files-2.1\\eda580d4d1156894c5ca25b06d8a0082\\appcompat-v7-26.1.0\\res\\drawable-v21\\abc_edit_text_material.xml"
+    }
+]

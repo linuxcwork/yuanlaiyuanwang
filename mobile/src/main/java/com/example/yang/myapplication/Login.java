@@ -31,13 +31,13 @@ import com.example.yang.util.FileOperationUtil;
 import com.example.yang.util.MessageListener;
 import com.example.yang.util.XmppConnection;
 
-
 import org.jivesoftware.smack.SmackConfiguration;
 import org.jivesoftware.smack.SmackException;
 import org.jivesoftware.smack.StanzaCollector;
 import org.jivesoftware.smack.filter.PacketIDFilter;
 import org.jivesoftware.smack.packet.IQ;
 import org.jivesoftware.smack.provider.IQProvider;
+import org.jivesoftware.smack.provider.ProviderManager;
 import org.jivesoftware.smack.tcp.XMPPTCPConnection;
 import org.jivesoftware.smack.util.StringUtils;
 import org.xmlpull.v1.XmlPullParser;
@@ -68,7 +68,10 @@ public class Login extends Activity implements View.OnClickListener {
     private Button login;
     private TextView forgetpasswd;
     private TextView regist;
+
     private final int RESPONSE = 1;
+    private static final int MATCH_VER_RSP = 2;
+    private static final int IS_SEND_VER_RSP = 3;
     private MessageListener listener;
     private XmppConnection xmppConnection;
     private File path;
@@ -86,10 +89,27 @@ public class Login extends Activity implements View.OnClickListener {
     @SuppressLint("HandlerLeak")
     private Handler mhandler = new Handler() {
         public void handleMessage(Message msg) {
+            String response = (String) msg.obj;
             switch (msg.what) {
                 case RESPONSE:
-                    String response = (String) msg.obj;
                     LoginResponse(response);
+                    break;
+                case MATCH_VER_RSP:
+                     if("succeed".equals(response)) {
+                         Intent mainactivity = new Intent(Login.this, MainActivity.class);
+                         startActivity(mainactivity);
+                     }else {
+                         Toast.makeText(getApplicationContext(),"验证码错误",Toast.LENGTH_SHORT).show();
+                     }
+                    break;
+                case IS_SEND_VER_RSP:
+                    if("sended".equals(response)){
+                        phone_number_lin.setVisibility(View.GONE);
+                        ver_lin.setVisibility(View.VISIBLE);
+                        phone_number_tips.setText("验证码已发送至 " + admin.getText().toString());
+                    }else {
+                        Toast.makeText(getApplicationContext(),"请检查手机号是否正确",Toast.LENGTH_SHORT).show();
+                    }
                     break;
             }
             super.handleMessage(msg);
@@ -139,6 +159,8 @@ public class Login extends Activity implements View.OnClickListener {
         if (CheckPermission.isGPSOpen(this) == true) {
             CheckPermission.openGPS(this);
         }
+
+        ProviderManager.addIQProvider("query", "hoo.iq.userinfo", new Login.PhoneProvider());
 
         xmppConnection = XmppConnection.getInstance();
         FileOperationUtil.CreateDir(SECONDUSERINFODIRPATH + File.separator + "image");
@@ -274,6 +296,8 @@ public class Login extends Activity implements View.OnClickListener {
 
         PhoneNumLogin phoneNumLogin = new PhoneNumLogin();
         phoneNumLogin.setUsername("111");
+        phoneNumLogin.setElement_name("phonenumber");
+        phoneNumLogin.setPhonenumber(admin.getText().toString());
         phoneNumLogin.setType(IQ.Type.get);
         XMPPTCPConnection mConnection = xmppConnection.getXmppTcpConnection();
         StanzaCollector collector = mConnection.createStanzaCollector(new PacketIDFilter(phoneNumLogin.getPacketID()));
@@ -315,9 +339,6 @@ public class Login extends Activity implements View.OnClickListener {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            phone_number_lin.setVisibility(View.GONE);
-            ver_lin.setVisibility(View.VISIBLE);
-            phone_number_tips.setText("验证码已发送至 " + admin.getText().toString());
         }
     }
 
@@ -334,6 +355,36 @@ public class Login extends Activity implements View.OnClickListener {
         public void inputComplete() {
             String ver = verifyCodeView.getEditContent();
             //发送验证码到服务器
+
+            PhoneNumLogin phoneNumLogin = new PhoneNumLogin();
+            phoneNumLogin.setUsername("111");
+            phoneNumLogin.setElement_name("ver");
+
+            phoneNumLogin.setPhonenumber(admin.getText().toString());
+            phoneNumLogin.setphoneVer(ver);
+
+            phoneNumLogin.setType(IQ.Type.get);
+            XMPPTCPConnection mConnection = xmppConnection.getXmppTcpConnection();
+            StanzaCollector collector = mConnection.createStanzaCollector(new PacketIDFilter(phoneNumLogin.getPacketID()));
+            //AndFilter filter = new AndFilter(new PacketIDFilter(PhoneNumLogin.getPacketID()), new PacketTypeFilter(IQ.class));
+            try {
+                mConnection.sendStanza(phoneNumLogin);
+            } catch (SmackException.NotConnectedException e) {
+                e.printStackTrace();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+            //PhoneNumLogin response = collector.nextResult(SmackConfiguration.getDefaultPacketReplyTimeout());
+            try {
+                if (collector.nextResult(SmackConfiguration.getDefaultPacketReplyTimeout()) == null) {
+                    SmackException.NoResponseException.newWith(mConnection, collector);
+                }
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            collector.cancel();// 停止请求results（是否成功的结果）
+
         }
 
         @Override
@@ -364,8 +415,15 @@ public class Login extends Activity implements View.OnClickListener {
     et_id="134255" snippet_file_name="blog_20131230_5_2676678"
     name="code" class="java" style="color: rgb(51, 51, 51);
     font-size: 13px; line-height: 19px;">*/
-    public static class PhoneNumLogin extends IQ {
+    private static class PhoneNumLogin extends IQ {
         private String username;
+        private String phonenumber;
+        private String ver;
+        private String element_name;
+        /**
+         * Namespace of the packet extension.
+         */
+        public static final String NAMESPACE = "hoo.iq.userinfo";
 
         public PhoneNumLogin() {
             super("query");
@@ -399,13 +457,33 @@ public class Login extends Activity implements View.OnClickListener {
             this.username = username;
         }
 
+        public void setPhonenumber(String number){
+            this.phonenumber = number;
+        }
+
+        public void setphoneVer(String ver){
+            this.ver = ver;
+        }
+
+        public void setElement_name(String element_name){
+            this.element_name = element_name;
+        }
+
         @Override
         protected IQChildElementXmlStringBuilder getIQChildElementBuilder(IQChildElementXmlStringBuilder xml) {
-            return null;
+            xml.rightAngleBracket();
+            xml.append("<query xmlns=\"").append(NAMESPACE).append("\">");
+            xml.append("<prompt>").append(username).append("</prompt>");
+            xml.append("</query>");
+            xml.append( "<" + element_name + " xmlns=\"" + NAMESPACE + "\">" );
+            xml.element( "phonenumber",  phonenumber );
+            xml.element( "ver", ver );
+            xml.append( "</" + element_name + ">" );
+            return xml;
         }
     }
 
-    public static class PhoneProvider extends IQProvider<PhoneNumLogin> {
+    public class PhoneProvider extends IQProvider<PhoneNumLogin> {
         private static final String PREFERRED_ENCODING = "UTF-8";
 
         @Override
@@ -419,24 +497,27 @@ public class Login extends Activity implements View.OnClickListener {
                         break;
                     case XmlPullParser.START_TAG:
                         sb.append('<').append(parser.getName()).append('>');
-
+                        Message msg = new Message();
                         //验证码获取请求---结果
                         if (parser.getName().equals("reqver")) {
                             String reqverrsp = parser.nextText();
+                            msg.what = IS_SEND_VER_RSP;
                             if (reqverrsp != null && reqverrsp.equals("verrspsend")) {
-
+                                msg.obj = "sended";
                             } else {
-
+                                msg.obj = "sendfail";
                             }
                         } else if (parser.getName().equals("matchver")) {
                             //验证码匹配结果
                             String matchrsp = parser.nextText();
+                            msg.what = MATCH_VER_RSP;
                             if (matchrsp != null && matchrsp.equals("matched")) {
-
+                               msg.obj = "succeed";
                             } else {
-                                //Toast.makeText(getApplicationContext(),"验证码错误",Toast.LENGTH_SHORT).show();
+                                msg.obj = "failed";
                             }
                         }
+                        mhandler.sendMessage(msg);
                         break;
                     case XmlPullParser.END_TAG:
                         sb.append("</").append(parser.getName()).append('>');
