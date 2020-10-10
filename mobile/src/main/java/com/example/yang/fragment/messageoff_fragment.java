@@ -156,18 +156,21 @@ public class messageoff_fragment extends Fragment {
         intentFilter.addAction("com.example.yang.Bluetoothutil");
         msgUpadteReceiver = new MsgUpadteReceiver();
         //注册广播
-        localBroadcastManager = LocalBroadcastManager.getInstance(getActivity());
+        localBroadcastManager = LocalBroadcastManager.getInstance(getContext());
         //本地广播管理器注册广播接收器
         localBroadcastManager.registerReceiver(msgUpadteReceiver, intentFilter);
         return view;
     }
 
-    private class MsgUpadteReceiver extends BroadcastReceiver {
+    public class MsgUpadteReceiver extends BroadcastReceiver {
         @SuppressLint("ResourceType")
         @RequiresApi(api = Build.VERSION_CODES.KITKAT)
         @Override
         public void onReceive(Context context, Intent intent) {
             String name = intent.getStringExtra("account");
+            String type = intent.getStringExtra("type");
+            String data = intent.getStringExtra("path");
+            String time = intent.getStringExtra("time");
             Log.d(TAG,"MsgUpadteReceiver onReceive: "+name);
 			if(name == null){
 				return ;
@@ -183,7 +186,7 @@ public class messageoff_fragment extends Fragment {
             }
 
             if (intent.getAction().equals("com.example.yang.updaterecv")) {
-                String type = intent.getStringExtra("type");
+                //String type = intent.getStringExtra("type");
                 sql.open();
                 Map<String, Object> map = new HashMap<>();
                 Cursor cursor = sql.getContact(MainActivity.friendinfotable, sql.KEY_ACTNB, name);

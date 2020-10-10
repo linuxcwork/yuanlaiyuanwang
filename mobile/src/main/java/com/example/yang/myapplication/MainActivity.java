@@ -16,6 +16,7 @@ import android.os.Message;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -29,6 +30,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.yang.fragment.MenuFragmentpageAdapt;
+import com.example.yang.fragment.messageoff_fragment;
+
 import java.util.Objects;
 
 import q.rorbin.badgeview.QBadgeView;
@@ -139,6 +142,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         msgUpadteReceiver = new MsgUpadteReceiver();
         //注册广播
         registerReceiver(msgUpadteReceiver, intentFilter);
+
         /*
          * ui初始化*/
         init_active_id(page_fragment);

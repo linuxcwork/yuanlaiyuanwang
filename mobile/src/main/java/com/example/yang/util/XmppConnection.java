@@ -234,19 +234,18 @@ public class XmppConnection  {
      * 注册
      * @return 是否注册成功。 true 成功; false 失败。
      ********************************************************************************************/
-    public boolean RegisterAc(Map<String, String> map) throws XmppStringprepException {
+    public boolean RegisterAc(String map) {
         if (mConnection != null && mConnection.isConnected()) {
             // 已经connect 上了，才可以进行注册操作
+            AccountManager accountManager = AccountManager.getInstance(mConnection);
             try {
-                AccountManager accountManager = AccountManager.getInstance(mConnection);
                 if (accountManager.supportsAccountCreation()) {
                     accountManager.sensitiveOperationOverInsecureConnection(true);
-                    accountManager.createAccount(Localpart.from(map.get("account")), map.get("password"));
+                    accountManager.createAccount(Localpart.fromOrThrowUnchecked(map), "passwd");
                     return true;
                 }
             } catch (SmackException.NoResponseException e) {
                 e.printStackTrace();
-                Log.e(TAG,"RegisterAc NoResponseException"+e);
             } catch (XMPPException.XMPPErrorException e) {
                 e.printStackTrace();
                 Log.e(TAG,"RegisterAc XMPPErrorException"+e);
@@ -254,11 +253,9 @@ public class XmppConnection  {
                     // 用户名已存在
                 }*/
             } catch (SmackException.NotConnectedException e) {
-                Log.e(TAG,"RegisterAc NotConnectedException"+e);
                 e.printStackTrace();
             } catch (InterruptedException e) {
                 e.printStackTrace();
-                Log.e(TAG,"RegisterAc InterruptedException"+e);
             }
         }
 
@@ -267,15 +264,16 @@ public class XmppConnection  {
 
     /*********************************************************************************************
      * 登录服务器
+     *
+     * @param context
      * @param userName 用户名
-     * @param passWord 密码
      * @return 是否登录成功。 true 成功; false 失败。
      ********************************************************************************************/
-    public boolean login(Context context,String userName, String passWord) {
+    public boolean login(Context context, String userName) {
         checkConnection(); // 检查是否连接
         try {
             if (islogin()){ // 判断是否登录
-                mConnection.login(userName, passWord, Resourcepart.from(SystemUtil.getIMEI(context)));
+                mConnection.login(userName, "passwd", Resourcepart.from(SystemUtil.getIMEI(context)));
 				//timer.schedule(task,0,60000);
 				mHandler.postDelayed(runnable, 60000);
                 //addListener(); // 设置一些监听

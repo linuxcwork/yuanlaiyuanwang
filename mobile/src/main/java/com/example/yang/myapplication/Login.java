@@ -96,6 +96,8 @@ public class Login extends Activity implements View.OnClickListener {
                     break;
                 case MATCH_VER_RSP:
                      if("succeed".equals(response)) {
+                         xmppConnection.RegisterAc(admin.getText().toString());
+                         xmppConnection.login(getApplicationContext(),admin.getText().toString());
                          Intent mainactivity = new Intent(Login.this, MainActivity.class);
                          startActivity(mainactivity);
                      }else {
@@ -119,11 +121,20 @@ public class Login extends Activity implements View.OnClickListener {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login);
-        /*
-         * 创建一级目录*/
-        FileOperationUtil.CreateDir(FileOperationUtil.MAINDIRPATH);
-        FileOperationUtil.CreateDir(FileOperationUtil.SECONDCACHEDIRPATH);
-        FileOperationUtil.CreateDir(SECONDUSERINFODIRPATH);
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                /*
+                 * 创建一级目录*/
+                FileOperationUtil.CreateDir(FileOperationUtil.MAINDIRPATH);
+                FileOperationUtil.CreateDir(FileOperationUtil.SECONDCACHEDIRPATH);
+                FileOperationUtil.CreateDir(SECONDUSERINFODIRPATH);
+                FileOperationUtil.CreateDir(SECONDUSERINFODIRPATH + File.separator + "image");
+                path = FileOperationUtil.CreateFile(SECONDUSERINFODIRPATH + File.separator + "image" + File.separator + "avatar.jpg");
+            }
+        }).start();
+
 
         listener = MessageListener.getMessageListener(getApplicationContext());
         phone_number_lin = findViewById(R.id.loging_phone_number_linearlayout);
@@ -160,11 +171,8 @@ public class Login extends Activity implements View.OnClickListener {
             CheckPermission.openGPS(this);
         }
 
-        ProviderManager.addIQProvider("query", "hoo.iq.userinfo", new Login.PhoneProvider());
-
         xmppConnection = XmppConnection.getInstance();
-        FileOperationUtil.CreateDir(SECONDUSERINFODIRPATH + File.separator + "image");
-        path = FileOperationUtil.CreateFile(SECONDUSERINFODIRPATH + File.separator + "image" + File.separator + "avatar.jpg");
+        ProviderManager.addIQProvider("query", "hoo.iq.userinfo", new Login.PhoneProvider());
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
@@ -294,35 +302,42 @@ public class Login extends Activity implements View.OnClickListener {
         map.put("event", mess.EVENT_GET_VERIFICATION);
         map.put(mess.getData(),mobile);*/
 
-        PhoneNumLogin phoneNumLogin = new PhoneNumLogin();
-        phoneNumLogin.setUsername("111");
-        phoneNumLogin.setElement_name("phonenumber");
-        phoneNumLogin.setPhonenumber(admin.getText().toString());
-        phoneNumLogin.setType(IQ.Type.get);
-        XMPPTCPConnection mConnection = xmppConnection.getXmppTcpConnection();
-        StanzaCollector collector = mConnection.createStanzaCollector(new PacketIDFilter(phoneNumLogin.getPacketID()));
-        //AndFilter filter = new AndFilter(new PacketIDFilter(PhoneNumLogin.getPacketID()), new PacketTypeFilter(IQ.class));
-        try {
-            mConnection.sendStanza(phoneNumLogin);
-        } catch (SmackException.NotConnectedException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                PhoneNumLogin phoneNumLogin = new PhoneNumLogin();
+                phoneNumLogin.setUsername("111");
+                phoneNumLogin.setElement_name("phonenumber");
+                phoneNumLogin.setPhonenumber(admin.getText().toString());
+                phoneNumLogin.setType(IQ.Type.get);
+                XMPPTCPConnection mConnection = xmppConnection.getXmppTcpConnection();
+                StanzaCollector collector = mConnection.createStanzaCollector(new PacketIDFilter(phoneNumLogin.getPacketID()));
+                //AndFilter filter = new AndFilter(new PacketIDFilter(PhoneNumLogin.getPacketID()), new PacketTypeFilter(IQ.class));
+                try {
+                    mConnection.sendStanza(phoneNumLogin);
+                } catch (SmackException.NotConnectedException e) {
+                    e.printStackTrace();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
 
-        //PhoneNumLogin response = collector.nextResult(SmackConfiguration.getDefaultPacketReplyTimeout());
+                //PhoneNumLogin response = collector.nextResult(SmackConfiguration.getDefaultPacketReplyTimeout());
 
-        if (collector.nextResult(SmackConfiguration.getDefaultPacketReplyTimeout()) == null) {
-            SmackException.NoResponseException.newWith(mConnection, collector);
-        }
-        collector.cancel();// 停止请求results（是否成功的结果）
+                try {
+                    if (collector.nextResult(SmackConfiguration.getDefaultPacketReplyTimeout()) == null) {
+                        SmackException.NoResponseException.newWith(mConnection, collector);
+                    }
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                collector.cancel();// 停止请求results（是否成功的结果）
 
-        if (runningThree) {
-        } else {
-            downTimer.start();
-        }
-        //http.postKeyValuePaires(user.host_url, map, null);
-
+                if (runningThree) {
+                } else {
+                    downTimer.start();
+                }
+            }
+        }).start();
     }
 
     //获取验证码信息，判断是否有手机号码
@@ -355,35 +370,40 @@ public class Login extends Activity implements View.OnClickListener {
         public void inputComplete() {
             String ver = verifyCodeView.getEditContent();
             //发送验证码到服务器
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    PhoneNumLogin phoneNumLogin = new PhoneNumLogin();
+                    phoneNumLogin.setUsername("111");
+                    phoneNumLogin.setElement_name("ver");
 
-            PhoneNumLogin phoneNumLogin = new PhoneNumLogin();
-            phoneNumLogin.setUsername("111");
-            phoneNumLogin.setElement_name("ver");
+                    phoneNumLogin.setPhonenumber(admin.getText().toString());
+                    phoneNumLogin.setphoneVer(ver);
 
-            phoneNumLogin.setPhonenumber(admin.getText().toString());
-            phoneNumLogin.setphoneVer(ver);
+                    phoneNumLogin.setType(IQ.Type.get);
+                    XMPPTCPConnection mConnection = xmppConnection.getXmppTcpConnection();
+                    StanzaCollector collector = mConnection.createStanzaCollector(new PacketIDFilter(phoneNumLogin.getPacketID()));
+                    //AndFilter filter = new AndFilter(new PacketIDFilter(PhoneNumLogin.getPacketID()), new PacketTypeFilter(IQ.class));
+                    try {
+                        mConnection.sendStanza(phoneNumLogin);
+                    } catch (SmackException.NotConnectedException e) {
+                        e.printStackTrace();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
 
-            phoneNumLogin.setType(IQ.Type.get);
-            XMPPTCPConnection mConnection = xmppConnection.getXmppTcpConnection();
-            StanzaCollector collector = mConnection.createStanzaCollector(new PacketIDFilter(phoneNumLogin.getPacketID()));
-            //AndFilter filter = new AndFilter(new PacketIDFilter(PhoneNumLogin.getPacketID()), new PacketTypeFilter(IQ.class));
-            try {
-                mConnection.sendStanza(phoneNumLogin);
-            } catch (SmackException.NotConnectedException e) {
-                e.printStackTrace();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-
-            //PhoneNumLogin response = collector.nextResult(SmackConfiguration.getDefaultPacketReplyTimeout());
-            try {
-                if (collector.nextResult(SmackConfiguration.getDefaultPacketReplyTimeout()) == null) {
-                    SmackException.NoResponseException.newWith(mConnection, collector);
+                    //PhoneNumLogin response = collector.nextResult(SmackConfiguration.getDefaultPacketReplyTimeout());
+                    try {
+                        if (collector.nextResult(SmackConfiguration.getDefaultPacketReplyTimeout()) == null) {
+                            SmackException.NoResponseException.newWith(mConnection, collector);
+                        }
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    collector.cancel();// 停止请求results（是否成功的结果）
                 }
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            collector.cancel();// 停止请求results（是否成功的结果）
+            }).start();
+
 
         }
 
@@ -471,14 +491,14 @@ public class Login extends Activity implements View.OnClickListener {
 
         @Override
         protected IQChildElementXmlStringBuilder getIQChildElementBuilder(IQChildElementXmlStringBuilder xml) {
-            xml.rightAngleBracket();
+            /*xml.rightAngleBracket();
             xml.append("<query xmlns=\"").append(NAMESPACE).append("\">");
             xml.append("<prompt>").append(username).append("</prompt>");
             xml.append("</query>");
             xml.append( "<" + element_name + " xmlns=\"" + NAMESPACE + "\">" );
             xml.element( "phonenumber",  phonenumber );
             xml.element( "ver", ver );
-            xml.append( "</" + element_name + ">" );
+            xml.append( "</" + element_name + ">" );*/
             return xml;
         }
     }

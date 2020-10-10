@@ -22,6 +22,7 @@ import org.jivesoftware.smackx.filetransfer.FileTransferRequest;
 import org.jivesoftware.smackx.filetransfer.IncomingFileTransfer;
 import org.jivesoftware.smackx.vcardtemp.packet.VCard;
 import org.jxmpp.jid.EntityBareJid;
+import org.jxmpp.jid.Jid;
 import org.jxmpp.stringprep.XmppStringprepException;
 
 import java.io.BufferedOutputStream;
@@ -45,6 +46,8 @@ public class MessageListener implements IncomingChatMessageListener, FileTransfe
     private static Context mContext;
     public static String BROADCASTRECVUPDATE = "com.example.yang.updaterecv";
     public static String BROADCASTRECVUPDATEFILE = "com.example.yang.updaterecv.file";
+    private static String MESSAGE_TYPE_CHAT = "chat";
+    private static String MESSAGE_TYPE_FILE = "file";
     private File recvimagepath = FileOperationUtil.CreateDir(FileOperationUtil.SECONDMESSAFEDIRPATH+"recvimage");
 
     public static MessageListener getMessageListener(Context context){
@@ -57,7 +60,7 @@ public class MessageListener implements IncomingChatMessageListener, FileTransfe
 
     @Override
     public void newIncomingMessage(EntityBareJid from, Message message, Chat chat) {
-        	
+
         if(xmppConnection == null) {
             xmppConnection = XmppConnection.getInstance();
         }
@@ -113,16 +116,7 @@ public class MessageListener implements IncomingChatMessageListener, FileTransfe
         MainActivity.sql.insertContact(sqlite_linkmanmss.DATABASE_TABLE, map);
         MainActivity.sql.close();
 
-        Intent recvintent = new Intent();
-        recvintent.setAction(BROADCASTRECVUPDATE);
-        recvintent.putExtra("account",from.toString());
-        recvintent.putExtra("type",message.getSubject("type"));
-        recvintent.putExtra("path",body);
-        //创建一个本地广播管理器
-        LocalBroadcastManager localBroadcastManager = LocalBroadcastManager.getInstance(mContext);
-        //发送本地广播
-        localBroadcastManager.sendBroadcast(recvintent);
-
+        dispatchMessage(from.toString(),body,message.getSubject("type"),GetCurrentTime());
     }
 
     @Override
@@ -134,6 +128,7 @@ public class MessageListener implements IncomingChatMessageListener, FileTransfe
                 IncomingFileTransfer infiletransfer = request.accept();
                 File mfile = new File(recvimagepath.getAbsolutePath() + File.separator + request.getFileName());
 
+                Jid from = request.getRequestor();
                 try {
                     infiletransfer.receiveFile(mfile);
                     System.out.println("接收成功！");
@@ -168,7 +163,7 @@ public class MessageListener implements IncomingChatMessageListener, FileTransfe
                     }
                     VCard vCard = null;
                     try {
-                        vCard = xmppConnection.getFriendunisInfo(infiletransfer.getPeer().asEntityBareJidIfPossible().toString());
+                        vCard = xmppConnection.getFriendunisInfo(from.toString());
                     } catch (XMPPException.XMPPErrorException e) {
                         e.printStackTrace();
                     } catch (SmackException.NotConnectedException e) {
@@ -196,7 +191,7 @@ public class MessageListener implements IncomingChatMessageListener, FileTransfe
                         MainActivity.sql.updateContact(MainActivity.friendinfotable, sqlite_linkmanmss.KEY_ACTNB, infiletransfer.getPeer().asEntityBareJidIfPossible().toString(), update);
                     } else {
                         Map<String, Object> save = new HashMap<String, Object>();
-                        save.put(sqlite_linkmanmss.KEY_ACTNB, infiletransfer.getPeer().asEntityBareJidIfPossible().toString());
+                        save.put(sqlite_linkmanmss.KEY_ACTNB, from.toString());
                         save.put(sqlite_linkmanmss.KEY_ROWID, vCard.getAvatar());
                         save.put(sqlite_linkmanmss.KEY_NAME, vCard.getNickName());
                         save.put(sqlite_linkmanmss.KEY_ISNEWMESSAGE, 1);
@@ -208,30 +203,35 @@ public class MessageListener implements IncomingChatMessageListener, FileTransfe
                     MainActivity.sql.close();
                 }
 
-                Intent recvintent = new Intent();
-                recvintent.setAction(BROADCASTRECVUPDATEFILE);
-                recvintent.putExtra("account",infiletransfer.getPeer().asEntityBareJidIfPossible().toString());
-                recvintent.putExtra("path",mfile.getPath());
-                recvintent.putExtra("type",type);
-                //创建一个本地广播管理器
-                LocalBroadcastManager localBroadcastManager = LocalBroadcastManager.getInstance(mContext);
-                //发送本地广播
-                localBroadcastManager.sendBroadcast(recvintent);
+                dispatchMessage(from.toString(),request.getFileName(),MESSAGE_TYPE_FILE,GetCurrentTime());
             }
         }).start();
 
     }
 
+    private void dispatchMessage(String from,String msg,String type,String time){
+        Intent recvintent = new Intent();
+        recvintent.setAction(BROADCASTRECVUPDATE);
+        recvintent.putExtra("account",from);
+        recvintent.putExtra("path",msg);
+        recvintent.putExtra("type",type);
+        recvintent.putExtra("time",time);
+        //创建一个本地广播管理器
+        LocalBroadcastManager localBroadcastManager = LocalBroadcastManager.getInstance(mContext);
+        //发送本地广播
+        localBroadcastManager.sendBroadcast(recvintent);
+    }
+
     /******************************************************************
      *获取当前时间
      ******************************************************************/
-    private StringBuilder GetCurrentTime() {
+    private String GetCurrentTime() {
         Date mdate = new Date();
         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
         StringBuilder mBuilder = new StringBuilder();
 
         mBuilder.append(sdf.format(mdate));
 
-        return mBuilder;
+        return mBuilder.toString();
     }
 }

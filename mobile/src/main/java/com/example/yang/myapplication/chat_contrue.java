@@ -197,7 +197,37 @@ public class chat_contrue extends AppCompatActivity implements View.OnClickListe
         }
     };
 
+    private IncomingChatMessageListener incomingChatMessageListener = new IncomingChatMessageListener() {
+        @Override
+        public void newIncomingMessage(EntityBareJid from, org.jivesoftware.smack.packet.Message message, Chat chat) {
+            System.out.println(from + ":" + chataccount);
+            System.out.println(message.getTo() + " : " + message.getFrom());
+            try {
+                if (from.toString().equals(JidCreate.entityBareFrom(chataccount).toString())) {
+                    Map<String, Object> map = new HashMap<String, Object>();
+                    map.put(sqlite_linkmanmss.KEY_ACTNB, from.toString());
+                    map.put(sqlite_linkmanmss.KEY_DIRECTION, "recv");
+                    map.put(sqlite_linkmanmss.KEY_CONTENT, message.getBody());
+                    map.put(sqlite_linkmanmss.KEY_TIME, "time");
+                    map.put(sqlite_linkmanmss.EKY_MESSAGETYPE, KEY_MESSAGE_TYPE_STRING);
+                    map.put(sqlite_linkmanmss.KEY_ISNEWMESSAGE, "0");
+                    Message msg = new Message();
+                    msg.what = MAG_RECVMSG_DEAL;
+                    msg.obj = map;
+                    mHandler.sendMessage(msg);
+                }
+            } catch (XmppStringprepException e) {
+                e.printStackTrace();
+            }
+        }
+    };
+
     public chat_contrue() {
+        sql = new sqlite_linkmanmss(this, "link", null, 1);
+        mContext = getApplicationContext();
+        xmppConnection = XmppConnection.getInstance();
+        xmppConnection.recieveMessage(incomingChatMessageListener);
+        recvimagepath = FileOperationUtil.CreateDir(FileOperationUtil.SECONDMESSAFEDIRPATH + "recvimage");
     }
 
     @RequiresApi(api = Build.VERSION_CODES.HONEYCOMB)
@@ -205,37 +235,7 @@ public class chat_contrue extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.chat);
-
-        sql = new sqlite_linkmanmss(this, "link", null, 1);
         initUI();
-        mContext = getApplicationContext();
-        xmppConnection = XmppConnection.getInstance();
-        xmppConnection.recieveMessage(new IncomingChatMessageListener() {
-            @Override
-            public void newIncomingMessage(EntityBareJid from, org.jivesoftware.smack.packet.Message message, Chat chat) {
-                System.out.println(from+":"+chataccount);
-                System.out.println(message.getTo()+" : "+message.getFrom());
-                try {
-                    if(from.toString().equals(JidCreate.entityBareFrom(chataccount).toString())) {
-                        Map<String, Object> map = new HashMap<String, Object>();
-                        map.put(sqlite_linkmanmss.KEY_ACTNB, from.toString());
-                        map.put(sqlite_linkmanmss.KEY_DIRECTION, "recv");
-                        map.put(sqlite_linkmanmss.KEY_CONTENT, message.getBody());
-                        map.put(sqlite_linkmanmss.KEY_TIME, "time");
-                        map.put(sqlite_linkmanmss.EKY_MESSAGETYPE, KEY_MESSAGE_TYPE_STRING);
-                        map.put(sqlite_linkmanmss.KEY_ISNEWMESSAGE, "0");
-                        Message msg = new Message();
-                        msg.what = MAG_RECVMSG_DEAL;
-                        msg.obj = map;
-                        mHandler.sendMessage(msg);
-                    }
-                } catch (XmppStringprepException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-
-        recvimagepath = FileOperationUtil.CreateDir(FileOperationUtil.SECONDMESSAFEDIRPATH+"recvimage");
 
         /********************************************************
          * 表情功能部分
@@ -273,19 +273,19 @@ public class chat_contrue extends AppCompatActivity implements View.OnClickListe
                 int count = 0;
                 Map<String, String> map = new HashMap<String, String>();
                 map.put(sqlite_linkmanmss.KEY_ISNEWMESSAGE, String.valueOf(count));
-                tsql.updateContact(MainActivity.friendinfotable,sqlite_linkmanmss.KEY_ACTNB,chataccount,map);
-                Cursor cursor = tsql.getContact(MainActivity.friendinfotable,sqlite_linkmanmss.KEY_ACTNB,chataccount);
-                if(cursor != null && cursor.moveToFirst()){
+                tsql.updateContact(MainActivity.friendinfotable, sqlite_linkmanmss.KEY_ACTNB, chataccount, map);
+                Cursor cursor = tsql.getContact(MainActivity.friendinfotable, sqlite_linkmanmss.KEY_ACTNB, chataccount);
+                if (cursor != null && cursor.moveToFirst()) {
                     int indeximage = cursor.getColumnIndex(sqlite_linkmanmss.KEY_ROWID);
                     int indexname = cursor.getColumnIndex(sqlite_linkmanmss.KEY_NAME);
                     CurrentObject = cursor.getString(indexname);
-                    if(CurrentObject != null){
-                        Log.e(TAG,"CurrentObject: "+CurrentObject);
+                    if (CurrentObject != null) {
+                        Log.e(TAG, "CurrentObject: " + CurrentObject);
                         friend_name.setText(CurrentObject);
                     }
                     friendimage = cursor.getBlob(indeximage);
-                    if(friendimage == null){
-                        Log.e(TAG,"friendimage: "+friendimage);
+                    if (friendimage == null) {
+                        Log.e(TAG, "friendimage: " + friendimage);
                     }
                 }
                 tsql.close();
@@ -471,16 +471,16 @@ public class chat_contrue extends AppCompatActivity implements View.OnClickListe
             /* 聊天界面获取当前位置*/
             case R.id.funtionposition:
                 Intent intentchatmap = new Intent(chat_contrue.this, MapLocationPosition.class);
-                intentchatmap.putExtra("mapresource","chat_contrue");
+                intentchatmap.putExtra("mapresource", "chat_contrue");
                 startActivityForResult(intentchatmap, requestcodemap);
                 break;
             case R.id.funtionmakecall:
                 Intent intentrtcvoice = new Intent(chat_contrue.this, ChatRTCVoiceActivity.class);
-                intentrtcvoice.putExtra("mapresource",chataccount);
-                intentrtcvoice.putExtra("roomid",100);
+                intentrtcvoice.putExtra("mapresource", chataccount);
+                intentrtcvoice.putExtra("roomid", 100);
                 startActivityForResult(intentrtcvoice, requestcodemap);
                 try {
-                    xmppConnection.sendMessages(chataccount,"100",sqlite_linkmanmss.KEY_MESSAGE_TYPE_CALL);
+                    xmppConnection.sendMessages(chataccount, "100", sqlite_linkmanmss.KEY_MESSAGE_TYPE_CALL);
                 } catch (XmppStringprepException e) {
                     e.printStackTrace();
                 }
@@ -526,7 +526,7 @@ public class chat_contrue extends AppCompatActivity implements View.OnClickListe
                     new Thread(new Runnable() {
                         @Override
                         public void run() {
-                            xmppConnection.sendFiles(chataccount,btext,KEY_MESSAGE_TYPE_IMAGE);
+                            xmppConnection.sendFiles(chataccount, btext, KEY_MESSAGE_TYPE_IMAGE);
                         }
                     }).start();
                 }
@@ -545,7 +545,7 @@ public class chat_contrue extends AppCompatActivity implements View.OnClickListe
                         new Thread(new Runnable() {
                             @Override
                             public void run() {
-                                xmppConnection.sendFiles(chataccount,mdata.get(finalI).toString(),KEY_MESSAGE_TYPE_IMAGE);
+                                xmppConnection.sendFiles(chataccount, mdata.get(finalI).toString(), KEY_MESSAGE_TYPE_IMAGE);
                             }
                         }).start();
                     }
@@ -554,7 +554,7 @@ public class chat_contrue extends AppCompatActivity implements View.OnClickListe
             } else if (requestCode == 3) {
                 //相机返回数据处理
                 if (resultCode == Activity.RESULT_CANCELED) {
-                System.out.println("onActivityResult RESULT_CANCELED" + photopath);
+                    System.out.println("onActivityResult RESULT_CANCELED" + photopath);
                     //photoDeal.delteImageUri(chat_contrue.this,photopath);
                 }
 //            发现图片在ImageView上无法显示，原因是图片过大导致的，所以要对于图片进行处理。
@@ -593,7 +593,7 @@ public class chat_contrue extends AppCompatActivity implements View.OnClickListe
                     new Thread(new Runnable() {
                         @Override
                         public void run() {
-                            xmppConnection.sendFiles(chataccount,photopath,KEY_MESSAGE_TYPE_IMAGE);
+                            xmppConnection.sendFiles(chataccount, photopath, KEY_MESSAGE_TYPE_IMAGE);
                         }
                     }).start();
                 }
@@ -612,19 +612,21 @@ public class chat_contrue extends AppCompatActivity implements View.OnClickListe
     }
 
     // 继承 TRTCCloudListener 回调
-     class TRTCCloudListenerImpl extends TRTCCloudListener {
+    class TRTCCloudListenerImpl extends TRTCCloudListener {
         private WeakReference<chat_contrue> mContext;
+
         public TRTCCloudListenerImpl(chat_contrue activity) {
             super();
             mContext = new WeakReference<>(activity);
         }
+
         // 错误通知是要监听的，错误通知意味着 SDK 不能继续运行了
         @Override
         public void onError(int errCode, String errMsg, Bundle extraInfo) {
             Log.d(TAG, "sdk callback onError");
             chat_contrue activity = mContext.get();
             if (activity != null) {
-                Toast.makeText(activity, "onError: " + errMsg + "[" + errCode+ "]" , Toast.LENGTH_SHORT).show();
+                Toast.makeText(activity, "onError: " + errMsg + "[" + errCode + "]", Toast.LENGTH_SHORT).show();
                 if (errCode == TXLiteAVCode.ERR_ROOM_ENTER_FAIL) {
                     //activity.exitRoom();
                 }
@@ -641,7 +643,7 @@ public class chat_contrue extends AppCompatActivity implements View.OnClickListe
         if (!chin.getText().toString().isEmpty()) {
             Editable msg = chin.getText();
             updateMessageUI(msg.toString(), "send", KEY_MESSAGE_TYPE_STRING);
-            xmppConnection.sendMessages(chataccount,msg.toString(),"text");
+            xmppConnection.sendMessages(chataccount, msg.toString(), "text");
         }
     }
 
@@ -708,31 +710,31 @@ public class chat_contrue extends AppCompatActivity implements View.OnClickListe
         sql.open();
         //定义数据表结构，并创建数据表，当名字改编后需要修改名字
 
-            Cursor cu = sql.getContact(sqlite_linkmanmss.DATABASE_TABLE,sqlite_linkmanmss.KEY_ACTNB, chataccount);
-            if(cu != null) {
-                int indexdir = cu.getColumnIndex(sqlite_linkmanmss.KEY_DIRECTION);
-                int indextype = cu.getColumnIndex(sqlite_linkmanmss.EKY_MESSAGETYPE);
-                int indexmsg = cu.getColumnIndex(sqlite_linkmanmss.KEY_CONTENT);
-                int indextime = cu.getColumnIndex(sqlite_linkmanmss.KEY_TIME);
-                int indexisnew = cu.getColumnIndex(sqlite_linkmanmss.KEY_ISNEWMESSAGE);
-                int indexactnb = cu.getColumnIndex(sqlite_linkmanmss.KEY_ACTNB);
-                int indexrowid = cu.getColumnIndex(sqlite_linkmanmss.KEY_ROWID);
-                if (cu.moveToFirst()) {
-                    do {
-                        Map<String, Object> map = new HashMap<>();
-                        map.put(sqlite_linkmanmss.KEY_DIRECTION, cu.getString(indexdir));
-                        map.put(sqlite_linkmanmss.EKY_MESSAGETYPE, cu.getString(indextype));
-                        map.put(sqlite_linkmanmss.KEY_CONTENT, cu.getString(indexmsg));
-                        map.put(sqlite_linkmanmss.KEY_TIME, cu.getString(indextime));
-                        map.put(sqlite_linkmanmss.KEY_ISNEWMESSAGE, cu.getString(indexisnew));
-                        map.put(sqlite_linkmanmss.KEY_ACTNB, cu.getString(indexactnb));
-                        map.put(sqlite_linkmanmss.KEY_ROWID, cu.getString(indexrowid));
-                        MessagesSqlite.add(map);
-                    }while (cu.moveToNext());
-                }
+        Cursor cu = sql.getContact(sqlite_linkmanmss.DATABASE_TABLE, sqlite_linkmanmss.KEY_ACTNB, chataccount);
+        if (cu != null) {
+            int indexdir = cu.getColumnIndex(sqlite_linkmanmss.KEY_DIRECTION);
+            int indextype = cu.getColumnIndex(sqlite_linkmanmss.EKY_MESSAGETYPE);
+            int indexmsg = cu.getColumnIndex(sqlite_linkmanmss.KEY_CONTENT);
+            int indextime = cu.getColumnIndex(sqlite_linkmanmss.KEY_TIME);
+            int indexisnew = cu.getColumnIndex(sqlite_linkmanmss.KEY_ISNEWMESSAGE);
+            int indexactnb = cu.getColumnIndex(sqlite_linkmanmss.KEY_ACTNB);
+            int indexrowid = cu.getColumnIndex(sqlite_linkmanmss.KEY_ROWID);
+            if (cu.moveToFirst()) {
+                do {
+                    Map<String, Object> map = new HashMap<>();
+                    map.put(sqlite_linkmanmss.KEY_DIRECTION, cu.getString(indexdir));
+                    map.put(sqlite_linkmanmss.EKY_MESSAGETYPE, cu.getString(indextype));
+                    map.put(sqlite_linkmanmss.KEY_CONTENT, cu.getString(indexmsg));
+                    map.put(sqlite_linkmanmss.KEY_TIME, cu.getString(indextime));
+                    map.put(sqlite_linkmanmss.KEY_ISNEWMESSAGE, cu.getString(indexisnew));
+                    map.put(sqlite_linkmanmss.KEY_ACTNB, cu.getString(indexactnb));
+                    map.put(sqlite_linkmanmss.KEY_ROWID, cu.getString(indexrowid));
+                    MessagesSqlite.add(map);
+                } while (cu.moveToNext());
             }
-            cu.close();
-            sql.close();
+        }
+        cu.close();
+        sql.close();
 
 
         return MessagesSqlite;
@@ -775,14 +777,14 @@ public class chat_contrue extends AppCompatActivity implements View.OnClickListe
     protected void onDestroy() {
         System.out.println("chat_contrue onDestroy");
         localBroadcastManager.unregisterReceiver(msgUpadteReceiver);
-
+        xmppConnection.removeMessageListener(incomingChatMessageListener);
         //mDialogManager.dismissDialog();
         super.onDestroy();
     }
 
     @Override
     public void onBackPressed() {
-		System.out.println("chat_contrue onBackPressed");
+        System.out.println("chat_contrue onBackPressed");
         if (!mEmotionKeyboard.interceptBackPress()) {
             if (isRecording == true) {
                 Log.d(TAG, "onBackPressed: mdialogmanager");
