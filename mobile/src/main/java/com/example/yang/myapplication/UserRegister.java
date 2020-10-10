@@ -24,7 +24,6 @@ import com.example.yang.util.SharedPreferencedUtils;
 import com.example.yang.util.UrlListdb;
 import com.example.yang.util.XmppConnection;
 
-import org.jxmpp.stringprep.XmppStringprepException;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -128,11 +127,7 @@ public class UserRegister extends Activity implements View.OnClickListener{
 
         XmppConnection xmppConnection = XmppConnection.getInstance();
         boolean ret = false;
-        try {
-            ret = xmppConnection.RegisterAc(map);
-        } catch (XmppStringprepException e) {
-            e.printStackTrace();
-        }
+
     }
 
     private void view_init(){

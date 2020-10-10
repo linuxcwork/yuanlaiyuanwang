@@ -183,10 +183,10 @@ public class messageoff_fragment extends Fragment {
                 sql.open();
                 sql.updateContact(MainActivity.friendinfotable, sqlite_linkmanmss.KEY_ACTNB, name, map);
                 sql.close();
+                return ;
             }
 
             if (intent.getAction().equals("com.example.yang.updaterecv")) {
-                //String type = intent.getStringExtra("type");
                 sql.open();
                 Map<String, Object> map = new HashMap<>();
                 Cursor cursor = sql.getContact(MainActivity.friendinfotable, sql.KEY_ACTNB, name);
@@ -199,22 +199,21 @@ public class messageoff_fragment extends Fragment {
                     }
 
                     map.put(sql.KEY_TIME, cursor.getString(cursor.getColumnIndex(sql.KEY_TIME)));
-                    map.put(sql.KEY_ISNEWMESSAGE, cursor.getString(cursor.getColumnIndex(sql.KEY_ISNEWMESSAGE)));
                     map.put(sql.KEY_NAME, cursor.getString(cursor.getColumnIndex(sql.KEY_NAME)));
                     map.put(sql.KEY_ACTNB, cursor.getString(cursor.getColumnIndex(sql.KEY_ACTNB)));
-                    map.put(sql.EKY_MESSAGETYPE, MSGTYPECHATTEXT);
+                    map.put(sql.EKY_MESSAGETYPE, type);
                 }
                 int i = 0;
                 for (i = 0; i < listall.size(); i++) {
                     if (Objects.equals(listall.get(i).get(sqlite_linkmanmss.KEY_ACTNB), name)) {
-                        remove(i);
+                         int sdf = Integer.parseInt(listall.get(i).get(sql.KEY_ISNEWMESSAGE).toString()) + 1;
+                         map.put(sql.KEY_ISNEWMESSAGE, String.valueOf(sdf));
+                         remove(i);
                     }
                 }
                 add(0, map);
+
                 sql.close();
-                Message msg = new Message();
-                msg.what = UPDATEUI;
-                mhandler.sendMessage(msg);
                 if(type.equals(sqlite_linkmanmss.KEY_MESSAGE_TYPE_CALL)){
                     Intent callring = new Intent(getActivity(), ChatRTCVoiceIncommingActivity.class);
                     callring.putExtra("account",name);
@@ -259,10 +258,10 @@ public class messageoff_fragment extends Fragment {
                     sql.insertContact(MainActivity.friendinfotable, map);
                 }
                 sql.close();
-                Message msg = new Message();
-                msg.what = UPDATEUI;
-                mhandler.sendMessage(msg);
             }
+            Message msg = new Message();
+            msg.what = UPDATEUI;
+            mhandler.sendMessage(msg);
         }
     }
 

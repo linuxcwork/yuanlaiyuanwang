@@ -88,13 +88,13 @@ public class MessageListener implements IncomingChatMessageListener, FileTransfe
         Cursor cursor = MainActivity.sql.getContact(MainActivity.friendinfotable, sqlite_linkmanmss.KEY_ACTNB, from.toString());
         if (cursor != null && cursor.getCount()>0 && cursor.moveToFirst()) {
             int indexisnew = cursor.getColumnIndex(sqlite_linkmanmss.KEY_ISNEWMESSAGE);
-            int count = Integer.parseInt(cursor.getString(indexisnew)) + 1;
+            //int count = Integer.parseInt(cursor.getString(indexisnew)) + 1;
             Map<String, String> update = new HashMap<String, String>();
             update.put(sqlite_linkmanmss.KEY_ROWID, String.valueOf(vCard.getAvatar()));
             update.put(sqlite_linkmanmss.KEY_NAME, vCard.getNickName());
             update.put(sqlite_linkmanmss.KEY_CONTENT, body);
             update.put(sqlite_linkmanmss.KEY_TIME, String.valueOf(GetCurrentTime()));
-            update.put(sqlite_linkmanmss.KEY_ISNEWMESSAGE, String.valueOf(count));
+            //update.put(sqlite_linkmanmss.KEY_ISNEWMESSAGE, String.valueOf(count));
             MainActivity.sql.updateContact(MainActivity.friendinfotable, sqlite_linkmanmss.KEY_ACTNB, from.toString(), update);
         } else {
             Map<String, Object> save = new HashMap<String, Object>();
@@ -103,7 +103,7 @@ public class MessageListener implements IncomingChatMessageListener, FileTransfe
             save.put(sqlite_linkmanmss.KEY_CONTENT, body);
             save.put(sqlite_linkmanmss.KEY_TIME, GetCurrentTime());
             save.put(sqlite_linkmanmss.KEY_ACTNB, from.toString());
-            save.put(sqlite_linkmanmss.KEY_ISNEWMESSAGE, String.valueOf(1));
+            //save.put(sqlite_linkmanmss.KEY_ISNEWMESSAGE, String.valueOf(1));
             MainActivity.sql.insertContact(MainActivity.friendinfotable, save);
         }
 
@@ -181,9 +181,9 @@ public class MessageListener implements IncomingChatMessageListener, FileTransfe
                     if (cursor.getCount() > 0) {
                         cursor.moveToFirst();
                         int indexisnew = cursor.getColumnIndex(sqlite_linkmanmss.KEY_ISNEWMESSAGE);
-                        int count = Integer.parseInt(cursor.getString(indexisnew)) + 1;
+                        //int count = Integer.parseInt(cursor.getString(indexisnew)) + 1;
                         Map<String, String> update = new HashMap<String, String>();
-                        update.put(sqlite_linkmanmss.KEY_ISNEWMESSAGE, String.valueOf(count));
+                        //update.put(sqlite_linkmanmss.KEY_ISNEWMESSAGE, String.valueOf(count));
                         update.put(sqlite_linkmanmss.KEY_CONTENT, vCard.getNickName()+"[图片]");
                         update.put(sqlite_linkmanmss.KEY_NAME, vCard.getNickName());
                         update.put(sqlite_linkmanmss.KEY_TIME, GetCurrentTime().toString());
@@ -194,7 +194,7 @@ public class MessageListener implements IncomingChatMessageListener, FileTransfe
                         save.put(sqlite_linkmanmss.KEY_ACTNB, from.toString());
                         save.put(sqlite_linkmanmss.KEY_ROWID, vCard.getAvatar());
                         save.put(sqlite_linkmanmss.KEY_NAME, vCard.getNickName());
-                        save.put(sqlite_linkmanmss.KEY_ISNEWMESSAGE, 1);
+                        //save.put(sqlite_linkmanmss.KEY_ISNEWMESSAGE, 1);
                         save.put(sqlite_linkmanmss.KEY_CONTENT, vCard.getNickName()+"[图片]");
                         save.put(sqlite_linkmanmss.KEY_TIME, GetCurrentTime());
                         save.put(sqlite_linkmanmss.EKY_MESSAGETYPE, type);
